@@ -1,0 +1,44 @@
+.art {
+  display: block;
+  width: var(--art-width);
+}
+
+.divider {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  color: var(--line-strong);
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: var(--stroke);
+  background: currentColor;
+}
+
+.divider svg {
+  width: var(--space-8);
+}
+
+.rim {
+  transform-origin: center;
+  animation: weather var(--dur-wheel) linear infinite;
+}
+
+@keyframes weather {
+  to { transform: rotate(1turn); }
+}
+
+[data-state]:not([data-state='today'], [data-state='undeployed'], [data-state='soldout']) .rim {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rim { animation: none; }
+}
+
+.art[data-compact] {
+  width: var(--space-8);
+}
