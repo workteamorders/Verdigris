@@ -131,6 +131,7 @@
   --exhibit-demo: 56rem;
   --exhibit-crest-clearance: calc(min(86vw, var(--engraving-feature-width)) * 0.4125 - var(--space-4));
   --exhibit-veil: rgb(5 2 2 / 0.67);
+  --exhibit-beam: rgb(219 165 95 / 0.32);
   --exhibit-light: rgb(87 53 31 / 0.31);
   --engraving-feature-width: 23rem;
   --engraving-feature-rise: calc(var(--space-9) + var(--space-4));
@@ -151,6 +152,9 @@
   --dur-strike: 1100ms;
   --dur-drift: 240s;
   --dur-ticker: 60s;
+  --dur-exhibit-opening: 1400ms;
+  --dur-exhibit-label: 420ms;
+  --dur-exhibit-label-delay: 820ms;
   --dur-firefly-wing: 85ms;
   --dur-firefly-flight: 6s;
   --dur-firefly-arrive: 1400ms;

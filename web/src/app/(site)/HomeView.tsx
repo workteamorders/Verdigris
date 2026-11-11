@@ -1,34 +1,66 @@
 'use client';
 
 import Link from 'next/link';
+import { useEffect, useRef } from 'react';
 import { Wheel } from '@/components/Wheel';
 import { TiltCard } from '@/components/TiltCard';
 import { PatinaScrubber } from '@/components/PatinaScrubber';
 import { Panel } from '@/components/Panel';
 import { Facts, Grid, Section } from '@/components/Layout';
+import { useMotion } from '@/lib/motion';
 import { useCount } from '@/lib/chain-data';
 import { SIGNS } from '@/lib/signs';
 import { formatCountdown } from '@/lib/format';
 import { formatEthWei, wheelFor } from '@/lib/wheel';
 import styles from './HomeView.module.css';
 
+const OPENING_KEY = 'verdigris.exhibit-opening';
+let openingPlayed = false;
+
 const LEVEL_AT = ['Minted or moved', '3 days unmoved', '14 days unmoved', '45 days unmoved', '120 days unmoved'];
 
 export function HomeView() {
+  const stage = useRef<HTMLElement>(null);
+  const { tier } = useMotion();
+
+  useEffect(() => {
+    const exhibit = stage.current;
+    if (!exhibit) return;
+    if (tier === 'minimal') {
+      exhibit.removeAttribute('data-opening');
+      return;
+    }
+    if (openingPlayed) return;
+    try {
+      if (window.sessionStorage.getItem(OPENING_KEY)) return;
+      window.sessionStorage.setItem(OPENING_KEY, '1');
+    } catch {
+      // When storage is disabled, the intro can still play once on this visit.
+    }
+    openingPlayed = true;
+    exhibit.setAttribute('data-opening', '');
+  }, [tier]);
+
   const count = useCount();
   const wheel = wheelFor(count);
   const t = count.today;
 
   return (
     <>
-      <section className={styles.stage} aria-labelledby="exhibit-title">
+      <section ref={stage} className={styles.stage} aria-labelledby="exhibit-title">
         <div className={`container ${styles.exhibit}`}>
           <h1 id="exhibit-title">Time leaves a mark.</h1>
           <figure className={styles.figure}>
             <div className={styles.wheel}>
-              <TiltCard round={false} max={3}>
+              <TiltCard round={false} max={3} className={styles.artifact}>
                 <Wheel {...wheel} featured />
               </TiltCard>
+              <span className={styles.lamp} aria-hidden="true">
+                <span
+                  className={styles.beam}
+                  onAnimationEnd={() => stage.current?.removeAttribute('data-opening')}
+                />
+              </span>
             </div>
             <figcaption className={styles.caption}>
               <p className="label">The 84-Day Count</p>
