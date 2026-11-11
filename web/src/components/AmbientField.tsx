@@ -16,7 +16,7 @@ function startField(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D
   const brush = sprite.getContext('2d');
   if (!brush) return;
   const gradient = brush.createRadialGradient(64, 64, 0, 64, 64, 64);
-  gradient.addColorStop(0, palette.getPropertyValue('--patina-deep').trim());
+  gradient.addColorStop(0, palette.getPropertyValue('--field-oxide-core').trim());
   gradient.addColorStop(0.32, palette.getPropertyValue('--field-oxide').trim());
   gradient.addColorStop(1, 'transparent');
   brush.fillStyle = gradient;
