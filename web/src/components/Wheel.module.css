@@ -2,7 +2,11 @@
   width: 100%;
   max-width: 40rem;
   aspect-ratio: 1;
-  padding: var(--space-5);
+}
+.plateFace {
+  display: flex;
+  align-items: center;
+  padding: var(--space-4);
 }
 .svg {
   display: block;

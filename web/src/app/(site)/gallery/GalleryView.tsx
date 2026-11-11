@@ -167,7 +167,7 @@ function DiscDetail({ id }: { id: number }) {
             </TiltCard>
           </ViewTransition>
         </div>
-        <Panel>
+        <Panel frame="lozenge">
           <div className={styles.info}>
             <p className="label">Disc #{d.id} · Day {d.day + 1}</p>
             <h2>

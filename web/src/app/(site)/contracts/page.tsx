@@ -32,7 +32,7 @@ export default function Page() {
 
       <Section title={dep ? dep.chainName : chain.name}>
         {dep ? (
-          <Panel>
+          <Panel frame="scale">
             <div style={{ padding: 'var(--space-4)' }}>
               <Facts
                 items={[

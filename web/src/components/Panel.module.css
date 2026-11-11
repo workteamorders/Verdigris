@@ -1,15 +1,10 @@
 .panel {
-  padding: var(--space-6) var(--space-6);
   min-width: 0;
 }
 
-.interactive {
-  transition: border-color var(--dur-element) var(--ease-out), background-color var(--dur-element) var(--ease-out);
-}
 .interactive:hover,
 .interactive[data-state='hover'] {
-  border-color: var(--text-dim);
-  background-color: var(--surface-2);
+  --face: var(--surface-2);
 }
 .interactive:focus-within,
 .interactive[data-state='focus'] {
@@ -27,7 +22,7 @@
 .cover::after {
   content: '';
   position: absolute;
-  inset: 0;
+  inset: calc(var(--frame-w) * -1);
 }
 .cover:focus-visible {
   outline: none;

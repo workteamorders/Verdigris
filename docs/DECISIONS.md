@@ -202,3 +202,13 @@ Metode devtools-throttling (waktu nyata), sebelum dan sesudah, mesin yang sama: 
 - Perilaku kursor dan sentuhan di perangkat nyata; browser tanpa `animation-timeline` (fallback statis ada, belum dilihat).
 - `ViewTransition` Gallery ke detail dan animasi Strike pada mint sungguhan (butuh deployment); Strike hanya diputar di `/styleguide`.
 - Kontras teks di atas latar hidup tidak tercakup pemeriksa kontras (27 pasangan token); alpha bloom sudah diturunkan dan diperiksa mata di 390 dan 1440 px.
+
+## Frame berukir per kotak
+
+- Setiap kotak (Panel, LinkPanel, plat roda) memakai `Frame`: bingkai perunggu cor dengan cahaya dari kiri atas, tampak tiga dimensi (bevel, alur, baut sudut berbayang), bukan garis datar.
+- Ada delapan frame: reed, bead, dentil, rope, lozenge, moulding, scale, inlay. Masing-masing punya pola ukiran tepi dan baut sudut sendiri. Kotak yang bersebelahan diberi frame berbeda lewat prop `frame`.
+- Tidak ada motif Mesoamerika; polanya dari tradisi bingkai klasik (alur, manik, dentil, tali pilin, kisi berlian, profil bertingkat, sisik, inlay verdigris).
+- Semua nilai berupa token (`--metal-*`, `--frame-w`, `--boss`, `--frame-shadow`, `--grain`). `Frame.module.css` dihasilkan oleh `tools/gen-frames.py`; ubah generatornya, bukan berkas CSS-nya.
+- Bingkai hanya dekorasi (`aria-hidden`); wajah panel tetap di atas `--surface`, jadi pasangan kontras tidak berubah (27 dari 27 lolos).
+- Elevasi: bayangan bingkai dihitung sebagai bagian dari level "raised"; jumlah level tetap tiga.
+- Biaya: Lighthouse mobile Home turun ke sekitar 86 sampai 88 (sebelumnya 89 sampai 92) pada ukuran yang sama; Style & Layout naik sekitar 65 ms. Belum diukur di perangkat nyata.

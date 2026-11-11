@@ -136,7 +136,7 @@ export function MintView() {
 
       <div className={styles.panel}>
         {phase.name === 'done' ? (
-          <Panel>
+          <Panel frame="rope">
             <div className={styles.stack}>
               <Badge tone="success">Minted</Badge>
               <h2>
@@ -163,7 +163,7 @@ export function MintView() {
             </div>
           </Panel>
         ) : (
-          <Panel>
+          <Panel frame="lozenge">
             <div className={styles.stack}>
               {today ? (
                 <>

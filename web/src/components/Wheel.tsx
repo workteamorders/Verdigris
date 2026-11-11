@@ -1,6 +1,7 @@
 import { useId, type ReactElement } from 'react';
 import { discInline } from '@/lib/disc';
 import { SIGNS, tierOfNumeral } from '@/lib/signs';
+import { Frame } from './Frame';
 import styles from './Wheel.module.css';
 
 export type WheelState = 'today' | 'before' | 'soldout' | 'done' | 'loading' | 'error' | 'undeployed';
@@ -73,7 +74,7 @@ export function Wheel({ state, sign, numeral, caption }: WheelProps) {
       : `Wheel. ${centre?.a ?? ''}.`;
 
   return (
-    <div className={`${styles.plate} bolted`} data-state={state}>
+    <Frame frame="moulding" className={styles.plate} faceClassName={styles.plateFace} data-state={state}>
       <svg viewBox="0 0 600 600" className={styles.svg} role="img" aria-label={label}>
         <circle cx="300" cy="300" r="294" className={styles.disk} />
         <circle cx="300" cy="300" r="238" className={state === 'error' ? styles.ringErr : styles.ring} />
@@ -108,6 +109,6 @@ export function Wheel({ state, sign, numeral, caption }: WheelProps) {
           </g>
         ) : null}
       </svg>
-    </div>
+    </Frame>
   );
 }

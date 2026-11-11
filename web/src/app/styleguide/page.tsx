@@ -3,6 +3,7 @@ import { SiteHeader } from '@/components/SiteHeader';
 import { Button } from '@/components/Button';
 import { Badge, type BadgeTone } from '@/components/Badge';
 import { Panel, LinkPanel } from '@/components/Panel';
+import { FRAMES } from '@/components/Frame';
 import { Tooltip } from '@/components/Tooltip';
 import { QuotaChart } from '@/components/QuotaChart';
 import { Skeleton, DiscSkeleton, EmptyState, ErrorState } from '@/components/States';
@@ -240,19 +241,32 @@ export default function StyleguidePage() {
           <div className={styles.sub}>
             <h3>Panels</h3>
             <div className={styles.grid3}>
-              <Panel as="section">
+              <Panel as="section" frame="bead">
                 <h3>Static panel</h3>
                 <p className="dim">A bolted slab for grouped information.</p>
               </Panel>
-              <LinkPanel href="/calendar/" title="Calendar">
+              <LinkPanel frame="dentil" href="/calendar/" title="Calendar">
                 <p className="dim">Interactive panel: one target, one link, the whole card is the hit area. Hover to see.</p>
               </LinkPanel>
-              <LinkPanel href="/calendar/" title="Calendar, hover" forceState="hover">
+              <LinkPanel frame="rope" href="/calendar/" title="Calendar, hover" forceState="hover">
                 <p className="dim">Pinned hover state.</p>
               </LinkPanel>
-              <LinkPanel href="/calendar/" title="Calendar, focus" forceState="focus">
+              <LinkPanel frame="lozenge" href="/calendar/" title="Calendar, focus" forceState="focus">
                 <p className="dim">Pinned focus state.</p>
               </LinkPanel>
+            </div>
+          </div>
+
+          <div className={styles.sub}>
+            <h3>Frames</h3>
+            <p className="dim">Eight cast-bronze frames, lit from the top left. Each has its own engraved border and its own corner pieces, so no two boxes on a page look the same. The frame is decoration only: it carries no information and is hidden from assistive technology.</p>
+            <div className={styles.grid3}>
+              {FRAMES.map((f) => (
+                <Panel key={f} frame={f}>
+                  <h4>{f}</h4>
+                  <p className="dim">Face and text stay on the same dark surface in every frame.</p>
+                </Panel>
+              ))}
             </div>
           </div>
 

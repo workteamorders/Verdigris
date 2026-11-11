@@ -65,7 +65,7 @@ export function HomeView() {
 
       <Section title="Today">
         {t ? (
-          <Panel>
+          <Panel frame="reed">
             <div className={styles.today}>
               <div>
                 <p className="label">Day {t.day + 1} of 84</p>
@@ -84,7 +84,7 @@ export function HomeView() {
             </div>
           </Panel>
         ) : (
-          <Panel>
+          <Panel frame="bead">
             <p>
               {count.status === 'undeployed'
                 ? 'No deployment is connected to this build yet, so there is no live Day to show. The wheel above is an EXAMPLE.'
@@ -102,17 +102,17 @@ export function HomeView() {
 
       <Section title="How it works" chapter={{ n: 1, label: 'The rule' }}>
         <Grid cols={3}>
-          <Panel>
+          <Panel frame="dentil">
             <h3>Time sets the identity</h3>
             <p>
               No draw, no reveal. The Day decides the Sign (one of 12) and the Numeral (one of 7). Numerals 1 to 4 are Ordinary, 5 and 6 are Fine, and 7 is Crown. At most 1,632 Discs will ever exist.
             </p>
           </Panel>
-          <Panel>
+          <Panel frame="rope">
             <h3>Patina follows the clock</h3>
             <p>A fresh Disc is clean bronze. The longer it sits unmoved, the more verdigris spreads from the rim. The contract works the level out from the time of the last move.</p>
           </Panel>
-          <Panel>
+          <Panel frame="lozenge">
             <h3>Any move starts it over</h3>
             <p>Selling, sending or even transferring a Disc to yourself resets its Patina to clean bronze. Approvals alone do not. Nothing about Patina is a promise about value.</p>
           </Panel>
@@ -120,7 +120,7 @@ export function HomeView() {
       </Section>
 
       <Section title="Five stages of Patina" chapter={{ n: 2, label: 'The clock' }} lead="EXAMPLE Discs, same Sign and Numeral, at each level. The thresholds shown are the mainnet defaults.">
-        <Panel>
+        <Panel frame="moulding">
           <PatinaScrubber when={LEVEL_AT} />
         </Panel>
         <ol className={styles.levels}>
@@ -138,7 +138,7 @@ export function HomeView() {
 
       <Section title="What this is, and is not" chapter={{ n: 3, label: 'The promise' }}>
         <Grid cols={2}>
-          <Panel>
+          <Panel frame="scale">
             <h3>What it is</h3>
             <ul className={styles.list}>
               <li>A collection of at most 1,632 ERC-721 Discs, one design per Day.</li>
@@ -146,7 +146,7 @@ export function HomeView() {
               <li>Contracts with no owner, no admin and no upgrade path.</li>
             </ul>
           </Panel>
-          <Panel>
+          <Panel frame="inlay">
             <h3>What it is not</h3>
             <ul className={styles.list}>
               <li>Not a token, and nothing to trade except the Discs themselves.</li>

@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import type { ReactNode } from 'react';
+import { Frame, type FrameName } from './Frame';
 import styles from './Panel.module.css';
 
 interface PanelProps {
@@ -8,14 +9,16 @@ interface PanelProps {
   className?: string;
   /** Styleguide only: pin a pseudo-state. */
   forceState?: 'hover' | 'focus';
+  /** Which engraved frame to use. Neighbouring panels should differ. */
+  frame?: FrameName;
 }
 
-/** Static panel: a bolted slab. */
-export function Panel({ children, as: Tag = 'div', className }: PanelProps) {
+/** Static panel: a slab in a cast-bronze frame. */
+export function Panel({ children, as = 'div', className, frame }: PanelProps) {
   return (
-    <Tag className={[styles.panel, 'bolted', className].filter(Boolean).join(' ')} data-reveal>
+    <Frame as={as} frame={frame} className={[styles.panel, className].filter(Boolean).join(' ')} data-reveal>
       {children}
-    </Tag>
+    </Frame>
   );
 }
 
@@ -25,15 +28,15 @@ interface LinkPanelProps extends PanelProps {
 }
 
 /** Interactive panel: ONE target with ONE primary link (the title). The rest of the card is covered by that link. */
-export function LinkPanel({ children, href, title, forceState, className }: LinkPanelProps) {
+export function LinkPanel({ children, href, title, forceState, className, frame }: LinkPanelProps) {
   return (
-    <article className={[styles.panel, styles.interactive, 'bolted', className].filter(Boolean).join(' ')} data-state={forceState}>
+    <Frame as="article" frame={frame} linked className={[styles.panel, styles.interactive, className].filter(Boolean).join(' ')} data-state={forceState}>
       <h3 className={styles.title}>
         <Link href={href} className={styles.cover}>
           {title}
         </Link>
       </h3>
       {children}
-    </article>
+    </Frame>
   );
 }

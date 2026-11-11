@@ -34,21 +34,21 @@ export default function Page() {
 
       <Section title="Tiers and supply" id="tiers">
         <Grid cols={3}>
-          <Panel>
+          <Panel frame="dentil">
             <div style={{ padding: 'var(--space-4)' }}>
               <h3>Ordinary</h3>
               <p className="dim">Numerals 1 to 4</p>
               <Facts stacked items={[['Per Day', '24 Discs'], ['Days', '48'], ['Price', price('ordinary')]]} />
             </div>
           </Panel>
-          <Panel>
+          <Panel frame="rope">
             <div style={{ padding: 'var(--space-4)' }}>
               <h3>Fine</h3>
               <p className="dim">Numerals 5 and 6</p>
               <Facts stacked items={[['Per Day', '16 Discs'], ['Days', '24'], ['Price', price('fine')]]} />
             </div>
           </Panel>
-          <Panel>
+          <Panel frame="lozenge">
             <div style={{ padding: 'var(--space-4)' }}>
               <h3>Crown</h3>
               <p className="dim">Numeral 7</p>

@@ -111,7 +111,7 @@ export function CalendarView() {
             <p className="dim">{dep ? 'Bars show how much of each Day has been minted.' : 'No deployment is connected, so supply is not shown. The layout is fixed by the rules.'}</p>
           </div>
 
-          <Panel>
+          <Panel frame="moulding">
             <div className={styles.detail}>
               <p className="label">Day {selected + 1} of 84{todayDay === selected ? ', today' : ''}</p>
               <h2>
