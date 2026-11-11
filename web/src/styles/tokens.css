@@ -92,6 +92,13 @@
 
   /* Layout */
   --content-max: 75rem; /* 1200 */
+  --hero-wheel-max: 34rem;
+  --wheel-max: 40rem;
+  --disc-perspective: 40rem;
+  --disc-tilt: 6deg;
+  --disc-sheen: rgb(233 223 210 / 0.22);
+  --specimen-max: 18rem;
+  --art-width: 10rem;
   --gutter: var(--space-4);
   --measure: 68ch;
   --tap: 2.75rem; /* 44 */
@@ -108,8 +115,11 @@
   --elev-floating: 0 24px 48px rgb(0 0 0 / 0.55), inset 0 0 0 6px var(--surface-2), inset 0 0 0 7px var(--line-strong);
 
   /* Motion: one character, "exposure": steady, linear, no bounce. */
+  --dur-stagger: 80ms;
+  --magnet-distance: var(--space-1);
   --dur-bloom: 520ms;
   --dur-breathe: 3600ms;
+  --dur-signs: 28s;
   --dur-wheel: 150s;
   --dur-rim: 16s;
   --dur-micro: 100ms;
