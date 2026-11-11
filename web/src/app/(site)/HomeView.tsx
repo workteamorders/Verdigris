@@ -2,20 +2,17 @@
 
 import Link from 'next/link';
 import { Wheel } from '@/components/Wheel';
-import { Disc } from '@/components/Disc';
-import { Badge } from '@/components/Badge';
+import { Reveal } from '@/components/Reveal';
+import { PatinaTimeline } from '@/components/PatinaTimeline';
+import { CountClock } from '@/components/CountClock';
+import { ExposureDivider } from '@/components/Artwork';
 import { Panel } from '@/components/Panel';
-import { Button } from '@/components/Button';
+import { ButtonLink } from '@/components/Button';
 import { Facts, Grid, Section } from '@/components/Layout';
 import { useCount } from '@/lib/chain-data';
 import { SIGNS } from '@/lib/signs';
-import { LEVEL_NAMES, type PatinaLevel } from '@/lib/patina';
-import { formatCountdown } from '@/lib/format';
 import { formatEthWei, wheelFor } from '@/lib/wheel';
 import styles from './HomeView.module.css';
-
-const EXAMPLE_LEVELS: readonly PatinaLevel[] = [0, 1, 2, 3, 4];
-const LEVEL_AT = ['Minted or moved', '3 days unmoved', '14 days unmoved', '45 days unmoved', '120 days unmoved'];
 
 export function HomeView() {
   const count = useCount();
@@ -25,27 +22,23 @@ export function HomeView() {
   return (
     <>
       <div className={`container ${styles.hero}`}>
-        <div className={styles.copy}>
+        <div className={styles.heading}>
           <p className="label">An 84-Day Count</p>
-          <h1>One Sign and one Numeral each Day. Then time does the rest.</h1>
-          <p className={styles.lead}>
-            Verdigris Discs are bronze medals drawn fully on-chain. Each Day of the Count opens a single Sign and Numeral. A Disc gains Patina the longer it stays unmoved, and any move resets it.
-          </p>
-          <div className={styles.actions}>
-            <Link href="/mint/" className={styles.cta}>
-              <Button variant="primary" size="lg">
-                {count.status === 'live' ? "Mint today's Disc" : 'Open Mint'}
-              </Button>
-            </Link>
-            <Link href="/rules/" className={styles.cta}>
-              <Button variant="secondary" size="lg">
-                Read the rules
-              </Button>
-            </Link>
-          </div>
+          <h1>Time sets the Disc.</h1>
         </div>
         <div className={styles.wheel}>
-          <Wheel {...wheel} />
+          <Wheel {...wheel} example={!t} serial={t ? Math.min(t.cap, t.minted + 1) : undefined} />
+        </div>
+        <div className={styles.copy}>
+          <p className={styles.lead}>
+            Each Day opens one Sign and one Numeral. Verdigris Discs are bronze medals drawn fully on-chain. Patina spreads while a Disc stays unmoved. Any move resets it.
+          </p>
+          <div className={styles.actions}>
+            <ButtonLink href="/mint/" variant="primary" size="lg">
+              {count.status === 'live' ? "Mint today's Disc" : 'Open Mint'}
+            </ButtonLink>
+            <ButtonLink href="/rules/" size="lg">Read the rules</ButtonLink>
+          </div>
         </div>
       </div>
 
@@ -64,7 +57,7 @@ export function HomeView() {
                 items={[
                   ['Price', formatEthWei(t.priceWei)],
                   ['Left today', `${t.cap - t.minted} of ${t.cap}`],
-                  ['Next Day opens in', <span key="n" className="mono">{formatCountdown(count.secondsToNextDay ?? 0)}</span>],
+                  ['Next Day opens in', <CountClock key="n" seconds={count.secondsToNextDay} />],
                 ]}
               />
             </div>
@@ -87,7 +80,7 @@ export function HomeView() {
       </Section>
 
       <Section title="How it works">
-        <Grid cols={3}>
+        <Reveal>
           <Panel>
             <h3>Time sets the identity</h3>
             <p>
@@ -102,21 +95,14 @@ export function HomeView() {
             <h3>Any move starts it over</h3>
             <p>Selling, sending or even transferring a Disc to yourself resets its Patina to clean bronze. Approvals alone do not. Nothing about Patina is a promise about value.</p>
           </Panel>
-        </Grid>
+        </Reveal>
       </Section>
 
-      <Section title="Five stages of Patina" lead="EXAMPLE Discs, same Sign and Numeral, at each level. The thresholds shown are the mainnet defaults.">
-        <ol className={styles.levels}>
-          {EXAMPLE_LEVELS.map((l) => (
-            <li key={l} className={styles.level}>
-              <Disc sign={5} numeral={3} serial={7} level={l} />
-              <p className={styles.levelName}>
-                <Badge tone="patina">{`Level ${l}`}</Badge> {LEVEL_NAMES[l]}
-              </p>
-              <p className="dim">{LEVEL_AT[l]}</p>
-            </li>
-          ))}
-        </ol>
+      <Section title="Five stages of Patina" lead={count.deployment ? 'Thresholds for the connected Count.' : 'Thresholds for the mainnet Count.'}>
+        <ExposureDivider />
+        <Panel>
+          <PatinaTimeline thresholds={count.deployment?.patinaSeconds} />
+        </Panel>
       </Section>
 
       <Section title="What this is, and is not">

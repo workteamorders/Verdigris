@@ -15,14 +15,14 @@
   line-height: 1;
   letter-spacing: 0.01em;
   cursor: pointer;
-  transition: transform var(--dur-micro) var(--ease-out), background-color var(--dur-element) var(--ease-out), box-shadow var(--dur-micro) var(--ease-out);
+  transition: transform var(--dur-micro) var(--ease-out);
 }
 
 .content {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
-  transition: opacity var(--dur-element) var(--ease-out);
+  transition: opacity var(--dur-element) var(--ease-out), transform var(--dur-micro) var(--ease-out);
 }
 
 .sm {
@@ -148,4 +148,24 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .btn:not(:disabled, [data-loading]):hover .content {
+    transform: translate(
+      calc(var(--magnet-x, 0) * var(--magnet-distance)),
+      calc(var(--magnet-y, 0) * var(--magnet-distance))
+    );
+  }
+}
+
+.link,
+.link:hover {
+  text-decoration: none;
+  color: var(--text);
+}
+
+.link.primary,
+.link.primary:hover {
+  color: var(--text-on-accent);
 }

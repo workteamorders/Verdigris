@@ -1,0 +1,147 @@
+.discStage {
+  perspective: var(--disc-perspective);
+}
+
+.discSurface {
+  position: relative;
+  transform: rotateX(calc(var(--tilt-x, 0) * var(--disc-tilt))) rotateY(calc(var(--tilt-y, 0) * var(--disc-tilt)));
+  transition: transform var(--dur-element) var(--ease-out);
+}
+
+.discSurface > svg,
+.previous > svg {
+  display: block;
+  height: auto;
+}
+
+.previous,
+.shineClip {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.previous {
+  animation: weather-in var(--dur-bloom) var(--ease-out) both;
+}
+
+@keyframes weather-in {
+  to { opacity: 0; transform: scale(0.94); }
+}
+
+.shineClip {
+  overflow: hidden;
+  border-radius: var(--radius-round);
+  inset: var(--space-2);
+}
+
+.shine {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: radial-gradient(ellipse at center, var(--disc-sheen), transparent 56%);
+  transform: translate(var(--shine-x, 0), var(--shine-y, 0));
+  transition: opacity var(--dur-element) var(--ease-out), transform var(--dur-element) var(--ease-out);
+}
+
+.discSurface[data-tilting] .shine,
+:focus-visible .discStage:not([data-disabled]) .shine,
+.discStage:not([data-disabled]):active .shine {
+  opacity: 1;
+}
+
+.discUnavailable {
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  aspect-ratio: 1;
+  text-align: center;
+}
+
+.timeline {
+  display: grid;
+  align-items: center;
+  gap: var(--space-5);
+}
+
+.specimen {
+  width: 100%;
+  max-width: var(--specimen-max);
+  margin-inline: auto;
+}
+
+.clock {
+  display: inline-flex;
+  gap: var(--space-2);
+  align-items: center;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.clock time {
+  min-width: 8ch;
+}
+
+.dial {
+  display: inline-block;
+  flex: none;
+  width: var(--space-4);
+  height: var(--space-4);
+  border: var(--stroke-bold) solid var(--line-strong);
+  border-top-color: var(--patina-text);
+  border-radius: var(--radius-round);
+}
+
+.clock[data-live] .dial {
+  animation: sweep var(--dur-rim) linear infinite;
+}
+
+@keyframes sweep {
+  to { transform: rotate(1turn); }
+}
+
+[data-reveal-group] .reveal {
+  animation: reveal var(--dur-panel) var(--ease-out) both;
+  animation-delay: calc(var(--reveal-order, 0) * var(--dur-stagger));
+}
+
+@keyframes reveal {
+  from { opacity: 0.72; transform: translateY(var(--space-2)); }
+}
+
+@media (min-width: 48rem) {
+  .timeline { grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .discSurface { transform: none; }
+  .shine, .previous { display: none; }
+  .clock[data-live] .dial, [data-reveal-group] .reveal { animation: none; }
+}
+
+.revealGroup {
+  display: grid;
+  gap: var(--gap-medium);
+}
+
+.revealGroup > div {
+  display: grid;
+  min-width: 0;
+}
+
+@media (min-width: 48rem) {
+  .revealGroup { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+.counter {
+  display: inline-grid;
+}
+
+.counter > span {
+  grid-area: 1 / 1;
+}
+
+.counterWidth > span[aria-hidden] {
+  visibility: hidden;
+}

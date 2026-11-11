@@ -6,7 +6,7 @@ import { useAccount, useBalance, useWriteContract } from 'wagmi';
 import { useQueryClient, useQuery } from '@tanstack/react-query';
 import { parseEventLogs } from 'viem';
 import { Button } from '@/components/Button';
-import { Disc } from '@/components/Disc';
+import { TiltDisc } from '@/components/TiltDisc';
 import { Badge } from '@/components/Badge';
 import { Panel } from '@/components/Panel';
 import { Dialog } from '@/components/Dialog';
@@ -20,7 +20,7 @@ import { explainError, useClient, useCount, TX_CAP, WALLET_SLOT_CAP } from '@/li
 import { useGeoBlocked } from '@/lib/geo';
 import { activeChain } from '@/lib/wagmi';
 import { SIGNS } from '@/lib/signs';
-import { formatCountdown } from '@/lib/format';
+import { CountClock } from '@/components/CountClock';
 import { formatEthWei } from '@/lib/wheel';
 import styles from './MintView.module.css';
 
@@ -121,7 +121,7 @@ export function MintView() {
   return (
     <div className={`container ${styles.layout}`}>
       <div className={styles.preview}>
-        <Disc sign={sign} numeral={numeral} serial={(today?.minted ?? 4) + 1} level={0} />
+        <TiltDisc sign={sign} numeral={numeral} serial={(today?.minted ?? 4) + 1} level={0} />
         <p className="dim">
           {count.status === 'live' ? `Preview of Disc ${(today?.minted ?? 0) + 1} of today. The contract draws the final image.` : 'EXAMPLE: the Disc of Day 1.'}
         </p>
@@ -174,7 +174,7 @@ export function MintView() {
                       ['Price each', formatEthWei(today.priceWei)],
                       ['Left today', `${left} of ${today.cap}`],
                       ['Your allowance', isConnected ? (mine.data === undefined ? 'Reading…' : `${walletLeft} of ${WALLET_SLOT_CAP} left`) : `${WALLET_SLOT_CAP} per wallet`],
-                      ['Next Day in', <span key="c" className="mono">{formatCountdown(count.secondsToNextDay ?? 0)}</span>],
+                      ['Next Day in', <CountClock key="c" seconds={count.secondsToNextDay} />],
                     ]}
                   />
                   <Stepper label="Quantity" hint={`Up to ${TX_CAP} per transaction`} min={maxQty > 0 ? 1 : 0} max={maxQty} value={maxQty > 0 ? qty : 0} onChange={setQty} disabled={maxQty === 0 || busy} />
@@ -185,7 +185,7 @@ export function MintView() {
               ) : (
                 <EmptyState title={blocker ?? 'Nothing to mint right now'}>
                   {count.status === 'before' && count.secondsToStart !== undefined ? (
-                    <>Day 1 opens in <span className="mono">{formatCountdown(count.secondsToStart)}</span>.</>
+                    <>Day 1 opens in <CountClock seconds={count.secondsToStart} />.</>
                   ) : (
                     <>Read the rules and browse the Calendar in the meantime.</>
                   )}

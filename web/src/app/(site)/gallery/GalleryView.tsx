@@ -5,7 +5,8 @@ import { useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { Badge } from '@/components/Badge';
 import { Button } from '@/components/Button';
-import { Disc } from '@/components/Disc';
+import { MintedTotal } from '@/components/MintedTotal';
+import { TiltDisc } from '@/components/TiltDisc';
 import { Facts, Section } from '@/components/Layout';
 import { Panel } from '@/components/Panel';
 import { DiscSkeleton, EmptyState, ErrorState } from '@/components/States';
@@ -61,13 +62,13 @@ function DiscGrid({ page }: { page: number }) {
   }
   return (
     <Section>
-      <p className="dim">{total.data === undefined ? 'Reading the chain…' : `${n} Disc${n === 1 ? '' : 's'} minted. Showing ${ids.length}, newest first.`}</p>
+      <p className="dim">{total.data === undefined ? 'Reading the chain…' : <><MintedTotal value={n} /> {n === 1 ? 'Disc' : 'Discs'} minted. Showing {ids.length}, newest first.</>}</p>
       <ul className={styles.grid}>
         {discs.data
           ? discs.data.map((d) => (
               <li key={d.id}>
                 <Link href={`/gallery/?id=${d.id}`} className={styles.card} aria-label={`Disc ${d.id}, ${SIGNS[d.sign]?.name}, Numeral ${d.numeral}, Patina level ${d.level}`}>
-                  <Disc sign={d.sign} numeral={d.numeral} serial={d.serial} level={d.level} noFilters />
+                  <TiltDisc sign={d.sign} numeral={d.numeral} serial={d.serial} level={d.level} noFilters />
                   <span className={styles.meta}>
                     <span className="mono">#{d.id}</span>
                     <span className="dim">
@@ -156,7 +157,7 @@ function DiscDetail({ id }: { id: number }) {
     <Section>
       <div className={styles.detail}>
         <div className={styles.big}>
-          <Disc sign={d.sign} numeral={d.numeral} serial={d.serial} level={d.level} />
+          <TiltDisc sign={d.sign} numeral={d.numeral} serial={d.serial} level={d.level} />
         </div>
         <Panel>
           <div className={styles.info}>
