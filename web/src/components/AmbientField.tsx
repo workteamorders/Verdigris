@@ -1,32 +1,70 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
 import { useEffect, useRef } from 'react';
 import styles from './AmbientField.module.css';
 
-type Bloom = { x: number; y: number; radius: number; phase: number };
-type Ripple = { x: number; y: number; age: number };
+type Mark = { x: number; y: number; age: number; angle: number };
+
+const clamp = (value: number) => Math.max(0, Math.min(1, value));
+
+function makeTexture(core: string, edge: string, phase: number, rimOnly = false) {
+  const texture = document.createElement('canvas');
+  const size = 144;
+  texture.width = texture.height = size;
+  const brush = texture.getContext('2d');
+  if (!brush) return texture;
+
+  const mask = brush.createImageData(size, size);
+  for (let y = 0; y < size; y++) {
+    for (let x = 0; x < size; x++) {
+      const u = (x + 0.5) / size * 2 - 1;
+      const v = (y + 0.5) / size * 2 - 1;
+      const angle = Math.atan2(v, u);
+      const radius = Math.hypot(u, v);
+      const edgeRadius = 0.71 + 0.10 * Math.sin(angle * 3 + phase)
+        + 0.065 * Math.sin(angle * 8 - phase) + 0.035 * Math.sin(angle * 17 + phase);
+      const grain = Math.sin(x * 1.72 + y * 0.91) * Math.sin(y * 2.3 - x * 0.3);
+      const veins = Math.sin(u * 17 + Math.sin(v * 13) * 2.2)
+        * Math.cos(v * 23 + Math.sin(u * 16) * 2.8);
+      const distance = (edgeRadius - radius) + veins * 0.07 + grain * 0.033;
+      const fringe = clamp(1 - Math.abs(distance) * 17) * (0.48 + 0.32 * grain);
+      const body = rimOnly ? 0 : clamp(distance * 12) * (0.45 + 0.19 * veins + 0.15 * grain);
+      mask.data[(y * size + x) * 4 + 3] = 255 * clamp(body + fringe);
+    }
+  }
+  brush.putImageData(mask, 0, 0);
+  const gradient = brush.createRadialGradient(63, 63, 0, 72, 72, 72);
+  gradient.addColorStop(0, edge);
+  gradient.addColorStop(0.62, core);
+  gradient.addColorStop(1, core);
+  brush.globalCompositeOperation = 'source-in';
+  brush.fillStyle = gradient;
+  brush.fillRect(0, 0, size, size);
+  return texture;
+}
 
 function startField(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D) {
   const motion = matchMedia('(prefers-reduced-motion: reduce)');
   const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
   const economy = connection?.saveData || navigator.hardwareConcurrency <= 4;
   const palette = getComputedStyle(canvas);
-  const sprite = document.createElement('canvas');
-  sprite.width = sprite.height = 128;
-  const brush = sprite.getContext('2d');
-  if (!brush) return;
-  const gradient = brush.createRadialGradient(64, 64, 0, 64, 64, 64);
-  gradient.addColorStop(0, palette.getPropertyValue('--field-oxide-core').trim());
-  gradient.addColorStop(0.32, palette.getPropertyValue('--field-oxide').trim());
-  gradient.addColorStop(1, 'transparent');
-  brush.fillStyle = gradient;
-  brush.fillRect(0, 0, 128, 128);
-
-  const blooms: Bloom[] = Array.from({ length: economy ? 26 : 64 }, (_, index) => ({
-    x: Math.random(), y: Math.random(), radius: index < 8 ? 0.16 + Math.random() * 0.18 : 0.004 + Math.random() * 0.025,
-    phase: Math.random() * Math.PI * 2,
-  }));
-  let ripple: Ripple | undefined;
+  const color = (token: string) => palette.getPropertyValue(token).trim();
+  const oxide = color('--field-oxide-core');
+  const shade = color('--field-oxide');
+  const bronze = color('--field-bronze');
+  const textures = [makeTexture(oxide, shade, 0.8), makeTexture(oxide, shade, 3.6)];
+  const rim = makeTexture(oxide, shade, 2.4, true);
+  const lens = makeTexture(bronze, color('--field-glow'), 4.1);
+  const hero = document.querySelector('[data-ambient-anchor]');
+  const patches = [
+    { x: 0.01, y: 0.13, size: 0.41, angle: 0.6, depth: 0.14 },
+    { x: 0.98, y: 0.57, size: 0.54, angle: -0.32, depth: 0.12 },
+    { x: 0.22, y: 1.02, size: 0.37, angle: 0.25, depth: 0.09 },
+    { x: 0.62, y: 1.18, size: 0.44, angle: -0.72, depth: 0.2 },
+  ].slice(0, economy ? 2 : 4);
+  const marks: Mark[] = [];
+  const trail: Mark[] = [];
   const pointer = { x: 0, y: 0, targetX: 0, targetY: 0, warmth: 0, targetWarmth: 0 };
   let width = 0;
   let height = 0;
@@ -37,41 +75,75 @@ function startField(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D
   let last = 0;
   let slow = 0;
   let scroll = window.scrollY;
+  let anchor: DOMRect | undefined;
+  let anchorScroll = scroll;
+
+  function measureAnchor() {
+    anchor = hero?.getBoundingClientRect();
+    anchorScroll = window.scrollY;
+  }
+
+  function stamp(texture: HTMLCanvasElement, x: number, y: number, w: number, h: number, angle: number, opacity: number) {
+    context.save();
+    context.globalAlpha = opacity;
+    context.translate(x, y);
+    context.rotate(angle);
+    context.drawImage(texture, -w / 2, -h / 2, w, h);
+    context.restore();
+  }
 
   function draw(dt: number) {
     time += dt;
-    const spring = 1 - Math.exp(-dt * 5);
+    const spring = 1 - Math.exp(-dt * 6);
     pointer.x += (pointer.targetX - pointer.x) * spring;
     pointer.y += (pointer.targetY - pointer.y) * spring;
     pointer.warmth += (pointer.targetWarmth - pointer.warmth) * spring;
     const scale = Math.min(width, height);
     context.clearRect(0, 0, width, height);
-    for (const bloom of blooms) {
-      const phase = time * (0.07 + bloom.radius * 0.17) + bloom.phase;
-      const x = width * bloom.x + scale * Math.sin(phase) * 0.08;
-      const y = height * bloom.y + scale * Math.cos(phase * 0.8) * 0.09 - Math.min(scroll * 0.035, scale * 0.12);
-      const distance = Math.hypot(pointer.x - x, pointer.y - y) / scale;
-      const warmth = pointer.warmth * Math.max(0, 1 - distance * 3);
-      const radius = scale * bloom.radius * (1 + 0.22 * Math.sin(phase) + warmth * 0.15);
-      const shift = warmth * 0.12;
-      context.globalAlpha = 0.17 + 0.1 * Math.cos(phase) + warmth * 0.23;
-      context.drawImage(sprite, x + (pointer.x - x) * shift - radius, y + (pointer.y - y) * shift - radius, radius * 2, radius * 2);
-    }
-    if (ripple) {
-      ripple.age += dt;
-      const progress = ripple.age / 2.2;
-      const radius = scale * (0.04 + 0.38 * progress);
-      context.globalAlpha = 0.36 * Math.max(0, 1 - progress);
-      for (let i = 0; i < 12; i++) {
-        const angle = (i / 12) * Math.PI * 2;
-        const size = radius * 0.32;
-        context.drawImage(sprite, ripple.x + Math.cos(angle) * radius - size, ripple.y + Math.sin(angle) * radius - size, size * 2, size * 2);
+
+    patches.forEach((patch, index) => {
+      const growth = 1 + Math.sin(time * (0.23 + index * 0.035) + index) * 0.21;
+      const size = scale * patch.size * growth;
+      const offset = Math.min(scroll * patch.depth, height * 0.52);
+      stamp(textures[index % 2]!, width * patch.x, height * patch.y - offset, size * 1.48, size, patch.angle, hero ? 0.83 : 0.62);
+    });
+
+    if (anchor) {
+      const y = anchor.top + anchorScroll - scroll;
+      const size = Math.min(anchor.width, height);
+      if (y + anchor.height + size > 0 && y - size < height) {
+        const growth = 1 + Math.sin(time * 0.31) * 0.22;
+        const spread = size * (0.68 + 0.15 * growth);
+        stamp(textures[0]!, anchor.left + anchor.width * 0.96, y + anchor.height * 0.12, spread * growth, spread * 0.78, -0.57, 0.98);
+        stamp(textures[1]!, anchor.left + anchor.width * 0.17, y + anchor.height * 0.90, spread * 0.94, spread * (0.78 + Math.sin(time * 0.24) * 0.14), 0.52, 0.94);
+        stamp(rim, anchor.left + anchor.width * 0.96, y + anchor.height * 0.12, spread * 1.18 * growth, spread * 0.91, -0.57, 0.48);
       }
-      if (progress >= 1) ripple = undefined;
+    }
+
+    for (const mark of marks) {
+      mark.age += dt;
+      const progress = clamp(mark.age / 1.8);
+      const spread = scale * (0.13 + 0.50 * (1 - (1 - progress) ** 2));
+      const remaining = clamp(1 - mark.age / 7);
+      const y = mark.y - scroll;
+      stamp(textures[1]!, mark.x, y, spread, spread * 0.84, mark.angle, 0.64 * remaining * Math.min(1, mark.age * 9));
+      if (progress < 1) stamp(rim, mark.x, y, spread * 1.12, spread, mark.angle, (1 - progress) * 0.9);
+    }
+    while (marks[0] && marks[0].age >= 7) marks.shift();
+
+    for (const point of trail) {
+      point.age += dt;
+      const remaining = clamp(1 - point.age / 0.85);
+      stamp(lens, point.x, point.y - scroll, scale * 0.28, scale * 0.16, point.angle, remaining * 0.31);
+    }
+    while (trail[0] && trail[0].age >= 0.85) trail.shift();
+    if (pointer.warmth > 0.01) {
+      stamp(lens, pointer.x, pointer.y, scale * 0.44, scale * 0.31, -0.42, pointer.warmth * 0.88);
     }
   }
 
   function resize() {
+    measureAnchor();
     width = Math.max(1, canvas.clientWidth);
     height = Math.max(1, canvas.clientHeight);
     const ratio = Math.min(devicePixelRatio || 1, 2) * resolution;
@@ -99,7 +171,8 @@ function startField(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D
     last = 0;
     if (motion.matches) {
       time = 0;
-      ripple = undefined;
+      marks.length = 0;
+      trail.length = 0;
       pointer.warmth = 0;
       draw(0);
     } else if (!document.hidden && visible) {
@@ -113,6 +186,13 @@ function startField(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D
       pointer.x = event.clientX;
       pointer.y = event.clientY;
     }
+    const previous = trail.at(-1);
+    const y = event.clientY + scroll;
+    if (event.pointerType !== 'touch' && (!previous || Math.hypot(event.clientX - previous.x, y - previous.y) > 22)) {
+      const angle = previous ? Math.atan2(y - previous.y, event.clientX - previous.x) : -0.42;
+      trail.push({ x: event.clientX, y, age: 0, angle });
+      if (trail.length > (economy ? 3 : 6)) trail.shift();
+    }
     pointer.targetX = event.clientX;
     pointer.targetY = event.clientY;
     pointer.targetWarmth = 1;
@@ -122,7 +202,8 @@ function startField(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D
   function press(event: PointerEvent) {
     if (motion.matches || !event.isPrimary || event.button !== 0) return;
     move(event);
-    ripple = { x: event.clientX, y: event.clientY, age: 0 };
+    marks.push({ x: event.clientX, y: event.clientY + scroll, age: 0, angle: event.clientX * 0.024 });
+    if (marks.length > (economy ? 2 : 4)) marks.shift();
   }
   function onScroll() { if (!motion.matches) scroll = window.scrollY; }
 
@@ -132,6 +213,11 @@ function startField(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D
     update();
   });
   observer.observe(canvas);
+  const anchorObserver = hero ? new ResizeObserver(() => {
+    measureAnchor();
+    if (motion.matches) draw(0);
+  }) : undefined;
+  if (hero) anchorObserver?.observe(hero);
   motion.addEventListener('change', update);
   document.addEventListener('visibilitychange', update);
   document.documentElement.addEventListener('pointerleave', leave);
@@ -146,6 +232,7 @@ function startField(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D
   return () => {
     cancelAnimationFrame(frame);
     observer.disconnect();
+    anchorObserver?.disconnect();
     motion.removeEventListener('change', update);
     document.removeEventListener('visibilitychange', update);
     document.documentElement.removeEventListener('pointerleave', leave);
@@ -161,6 +248,7 @@ function startField(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D
 
 export function AmbientField() {
   const ref = useRef<HTMLCanvasElement>(null);
+  const pathname = usePathname();
   useEffect(() => {
     let stop: (() => void) | undefined;
     const init = () => {
@@ -174,6 +262,6 @@ export function AmbientField() {
     }
     const id = window.setTimeout(init, 400);
     return () => { window.clearTimeout(id); stop?.(); };
-  }, []);
+  }, [pathname]);
   return <canvas ref={ref} className={styles.canvas} aria-hidden="true" />;
 }

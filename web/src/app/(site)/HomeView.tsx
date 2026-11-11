@@ -26,7 +26,7 @@ export function HomeView() {
           <p className="label">An 84-Day Count</p>
           <h1>Time sets the Disc.</h1>
         </div>
-        <div className={styles.wheel}>
+        <div className={styles.wheel} data-ambient-anchor>
           <Wheel {...wheel} example={!t} serial={t ? Math.min(t.cap, t.minted + 1) : undefined} />
         </div>
         <div className={styles.copy}>

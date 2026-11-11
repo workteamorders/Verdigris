@@ -166,3 +166,9 @@ Mobile Lighthouse 13.6.0 compared `main` with the updated static export. Both bu
 The updated routes scored 100 for Accessibility, Best Practices, and SEO.
 
 Chromium reported no horizontal overflow at 360, 768, or 1440 px. Keyboard navigation, tilt, wheel inertia, the ticking Count, and the live Calendar selection passed against the local fixture. The canvas checks exercised touch ripples, hidden and off-screen pausing, reduced motion, half-resolution fallback, and the CSS fallback. Median frame interval was 16.7 ms in mobile emulation with 4× CPU throttling.
+
+### Ambient field revision
+
+Patina now grows in irregular textured patches anchored to the Home wheel and viewport edges. The pointer draws a short bronze trail, and taps leave a bloom that expands and fades at its document position. The canvas reuses four small procedural textures. Other routes use a quieter composition. The bronze pigment adds one contrast check.
+
+Home scored 100 in all four mobile Lighthouse categories with CLS 0.0018 and TBT 1.5 ms on the undeployed local export. Chromium reproduced the mouse and touch effects, static reduced motion, and off-screen pausing. Mobile emulation at 4× CPU throttling had a median frame interval of 16.7 ms. The six-route fixture audit above predates this revision.

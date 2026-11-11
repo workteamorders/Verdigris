@@ -26,6 +26,7 @@ const PAIRS = [
   ['text-dim', 'field', 4.5, 'Dim text on field'],
   ['text-dim', 'surface', 4.5, 'Dim text on slab'],
   ['text-dim', 'surface-2', 4.5, 'Dim text on slab 2'],
+  ['text-dim', 'field-bronze', 4.5, 'Dim text on the bronze lens'],
   ['text-dim', 'field-glow', 4.5, 'Dim text on field glow'],
   ['text-dim', 'field-oxide-core', 4.5, 'Dim text on ambient bloom core'],
   ['focus', 'field-oxide-core', 3, 'Focus ring on ambient bloom core (3:1)'],
