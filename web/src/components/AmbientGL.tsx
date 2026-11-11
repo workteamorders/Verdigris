@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { attachInput, createFrameWatch } from '@/lib/ambient-input';
+import { attachInput, createFrameWatch, renderScale } from '@/lib/ambient-input';
 import { tokenRgb, useMotion } from '@/lib/motion';
 import styles from './Ambient.module.css';
 
@@ -19,6 +19,7 @@ uniform float uTime;
 uniform vec2 uMouse;
 uniform float uLens;
 uniform float uScroll;
+uniform float uCssH;
 uniform vec4 uRip[3];
 uniform vec3 uBronze;
 uniform vec3 uDeep;
@@ -66,10 +67,15 @@ void main(){
     }
   }
 
-  float body = smoothstep(0.50, 0.60, f);
-  float rim = smoothstep(0.46, 0.52, f) - smoothstep(0.55, 0.64, f);
-  float grain = noise(q0 * 140.0);
-  float speck = smoothstep(0.80, 0.96, grain) * body;
+  float body = smoothstep(0.51, 0.57, f);
+  float rim = smoothstep(0.48, 0.52, f) - smoothstep(0.55, 0.61, f);
+  // Round pin-prick specks, one per cell at most, sized in CSS pixels so they stay crisp at any density.
+  vec2 gp = q0 * (uCssH / 9.0);
+  vec2 gi = floor(gp), gf = fract(gp);
+  vec2 ctr = vec2(hash(gi + 3.1), hash(gi + 7.7)) * 0.6 + 0.2;
+  float present = step(0.78, hash(gi + 11.3));
+  float rad = 0.10 + 0.14 * hash(gi + 19.9);
+  float speck = (1.0 - smoothstep(rad * 0.55, rad, distance(gf, ctr))) * present * body;
 
   vec3 col = uDeep * body * 0.26 + uMid * rim * 0.22 + uBright * speck * 0.12;
   col += uBronze * lens * 0.10;
@@ -134,18 +140,20 @@ export default function AmbientGL({ onFail }: { onFail: () => void }) {
     const uMouse = u('uMouse');
     const uLens = u('uLens');
     const uScroll = u('uScroll');
+    const uCssH = u('uCssH');
     const uRip = u('uRip');
     gl.uniform3fv(u('uBronze'), to01(tokenRgb('--patina-0', [201, 138, 75])));
     gl.uniform3fv(u('uDeep'), to01(tokenRgb('--patina-deep', [31, 90, 88])));
     gl.uniform3fv(u('uMid'), to01(tokenRgb('--patina', [63, 143, 126])));
     gl.uniform3fv(u('uBright'), to01(tokenRgb('--patina-text', [127, 203, 182])));
 
-    const SCALE = 0.5;
     const resize = () => {
+      const SCALE = renderScale(window.innerWidth, window.innerHeight);
       canvas.width = Math.max(2, Math.round(window.innerWidth * SCALE));
       canvas.height = Math.max(2, Math.round(window.innerHeight * SCALE));
       gl.viewport(0, 0, canvas.width, canvas.height);
       gl.uniform2f(uRes, canvas.width, canvas.height);
+      gl.uniform1f(uCssH, window.innerHeight);
     };
     resize();
 

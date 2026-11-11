@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { attachInput, createFrameWatch } from '@/lib/ambient-input';
+import { attachInput, createFrameWatch, renderScale } from '@/lib/ambient-input';
 import { tokenRgb, useMotion } from '@/lib/motion';
 import styles from './Ambient.module.css';
 
@@ -37,7 +37,7 @@ function rng(seed: number): () => number {
 
 const SCALE = 0.5;
 
-function sprite(rgb: [number, number, number], size = 128): HTMLCanvasElement {
+function sprite(rgb: [number, number, number], size = 256): HTMLCanvasElement {
   const c = document.createElement('canvas');
   c.width = size;
   c.height = size;
@@ -57,7 +57,6 @@ function sprite(rgb: [number, number, number], size = 128): HTMLCanvasElement {
 export function AmbientCanvas() {
   const ref = useRef<HTMLCanvasElement>(null);
   const { tier, degrade } = useMotion();
-  const animate = true;
   const full = tier === 'full';
 
   useEffect(() => {
@@ -74,10 +73,14 @@ export function AmbientCanvas() {
     let W = 0;
     let H = 0;
     const resize = () => {
+      // Logic runs in a small "logical" space (half the page size). The backing store is sharper than that, so
+      // speckles and ripple lines stay crisp, and a transform maps one to the other.
       W = Math.max(2, Math.round(window.innerWidth * SCALE));
       H = Math.max(2, Math.round(window.innerHeight * SCALE));
-      canvas.width = W;
-      canvas.height = H;
+      const r = renderScale(window.innerWidth, window.innerHeight);
+      canvas.width = Math.max(2, Math.round(window.innerWidth * r));
+      canvas.height = Math.max(2, Math.round(window.innerHeight * r));
+      ctx.setTransform(canvas.width / W, 0, 0, canvas.height / H, 0, 0);
     };
     resize();
 
@@ -110,8 +113,8 @@ export function AmbientCanvas() {
       b.y = b.hy * H;
     }
 
-    const { input, detach } = animate ? attachInput() : { input: null, detach: () => undefined };
-    let t = animate ? 0 : 6;
+    const { input, detach } = attachInput();
+    let t = 0;
     let lens = 0;
     let raf = 0;
     let last = 0;
@@ -211,7 +214,7 @@ export function AmbientCanvas() {
     };
 
     const start = () => {
-      if (!animate || raf) return;
+      if (raf) return;
       last = 0;
       raf = requestAnimationFrame(loop);
     };
@@ -222,23 +225,18 @@ export function AmbientCanvas() {
     const onVis = () => (document.hidden ? stop() : start());
     const onResize = () => {
       resize();
-      if (!animate) frame(performance.now(), 0);
     };
 
     window.addEventListener('resize', onResize);
-    if (animate) {
-      document.addEventListener('visibilitychange', onVis);
-      start();
-    } else {
-      frame(performance.now(), 0);
-    }
+    document.addEventListener('visibilitychange', onVis);
+    start();
     return () => {
       stop();
       detach();
       window.removeEventListener('resize', onResize);
       document.removeEventListener('visibilitychange', onVis);
     };
-  }, [animate, full, degrade]);
+  }, [full, degrade]);
 
   return <canvas ref={ref} className={styles.canvas} style={FIXED} aria-hidden="true" />;
 }

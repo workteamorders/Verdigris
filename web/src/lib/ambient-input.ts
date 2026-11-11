@@ -83,3 +83,9 @@ export function createFrameWatch(budgetMs: number, windowMs = 2500, graceMs = 30
     return false;
   };
 }
+
+/** Pixels of backing store per CSS pixel: sharper on dense screens, capped so the canvas never gets expensive. */
+export function renderScale(w: number, h: number): number {
+  const wanted = Math.min(1.25, Math.max(0.8, (window.devicePixelRatio || 1) * 0.65));
+  return Math.min(wanted, Math.sqrt(1_600_000 / (w * h)));
+}

@@ -3,8 +3,12 @@
 }
 .inner {
   position: relative;
-  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  /* At rest there is no transform at all, so the artwork is drawn natively sharp. */
+  transform: none;
   transition: transform var(--dur-panel) var(--ease-out);
+}
+.tilt[data-active] .inner {
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
   will-change: transform;
 }
 .sheen {

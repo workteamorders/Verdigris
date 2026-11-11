@@ -37,13 +37,17 @@ export function TiltCard({ children, max = 8, round = true, className }: TiltPro
     cancelAnimationFrame(frame.current);
     frame.current = requestAnimationFrame(() => set(px, py));
   };
+  const onEnter = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (enabled && e.pointerType === 'mouse') root.current?.setAttribute('data-active', '');
+  };
   const onLeave = () => {
     cancelAnimationFrame(frame.current);
+    root.current?.removeAttribute('data-active');
     frame.current = requestAnimationFrame(() => set(0.5, 0.5));
   };
 
   return (
-    <div ref={root} className={`${styles.tilt} ${className ?? ''}`} onPointerMove={onMove} onPointerLeave={onLeave} data-enabled={enabled || undefined}>
+    <div ref={root} className={`${styles.tilt} ${className ?? ''}`} onPointerEnter={onEnter} onPointerMove={onMove} onPointerLeave={onLeave} data-enabled={enabled || undefined}>
       <div className={styles.inner}>
         {children}
         <span className={`${styles.sheen} ${round ? styles.round : ''}`} aria-hidden="true" />
