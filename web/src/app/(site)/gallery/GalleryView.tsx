@@ -18,9 +18,8 @@ import { SIGNS } from '@/lib/signs';
 import { activeChain } from '@/lib/wagmi';
 import { formatDate, formatDuration } from '@/lib/wheel';
 import { useChainClock } from '@/lib/chain-data';
+import { GALLERY_PAGE_SIZE as PAGE, GalleryGridSkeleton, GalleryPlaceholder } from './GalleryPlaceholder';
 import styles from './GalleryView.module.css';
-
-const PAGE = 12;
 
 export function GalleryView() {
   const params = useSearchParams();
@@ -39,13 +38,7 @@ function DiscGrid({ page }: { page: number }) {
   const ids = Array.from({ length: Math.max(0, Math.min(PAGE, top)) }, (_, i) => top - i);
   const discs = useDiscPage(ids);
 
-  if (!dep) {
-    return (
-      <Section>
-        <EmptyState title="No Discs to show yet">No deployment is connected to this build. Once the Count opens, every Disc appears here.</EmptyState>
-      </Section>
-    );
-  }
+  if (!dep) return <GalleryPlaceholder deployed={false} />;
   if (total.isError || discs.isError) {
     return (
       <Section>
@@ -78,16 +71,7 @@ function DiscGrid({ page }: { page: number }) {
                 </Link>
               </li>
             ))
-          : (ids.length > 0 ? ids : Array.from({ length: PAGE }, (_, i) => -i)).map((i) => (
-              <li key={i}>
-                <div className={styles.card} aria-hidden={i <= 0 ? undefined : true}>
-                  <DiscSkeleton />
-                  <span className={styles.meta}>
-                    <span className="mono">&nbsp;</span>
-                  </span>
-                </div>
-              </li>
-            ))}
+          : <GalleryGridSkeleton count={ids.length || PAGE} />}
       </ul>
       {pages > 1 ? (
         <nav aria-label="Pages" className={styles.pager}>

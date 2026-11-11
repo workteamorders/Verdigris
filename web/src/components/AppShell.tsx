@@ -32,7 +32,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               ? { tone: 'info' as const, label: 'Count complete' }
               : count.status === 'error'
                 ? { tone: 'warning' as const, label: 'Cannot read the chain' }
-                : undefined;
+                : { tone: 'info' as const, label: 'Reading the Count' };
 
   return (
     <>
