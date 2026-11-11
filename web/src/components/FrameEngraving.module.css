@@ -14,7 +14,8 @@
 }
 
 .corner,
-.cartouche {
+.crown,
+.roots {
   position: absolute;
   overflow: visible;
   filter: drop-shadow(0 2px 2px var(--metal-deep));
@@ -30,11 +31,20 @@
 .bottomLeft { bottom: 0; left: 0; transform: scaleY(-1); }
 .bottomRight { bottom: 0; right: 0; transform: scale(-1); }
 
-.cartouche {
-  top: 0;
+.crown,
+.roots {
   left: 50%;
-  width: min(var(--engraving-cartouche), 45%);
   transform: translateX(-50%);
+}
+
+.crown {
+  top: calc(var(--frame-w) * -0.52);
+  width: min(var(--engraving-crown), 59%);
+}
+
+.roots {
+  bottom: calc(var(--frame-w) * -0.24);
+  width: min(var(--engraving-roots), 42%);
 }
 
 .cast {
@@ -43,10 +53,21 @@
   stroke-width: 1.5;
 }
 
-.bevel {
-  fill: var(--metal-mid);
+.rim {
   stroke: color-mix(in srgb, var(--metal-spec) 76%, var(--metal-mid));
-  stroke-width: 0.85;
+  stroke-width: 0.8;
+}
+
+.leaf {
+  fill: color-mix(in srgb, var(--metal-hi) 72%, var(--patina-deep));
+  stroke: var(--metal-lo);
+  stroke-width: 0.8;
+}
+
+.pearl {
+  fill: var(--metal-hi);
+  stroke: var(--metal-spec);
+  stroke-width: 0.5;
 }
 
 .inset {
