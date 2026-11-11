@@ -1,0 +1,116 @@
+.intro {
+  position: fixed;
+  inset: 0;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: var(--space-6);
+  border: 0;
+  color: var(--text);
+  background:
+    radial-gradient(ellipse at 50% 45%, var(--intro-light), transparent 55%),
+    radial-gradient(ellipse at 75% 80%, var(--intro-patina), transparent 57%),
+    var(--field-deep);
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+
+.intro[open] {
+  display: grid;
+  place-items: center;
+  animation: intro-out var(--dur-site-intro) var(--ease-inout) both;
+}
+
+.intro::backdrop { background: transparent; }
+
+.display {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-2);
+  text-align: center;
+}
+
+.emblem {
+  width: min(62vw, var(--intro-emblem-size));
+  height: auto;
+  overflow: visible;
+  animation: emblem-in var(--dur-site-intro-emblem) var(--ease-out) both;
+}
+
+.rim {
+  transform-origin: center;
+  animation: rim-in var(--dur-site-intro-emblem) var(--ease-out) both;
+}
+
+.outline,
+.ticks,
+.edge,
+.glyph {
+  stroke: var(--metal-spec);
+  stroke-width: 1;
+}
+
+.outline,
+.ticks { fill: none; }
+.ticks { stroke-dasharray: 1 4; opacity: 0.63; }
+
+.face {
+  fill: var(--metal-deep);
+  stroke: var(--metal-hi);
+}
+
+.patina { opacity: 0.78; }
+
+.glyph {
+  fill: none;
+  stroke-width: 2.2;
+  stroke-linejoin: round;
+}
+
+.wordmark {
+  font-family: var(--font-engraved);
+  font-size: clamp(var(--fs-3xl), 9vw, var(--fs-4xl));
+  line-height: var(--lh-tight);
+  animation: title-in var(--dur-site-intro-title) var(--ease-out) var(--dur-site-intro-title-delay) both;
+}
+
+.caption {
+  animation: title-in var(--dur-site-intro-title) var(--ease-out) var(--dur-site-intro-caption-delay) both;
+}
+
+.skip {
+  position: absolute;
+  inset: auto var(--space-5) var(--space-5) auto;
+  min-height: var(--tap);
+  padding-inline: var(--space-4);
+  border: var(--stroke) solid var(--line-strong);
+  color: var(--text);
+  background: var(--surface);
+  font: inherit;
+  cursor: pointer;
+}
+
+.skip:hover { background: var(--surface-2); }
+
+@keyframes intro-out {
+  from, 75% { opacity: 1; }
+  to { opacity: 0; }
+}
+
+@keyframes emblem-in {
+  from { opacity: 0; transform: scale(0.88); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes rim-in {
+  from { opacity: 0; transform: rotate(-38deg) scale(1.1); }
+  to { opacity: 1; transform: rotate(0) scale(1); }
+}
+
+@keyframes title-in {
+  from { opacity: 0; transform: translateY(var(--space-2)); }
+  to { opacity: 1; transform: translateY(0); }
+}

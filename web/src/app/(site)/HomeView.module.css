@@ -25,57 +25,8 @@
 }
 
 .wheel {
-  position: relative;
-  isolation: isolate;
   width: min(100%, var(--exhibit-wheel));
   padding-block-start: var(--exhibit-crest-clearance);
-}
-
-.lamp {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  pointer-events: none;
-  z-index: 2;
-  mix-blend-mode: screen;
-}
-
-.beam {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  background: radial-gradient(ellipse 50% 24% at center, var(--exhibit-beam), transparent);
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .stage[data-opening] .artifact {
-    animation: artifact-light var(--dur-exhibit-opening) var(--ease-out) both;
-  }
-
-  .stage[data-opening] .beam {
-    animation: gallery-lamp var(--dur-exhibit-opening) var(--ease-inout) both;
-  }
-
-  .stage[data-opening] .caption > p {
-    animation: exhibit-label var(--dur-exhibit-label) var(--ease-out) var(--dur-exhibit-label-delay) both;
-  }
-}
-
-@keyframes artifact-light {
-  from { opacity: 0.72; }
-  62%, to { opacity: 1; }
-}
-
-@keyframes gallery-lamp {
-  from { opacity: 0; transform: translateY(-45%); }
-  19% { opacity: 0.92; }
-  62% { opacity: 0.54; }
-  to { opacity: 0; transform: translateY(43%); }
-}
-
-@keyframes exhibit-label {
-  from { opacity: 0.68; transform: translateY(var(--space-1)); }
-  to { opacity: 1; transform: translateY(0); }
 }
 
 .caption {
