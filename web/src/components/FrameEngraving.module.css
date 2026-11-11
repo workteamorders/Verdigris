@@ -41,7 +41,7 @@
 
 .crown {
   top: calc(var(--frame-w) * -0.52);
-  width: min(var(--engraving-crown), 59%);
+  width: min(var(--engraving-crown), 67%);
 }
 
 .sculptedCrown {
@@ -96,6 +96,21 @@
   stroke: var(--metal-hi);
   stroke-width: 1.1;
 }
+
+.variantInlay,
+.corner .inset {
+  fill: var(--engraving-stone, var(--patina-deep));
+  stroke: var(--metal-lo);
+  stroke-width: 1.7;
+}
+
+.engraving[data-engraving='bead'] { --engraving-stone: var(--engraving-amber); }
+.engraving[data-engraving='dentil'] { --engraving-stone: var(--metal-deep); }
+.engraving[data-engraving='rope'] { --engraving-stone: var(--engraving-olive); }
+.engraving[data-engraving='lozenge'] { --engraving-stone: var(--engraving-garnet); }
+.engraving[data-engraving='moulding'] { --engraving-stone: var(--metal-lo); }
+.engraving[data-engraving='scale'] { --engraving-stone: var(--engraving-slate); }
+.engraving[data-engraving='inlay'] { --engraving-stone: var(--patina-4); }
 
 .lightCut,
 .shadowCut,

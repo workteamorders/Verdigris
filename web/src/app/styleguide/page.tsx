@@ -1,3 +1,4 @@
+import { CRESTS } from '@/components/frame-crests';
 import type { Metadata } from 'next';
 import { SiteHeader } from '@/components/SiteHeader';
 import { Button } from '@/components/Button';
@@ -259,11 +260,11 @@ export default function StyleguidePage() {
 
           <div className={styles.sub}>
             <h3>Frames</h3>
-            <p className="dim">Eight cast-bronze frames, lit from the top left. Each has a distinct engraved rail, and a matching stamp. Roots, shoots, and a firefly rise from the bronze relief, with a verdigris inlay and beaded details. The frame is decorative and hidden from assistive technology.</p>
+            <p className="dim">Each frame pairs its own rail with a distinct crest. The shapes range from soft leaves and cast beads to angular stone and stepped bronze.</p>
             <div className={styles.grid3}>
               {FRAMES.map((f) => (
                 <Panel key={f} frame={f}>
-                  <h4>{f}</h4>
+                  <h4>{CRESTS[f].title}</h4>
                   <p className="dim">Face and text stay on the same dark surface in every frame.</p>
                 </Panel>
               ))}

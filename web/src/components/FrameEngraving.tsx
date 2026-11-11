@@ -1,4 +1,5 @@
 import { useId } from 'react';
+import { CRESTS } from './frame-crests';
 import type { FrameName } from './Frame';
 import styles from './FrameEngraving.module.css';
 
@@ -18,10 +19,6 @@ const compactCorners = ['topLeft', 'bottomRight'] as const;
 const shell = 'M1 1H80L74 6Q65 11 54 9Q47 17 35 15Q29 29 16 34Q18 47 9 54Q11 66 6 74L1 80Z';
 const foliage = 'M7 68C15 55 2 45 15 36C25 29 32 32 34 22C36 11 51 17 55 8M9 59C9 49 15 46 20 46C25 46 25 52 21 52M12 38C11 28 21 23 28 25M31 28C42 30 48 24 47 18M49 13C57 15 63 11 68 6';
 const cornerLeaves = 'M13 44Q18 36 25 36Q24 44 13 44ZM15 33Q16 23 24 22Q25 30 15 33ZM30 27Q39 21 44 22Q43 30 30 27ZM38 17Q44 8 51 10Q48 17 38 17ZM8 54Q3 46 8 40Q13 47 8 54Z';
-const frond = 'M104 38C86 43 78 15 52 24C41 27 44 39 54 37C62 35 57 28 52 30M89 34C73 16 49 14 33 28C25 34 16 35 7 32M75 26C67 13 50 7 35 14M86 38C71 39 68 53 54 49M44 23C34 20 27 23 21 28';
-const crestLeaves = 'M88 35Q80 22 68 24Q72 34 88 35ZM73 25Q68 11 54 12Q58 22 73 25ZM53 20Q44 13 36 16Q42 23 53 20ZM42 24Q25 20 19 30Q30 34 42 24ZM69 42Q55 40 48 49Q60 53 69 42ZM88 39Q78 40 76 49Q84 49 88 39Z';
-const beads = [[19, 33], [25, 31], [31, 31], [37, 32], [43, 34], [48, 38], [54, 41], [60, 38], [67, 34], [73, 39], [77, 43]] as const;
-
 function Bronze({ id }: { id: string }) {
   return (
     <defs>
@@ -56,31 +53,22 @@ function Corner({ frame, position }: { frame: FrameName; position: (typeof corne
   );
 }
 
-function Frond({ mirror = false }: { mirror?: boolean }) {
-  return (
-    <g transform={mirror ? 'translate(220) scale(-1 1)' : undefined}>
-      {beads.map(([cx, cy], index) => <circle key={cx} cx={cx} cy={cy} r={index % 3 ? 1.35 : 1.85} className={styles.pearl} />)}
-      <path d={crestLeaves} className={styles.leaf} />
-      <path d={frond} className={styles.shadowCut} transform="translate(0 1.4)" />
-      <path d={frond} className={styles.lightCut} />
-    </g>
-  );
-}
-
 function Crown({ frame }: { frame: FrameName }) {
   const metal = useId();
+  const { silhouette, relief, medallion } = CRESTS[frame];
   return (
-    <svg className={styles.crown} viewBox="0 0 220 58" focusable="false">
+    <svg className={styles.crown} viewBox="0 0 220 66" focusable="false">
       <Bronze id={metal} />
-      <path d="M1 32C26 36 31 12 55 12C72 12 81 22 94 18L110 2L126 18C139 22 148 12 165 12C189 12 194 36 219 32C205 45 181 36 166 45C150 57 132 49 122 45L110 57L98 45C88 49 70 57 54 45C39 36 15 45 1 32Z" className={styles.cast} />
-      <path d="M8 33C28 34 37 15 55 15C71 14 83 26 96 21L110 5L124 21C137 26 149 14 165 15C183 15 192 34 212 33C193 42 181 34 164 43C150 52 133 47 122 42L110 53L98 42C87 47 70 52 56 43C39 34 27 42 8 33Z" fill={`url(#${metal})`} className={styles.rim} />
-      <Frond />
-      <Frond mirror />
-      <path d="M110 8C121 12 128 21 127 31C126 41 118 48 110 51C102 48 94 41 93 31C92 21 99 12 110 8Z" className={styles.inset} />
-      <path d="M110 13Q100 17 102 25Q94 25 96 30Q100 38 108 35M110 13Q120 17 118 25Q126 25 124 30Q120 38 112 35M101 28L98 35M119 28L122 35" className={styles.lightCut} />
-      <path d="M110 17Q118 22 116 32Q114 41 110 45Q106 41 104 32Q102 22 110 17Z" fill={`url(#${metal})`} className={styles.rim} />
-      <path d={cuts[frame]} transform="translate(105.3 24) scale(.52)" className={styles.sign} />
-      <circle cx="110" cy="41" r="1.75" className={styles.rivet} />
+      {[false, true].map((mirror) => (
+        <g key={String(mirror)} transform={mirror ? 'translate(220) scale(-1 1)' : undefined}>
+          <path d={silhouette} fill={`url(#${metal})`} className={styles.sculptedRim} />
+          <path d={relief} className={styles.shadowCut} transform="translate(0 1.4)" />
+          <path d={relief} className={styles.lightCut} />
+        </g>
+      ))}
+      <path d={medallion} fill={`url(#${metal})`} className={styles.rim} />
+      <path d={medallion} transform="translate(25.3 8.05) scale(.77)" className={styles.variantInlay} />
+      <path d={cuts[frame]} transform="translate(102.2 26.3) scale(.87)" className={styles.sign} />
     </svg>
   );
 }
@@ -145,7 +133,7 @@ function Roots() {
 
 export function FrameEngraving({ frame, compact = false, featured = false }: { frame: FrameName; compact?: boolean; featured?: boolean }) {
   return (
-    <span className={styles.engraving} data-compact={compact || undefined} aria-hidden="true">
+    <span className={styles.engraving} data-compact={compact || undefined} data-engraving={frame} aria-hidden="true">
       <span className={styles.keylines} />
       {(compact ? compactCorners : corners).map((position) => <Corner key={position} frame={frame} position={position} />)}
       {!compact && <>{featured ? <SculptedCrown frame={frame} /> : <Crown frame={frame} />}<Roots /></>}
