@@ -9,6 +9,14 @@ import { Disc } from './Disc';
 import { Banner } from './Banner';
 import { DataTable } from './DataTable';
 import { LEVEL_NAMES, mainnetThresholdsSeconds, DAY_SECONDS, patinaLevel } from '@/lib/patina';
+import { CalendarGrid } from './CalendarGrid';
+import { CountClock } from './CountClock';
+import { MintedTotal } from './MintedTotal';
+import { Panel } from './Panel';
+import { PatinaTimeline } from './PatinaTimeline';
+import { RackArtwork } from './Artwork';
+import { Reveal } from './Reveal';
+import { TiltDisc } from './TiltDisc';
 import styles from '@/app/styleguide/Styleguide.module.css';
 
 const validateAddress = (v: string): string | undefined => (/^0x[0-9a-fA-F]{40}$/.test(v) ? undefined : 'Enter a 42-character address that starts with 0x.');
@@ -154,5 +162,68 @@ export function TableDemo() {
         { key: 'price', header: 'Mint price (ETH)', numeric: true, cell: (r) => r.price },
       ]}
     />
+  );
+}
+
+export function MotionDemos() {
+  const [selected, setSelected] = useState(0);
+  const [total, setTotal] = useState(24);
+  const [calendarMode, setCalendarMode] = useState('live');
+  return (
+    <>
+      <p className="label">EXAMPLE</p>
+      <h3>Patina timeline</h3>
+      <p>Use the arrow keys or drag the slider to preview each threshold.</p>
+      <PatinaTimeline />
+      <PatinaTimeline disabled />
+
+      <h3>Disc tilt and sheen</h3>
+      <div className={styles.wheelGrid}>
+        {(['ready', 'disabled', 'loading', 'empty', 'error'] as const).map((state) => (
+          <figure key={state} className={styles.wheelCell}>
+            {state === 'ready'
+              ? <a href="#motion" aria-label="Focus the Disc card"><TiltDisc state={state} sign={5} numeral={3} level={2} noFilters /></a>
+              : <TiltDisc state={state} sign={5} numeral={3} level={2} noFilters />}
+            <figcaption className="label">{state}</figcaption>
+          </figure>
+        ))}
+      </div>
+
+      <h3>Count clock</h3>
+      <dl>
+        <dt>Next Day</dt><dd><CountClock seconds={27_311} /></dd>
+        <dt>Day boundary</dt><dd><CountClock seconds={0} /></dd>
+        {(['loading', 'empty', 'error', 'disabled'] as const).map((state) => (
+          <div key={state}><dt>{state}</dt><dd><CountClock state={state} /></dd></div>
+        ))}
+      </dl>
+
+      <h3>Calendar</h3>
+      <SelectField
+        label="Calendar state"
+        value={calendarMode}
+        onChange={(event) => setCalendarMode(event.currentTarget.value)}
+        options={[
+          { value: 'live', label: 'Live Day' },
+          { value: 'loading', label: 'Loading' },
+          { value: 'empty', label: 'No live Day' },
+          { value: 'error', label: 'Error' },
+          { value: 'disabled', label: 'Disabled' },
+        ]}
+      />
+      {calendarMode === 'loading' && <p role="status">Reading the Count…</p>}
+      {calendarMode === 'error' && <p role="status">The chain could not be read.</p>}
+      <CalendarGrid today={calendarMode === 'live' ? 6 : null} selected={selected} onSelect={setSelected} disabled={calendarMode === 'disabled'} />
+
+      <h3>Scroll reveal and minted total</h3>
+      <Reveal>
+        <Panel>
+          <p><MintedTotal value={total} /> Discs minted</p>
+          <Button onClick={() => setTotal((value) => value === 24 ? 72 : 24)}>Change total</Button>
+        </Panel>
+        <Panel><RackArtwork kind="missing" /></Panel>
+        <Panel><RackArtwork kind="offline" /></Panel>
+      </Reveal>
+    </>
   );
 }

@@ -1,3 +1,4 @@
+import { MotionDemos } from '@/components/StyleguideDemos';
 import type { Metadata } from 'next';
 import { SiteHeader } from '@/components/SiteHeader';
 import { Button } from '@/components/Button';
@@ -73,6 +74,7 @@ const WHEELS: ReadonlyArray<{ state: WheelState; sign: number; numeral: number; 
   { state: 'before', sign: 0, numeral: 1, caption: '02 d 04:11:09', note: 'Before the start: Day 1 countdown' },
   { state: 'done', sign: 6, numeral: 3, note: 'Count finished: the wheel stops' },
   { state: 'loading', sign: 6, numeral: 3, note: 'Loading: skeleton in the same shape' },
+  { state: 'disabled', sign: 6, numeral: 3, note: 'Disabled' },
   { state: 'error', sign: 6, numeral: 3, note: 'RPC failed: nothing is lost' },
 ];
 
@@ -319,10 +321,10 @@ export default function StyleguidePage() {
                 <Skeleton height="var(--space-5)" />
                 <Skeleton width="60%" />
               </div>
-              <EmptyState title="No Discs in your Vault yet" action={<Button variant="primary">Mint today&#39;s Disc</Button>}>
+              <EmptyState heading="h3" title="No Discs in your Vault yet" action={<Button variant="primary">Mint today&#39;s Disc</Button>}>
                 Mint one and it will appear here with its Patina date.
               </EmptyState>
-              <ErrorState title="Cannot read the chain" what="The network did not answer, so today's numbers are missing." safe="Your Discs and funds are not affected. Nothing was sent." next={<Button variant="secondary">Try again</Button>} />
+              <ErrorState heading="h3" title="Cannot read the chain" what="The network did not answer, so today's numbers are missing." safe="Your Discs and funds are not affected. Nothing was sent." next={<Button variant="secondary">Try again</Button>} />
             </div>
           </div>
 
@@ -412,11 +414,16 @@ export default function StyleguidePage() {
           <div className={styles.wheelGrid}>
             {WHEELS.map((w) => (
               <div key={w.state} className={styles.wheelCell}>
-                <Wheel state={w.state} sign={w.sign} numeral={w.numeral} caption={w.caption} />
+                <Wheel state={w.state} sign={w.sign} numeral={w.numeral} caption={w.caption} example />
                 <span className="label">{w.note}</span>
               </div>
             ))}
           </div>
+        </section>
+        <section id="motion" className={styles.section} aria-labelledby="h-motion">
+          <h2 id="h-motion">Motion and artwork</h2>
+          <p className="dim">The ambient field runs on the main site. Reduced motion keeps a static field, and the controls retain their focus and selection states.</p>
+          <MotionDemos />
         </section>
       </main>
     </>
