@@ -143,3 +143,26 @@ Pilihan ini bisa diganti pemilik di titik berhenti kedua.
 
 ### Hal yang BELUM TERVERIFIKASI (diulang agar tidak hilang)
 Batas gas `eth_call`; dukungan Cancun/PUSH0; selisih jam sequencer; batas laju RPC; render SVG data-URI, ERC-2981 dan ERC-4906 di marketplace; perilaku dompet sungguhan; `/api/rpc` di Cloudflare; Syarat Khusus Layanan Cloudflare Pages; batas Tooltip pada tepi layar.
+
+## UI motion and artwork
+
+- The site layout mounts a canvas over the token gradient. Idle drift, pointer and touch bloom, ripples, and scroll depth share one drawing loop. It starts during idle, pauses on visibility changes, caps device pixel ratio at two, and cuts the backing resolution in half after sustained slow frames. Reduced motion uses a static frame. Two additional contrast checks cover the brightest canvas pigment.
+- The Home wheel highlights the current Sign and supports pointer drag and arrow-key navigation. Gallery, Disc detail, Mint, and Vault use the same tilt surface. Home uses a keyboard-operable Patina timeline with deployment thresholds or the mainnet defaults. The Count clock uses the existing chain timestamp, and Calendar groups the same 84 Days by Sign and Numeral. The styleguide demonstrates the interactive and data states.
+- The exposure plate, wheel accents, divider, status illustrations, favicon, and app icons are original SVG artwork. The 1200 × 630 Open Graph PNG is rasterized from its SVG source. Set the public site origin through `NEXT_PUBLIC_SITE_URL` at build time to publish an absolute Open Graph image URL. The artwork ships with the export in either case.
+- No runtime dependency was added. The ambient component is about 1.7 KiB minified and gzipped in isolation. The wheel, timeline, and Gallery thumbnails omit Disc texture filters to reduce rendering work. Gallery's initial fallback reserves the same grid as its loading state, and the header reserves space for the Count status while the first read is pending.
+- Typecheck, contrast, token check, parity, build, and copy check passed. Parity returned 99 byte-identical Discs. Browser checks use Chromium emulation and a synthetic read-only Count. Physical phones, a live deployment, and social crawler previews remain unverified.
+
+Mobile Lighthouse 13.6.0 compared `main` with the updated static export. Both builds used the same loopback Brotli server and the same 168-Disc read-only fixture.
+
+| Route | Performance before | Performance after | CLS before | CLS after | TBT before → after |
+|---|---:|---:|---:|---:|---:|
+| Home | 92 | 100 | 0.1824 | 0.0035 | 6.5 → 2.5 ms |
+| Mint | 100 | 100 | 0.0476 | 0.0003 | 0.5 → 7.5 ms |
+| Calendar | 100 | 100 | 0.0488 | 0.0002 | 10 → 5 ms |
+| Gallery | 94 | 100 | 0.1509 | 0.0003 | 10.5 → 13 ms |
+| Rules | 100 | 100 | 0.0560 | 0.0071 | 4 → 2 ms |
+| Vault | 100 | 100 | 0.0513 | 0.0057 | 1 → 1.5 ms |
+
+The updated routes scored 100 for Accessibility, Best Practices, and SEO.
+
+Chromium reported no horizontal overflow at 360, 768, or 1440 px. Keyboard navigation, tilt, wheel inertia, the ticking Count, and the live Calendar selection passed against the local fixture. The canvas checks exercised touch ripples, hidden and off-screen pausing, reduced motion, half-resolution fallback, and the CSS fallback. Median frame interval was 16.7 ms in mobile emulation with 4× CPU throttling.
