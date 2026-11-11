@@ -61,7 +61,7 @@ const STATES = ['default', 'hover', 'active', 'focus', 'disabled', 'loading'] as
 const VARIANTS = ['primary', 'secondary', 'ghost', 'danger'] as const;
 const LEVELS: readonly PatinaLevel[] = [0, 1, 2, 3, 4];
 const BADGES: ReadonlyArray<[BadgeTone, string]> = [
-  ['neutral', 'Example data'],
+  ['neutral', 'Preview data'],
   ['success', 'Confirmed'],
   ['danger', 'Sold out'],
   ['warning', 'Not deployed'],
@@ -69,7 +69,7 @@ const BADGES: ReadonlyArray<[BadgeTone, string]> = [
   ['patina', 'Patina level 2'],
 ];
 const WHEELS: ReadonlyArray<{ state: WheelState; sign: number; numeral: number; caption?: string; note: string }> = [
-  { state: 'undeployed', sign: 6, numeral: 3, note: 'Not deployed: example pair, labelled' },
+  { state: 'undeployed', sign: 6, numeral: 3, note: 'Preview pair shown before deployment' },
   { state: 'today', sign: 6, numeral: 3, note: 'Today: the lit pair opens now' },
   { state: 'soldout', sign: 6, numeral: 3, caption: '07:42:19', note: 'Today sold out: next Day opens in' },
   { state: 'before', sign: 0, numeral: 1, caption: '02 d 04:11:09', note: 'Before the start: Day 1 countdown' },
@@ -89,7 +89,7 @@ function buttonProps(state: (typeof STATES)[number]) {
 export default function StyleguidePage() {
   return (
     <>
-      <SiteHeader status={{ tone: 'warning', label: 'Not deployed · Example data' }} />
+      <SiteHeader status={{ tone: 'warning', label: 'Not deployed · Preview data' }} />
       <main id="main" className={`container ${styles.page}`}>
         <header className={styles.intro}>
           <p className="label">Internal reference · Direction C, Exposure Rack</p>
@@ -320,7 +320,7 @@ export default function StyleguidePage() {
                 { tier: 'Crown', minted: 3, cap: 8 },
               ]}
             />
-            <p className="dim">EXAMPLE data.</p>
+            <p className="dim">Preview data.</p>
           </div>
 
           <div className={styles.sub}>

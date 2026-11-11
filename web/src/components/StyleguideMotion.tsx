@@ -54,7 +54,7 @@ export function MotionDemo() {
       <Ticker />
 
       <h3>Chapter head, rule, plate</h3>
-      <ChapterHead n={4} label="Example" title="A chapter title in the engraved face" lead="The numeral and title are set in the engraved face, the label in mono, and a rule closes the head." />
+      <ChapterHead n={4} label="Preview" title="A chapter title in the engraved face" lead="The numeral and title are set in the engraved face, the label in mono, and a rule closes the head." />
       <Rule />
       <Plate n={2}>A caption set the way an engraved plate is captioned.</Plate>
 

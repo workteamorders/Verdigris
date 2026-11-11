@@ -2,6 +2,7 @@
 
 import dynamic from 'next/dynamic';
 import { useCallback, useEffect, useState } from 'react';
+import { AmbientFireflies } from './AmbientFireflies';
 import { AmbientCanvas } from './AmbientCanvas';
 import { useMotion, whenIdle } from '@/lib/motion';
 import styles from './Ambient.module.css';
@@ -42,5 +43,10 @@ export function Ambient() {
 
   const live = ready && tier !== 'minimal';
   if (!live) return <div className={styles.still} aria-hidden="true" />;
-  return tier === 'full' && !glFailed ? <AmbientGL onFail={onFail} /> : <AmbientCanvas />;
+  return (
+    <>
+      {tier === 'full' && !glFailed ? <AmbientGL onFail={onFail} /> : <AmbientCanvas />}
+      <AmbientFireflies economy={tier !== 'full'} />
+    </>
+  );
 }

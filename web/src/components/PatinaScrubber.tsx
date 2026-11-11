@@ -34,7 +34,7 @@ export function PatinaScrubber({ when, sign = 5, numeral = 3, serial = 7 }: Prop
         </div>
       </div>
       <div className={styles.controls}>
-        <p className="label">EXAMPLE Disc</p>
+        <p className="label">Disc preview</p>
         <label htmlFor={id} className={styles.heading}>
           <Badge tone="patina">{`Level ${level}`}</Badge> {name}
         </label>

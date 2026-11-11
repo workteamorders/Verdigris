@@ -87,7 +87,7 @@ export function HomeView() {
           <Panel frame="bead">
             <p>
               {count.status === 'undeployed'
-                ? 'No deployment is connected to this build yet, so there is no live Day to show. The wheel above is an EXAMPLE.'
+                ? 'No deployment is connected to this build yet, so there is no live Day to show. The wheel shows a preview.'
                 : count.status === 'before'
                   ? 'The Count has not started. Day 1 opens when the countdown in the wheel reaches zero.'
                   : count.status === 'ended'
@@ -119,7 +119,7 @@ export function HomeView() {
         </Grid>
       </Section>
 
-      <Section title="Five stages of Patina" chapter={{ n: 2, label: 'The clock' }} lead="EXAMPLE Discs, same Sign and Numeral, at each level. The thresholds shown are the mainnet defaults.">
+      <Section title="Five stages of Patina" chapter={{ n: 2, label: 'The clock' }} lead="Preview Discs show the same Sign and Numeral at each level. The thresholds shown are the mainnet defaults.">
         <Panel frame="moulding">
           <PatinaScrubber when={LEVEL_AT} />
         </Panel>

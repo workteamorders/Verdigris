@@ -130,7 +130,7 @@ export function MintView() {
           {phase.name === 'done' ? <Strike key={phase.hash} /> : null}
         </div>
         <p className="dim">
-          {count.status === 'live' ? `Preview of Disc ${(today?.minted ?? 0) + 1} of today. The contract draws the final image.` : 'EXAMPLE: the Disc of Day 1.'}
+          {count.status === 'live' ? `Preview of Disc ${(today?.minted ?? 0) + 1} of today. The contract draws the final image.` : 'Preview of a Day 1 Disc.'}
         </p>
       </div>
 

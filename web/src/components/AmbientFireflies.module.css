@@ -1,0 +1,50 @@
+.swarm {
+  position: fixed;
+  top: var(--swarm-y, 0);
+  left: var(--swarm-x, 0);
+  z-index: var(--z-fireflies);
+  pointer-events: none;
+  opacity: 0;
+  transform: scale(1.6);
+  transition: opacity var(--dur-panel) var(--ease-in), transform var(--dur-reveal) var(--ease-out);
+}
+
+.swarm[data-visible] {
+  opacity: 1;
+  transform: scale(1);
+  transition-timing-function: var(--ease-out);
+}
+
+.orbit {
+  animation: firefly-orbit var(--dur-firefly-orbit) linear infinite;
+}
+
+.fly {
+  position: absolute;
+  width: var(--space-3);
+  height: var(--space-3);
+  margin: calc(var(--space-3) / -2);
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--firefly-core) 12%, var(--firefly-glow) 27%, transparent 67%);
+  transform: rotate(var(--angle)) translateX(var(--radius));
+  animation: firefly-pulse var(--dur-firefly-pulse) var(--ease-inout) infinite alternate;
+  animation-delay: calc(var(--index) * -1 * var(--dur-firefly-phase));
+}
+
+.swarm:not([data-visible]) .orbit,
+.swarm:not([data-visible]) .fly {
+  animation-play-state: paused;
+}
+
+@keyframes firefly-orbit {
+  to { transform: rotate(1turn); }
+}
+
+@keyframes firefly-pulse {
+  from { opacity: 0.18; transform: rotate(var(--angle)) translateX(calc(var(--radius) + var(--space-2))) scale(0.72); }
+  to { opacity: 0.88; transform: rotate(var(--angle)) translateX(var(--radius)) scale(1.12); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .swarm { display: none; }
+}

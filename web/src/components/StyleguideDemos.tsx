@@ -141,7 +141,7 @@ const DEMO_ROWS: readonly DemoRow[] = [
 export function TableDemo() {
   return (
     <DataTable<DemoRow>
-      caption="Example Discs, EXAMPLE data"
+      caption="Disc preview data"
       rowKey={(r) => String(r.id)}
       rows={DEMO_ROWS}
       columns={[

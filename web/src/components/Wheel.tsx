@@ -104,7 +104,7 @@ export function Wheel({ state, sign, numeral, caption }: WheelProps) {
           <g>
             <rect x="215" y="446" width="170" height="34" className={styles.label} />
             <text x="300" y="469" textAnchor="middle" className={styles.centreText}>
-              EXAMPLE
+              PREVIEW
             </text>
           </g>
         ) : null}
