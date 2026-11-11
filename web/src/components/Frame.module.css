@@ -47,17 +47,10 @@
 @media (min-width: 48em) {
   .face { padding: var(--space-6); }
 }
-.boss {
-  position: absolute;
-  z-index: 3;
-  width: var(--boss);
-  height: var(--boss);
-  pointer-events: none;
+.frame[data-compact] {
+  --frame-w: var(--space-2);
 }
-.boss:nth-of-type(1) { top: calc(var(--frame-w) * -0.375); left: calc(var(--frame-w) * -0.375); --slot: 25deg; }
-.boss:nth-of-type(2) { top: calc(var(--frame-w) * -0.375); right: calc(var(--frame-w) * -0.375); --slot: 100deg; }
-.boss:nth-of-type(3) { bottom: calc(var(--frame-w) * -0.375); left: calc(var(--frame-w) * -0.375); --slot: 160deg; }
-.boss:nth-of-type(4) { bottom: calc(var(--frame-w) * -0.375); right: calc(var(--frame-w) * -0.375); --slot: 70deg; }
+.frame[data-compact] .face { padding: var(--space-2); }
 
 .frame[data-frame='reed'] {
   background-image:
@@ -82,11 +75,6 @@
     linear-gradient(0deg, color-mix(in srgb, var(--metal-deep) 85%, transparent) 0 1px, var(--metal-lo) 1px, var(--metal-mid) calc(100% - 1px), color-mix(in srgb, var(--metal-spec) 50%, transparent) calc(100% - 1px) 100%);
   background-size: var(--frame-w) var(--frame-w), 100% 100%;
   background-repeat: repeat-x, no-repeat;
-}
-.frame[data-frame='reed'] .boss {
-  border-radius: var(--radius-round);
-  background: radial-gradient(circle at 34% 30%, var(--metal-spec) 0 6%, var(--metal-hi) 24%, var(--metal-mid) 54%, var(--metal-lo) 82%, var(--metal-deep) 100%);
-  box-shadow: 0 2px 3px color-mix(in srgb, var(--metal-deep) 85%, transparent), inset 0 0 0 1px color-mix(in srgb, var(--metal-deep) 55%, transparent);
 }
 .frame[data-frame='bead'] {
   background-image:
@@ -116,11 +104,6 @@
   background-size: var(--frame-w) var(--frame-w), var(--frame-w) var(--frame-w), 100% 100%;
   background-repeat: repeat-x, repeat-x, no-repeat;
 }
-.frame[data-frame='bead'] .boss {
-  clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
-  background: radial-gradient(circle at 50% 50%, color-mix(in srgb, var(--metal-spec) 70%, transparent) 0, transparent 22%), conic-gradient(var(--metal-spec) 0 90deg, var(--metal-mid) 90deg 180deg, var(--metal-lo) 180deg 270deg, var(--metal-hi) 270deg 360deg);
-  filter: drop-shadow(0 2px 2px color-mix(in srgb, var(--metal-deep) 85%, transparent));
-}
 .frame[data-frame='dentil'] {
   background-image:
     repeating-linear-gradient(180deg, color-mix(in srgb, var(--metal-spec) 60%, transparent) 0 1px, var(--metal-hi) 1px 3px, var(--metal-lo) 3px var(--space-1), var(--metal-deep) var(--space-1) calc(var(--space-1) * 2)),
@@ -148,11 +131,6 @@
     linear-gradient(0deg, color-mix(in srgb, var(--metal-deep) 85%, transparent) 0 1px, var(--metal-lo) 1px, var(--metal-mid) calc(100% - 1px), color-mix(in srgb, var(--metal-spec) 50%, transparent) calc(100% - 1px) 100%);
   background-size: var(--frame-w) var(--frame-w), 100% 100%, 100% 100%;
   background-repeat: repeat-x, no-repeat, no-repeat;
-}
-.frame[data-frame='dentil'] .boss {
-  clip-path: polygon(25% 6.7%, 75% 6.7%, 100% 50%, 75% 93.3%, 25% 93.3%, 0 50%);
-  background: radial-gradient(circle at 40% 36%, color-mix(in srgb, var(--metal-spec) 60%, transparent) 0, var(--metal-mid) 26%, var(--metal-lo) 34%, color-mix(in srgb, var(--metal-deep) 90%, transparent) 38%, transparent 40%), conic-gradient(from 30deg, var(--metal-hi) 0 60deg, var(--metal-mid) 60deg 120deg, var(--metal-lo) 120deg 180deg, var(--metal-mid) 180deg 240deg, var(--metal-hi) 240deg 300deg, var(--metal-spec) 300deg 360deg);
-  filter: drop-shadow(0 2px 2px color-mix(in srgb, var(--metal-deep) 85%, transparent));
 }
 .frame[data-frame='rope'] {
   background-image:
@@ -182,11 +160,6 @@
   background-size: 100% 100%, var(--frame-w) var(--frame-w), 100% 100%;
   background-repeat: no-repeat, repeat-x, no-repeat;
 }
-.frame[data-frame='rope'] .boss {
-  border-radius: var(--radius-round);
-  background: radial-gradient(circle at 36% 32%, color-mix(in srgb, var(--metal-spec) 85%, transparent) 0 6%, transparent 24%), repeating-radial-gradient(circle at 50% 50%, var(--metal-mid) 0, var(--metal-hi) 1px, var(--metal-lo) 2px, var(--metal-deep) 3px);
-  box-shadow: 0 2px 3px color-mix(in srgb, var(--metal-deep) 85%, transparent), inset 0 0 0 1px color-mix(in srgb, var(--metal-deep) 60%, transparent);
-}
 .frame[data-frame='lozenge'] {
   background-image:
     repeating-linear-gradient(45deg, color-mix(in srgb, var(--metal-deep) 55%, transparent) 0 1px, transparent 1px var(--space-2)),
@@ -215,10 +188,6 @@
   background-size: var(--frame-w) var(--frame-w), var(--frame-w) var(--frame-w), 100% 100%;
   background-repeat: repeat-x, repeat-x, no-repeat;
 }
-.frame[data-frame='lozenge'] .boss {
-  background: radial-gradient(circle at 36% 32%, var(--metal-spec) 0 5%, var(--metal-hi) 20%, var(--metal-mid) 38%, var(--metal-lo) 47%, var(--metal-deep) 49%, transparent 51%), linear-gradient(135deg, var(--metal-hi), var(--metal-mid) 50%, var(--metal-lo));
-  box-shadow: 0 2px 3px color-mix(in srgb, var(--metal-deep) 85%, transparent), inset 1px 1px 0 color-mix(in srgb, var(--metal-spec) 70%, transparent), inset -1px -1px 0 color-mix(in srgb, var(--metal-deep) 80%, transparent);
-}
 .frame[data-frame='moulding'] {
   background-image:
     linear-gradient(90deg, color-mix(in srgb, var(--metal-spec) 70%, transparent) 0 1px, var(--metal-hi) 1px 18%, var(--metal-deep) 18% 26%, var(--metal-mid) 26% 52%, color-mix(in srgb, var(--metal-spec) 45%, transparent) 52% 58%, var(--metal-lo) 58% 70%, var(--metal-deep) 70% 76%, var(--metal-mid) 76% 100%),
@@ -242,11 +211,6 @@
     linear-gradient(0deg, color-mix(in srgb, var(--metal-deep) 85%, transparent) 0 1px, var(--metal-lo) 1px, var(--metal-mid) calc(100% - 1px), color-mix(in srgb, var(--metal-spec) 50%, transparent) calc(100% - 1px) 100%);
   background-size: 100% 100%, 100% 100%;
   background-repeat: no-repeat, no-repeat;
-}
-.frame[data-frame='moulding'] .boss {
-  border-radius: var(--radius-round);
-  background: linear-gradient(var(--slot, 20deg), transparent 43%, var(--metal-deep) 45% 55%, color-mix(in srgb, var(--metal-spec) 40%, transparent) 57%, transparent 60%), radial-gradient(circle at 34% 30%, var(--metal-spec) 0 6%, var(--metal-hi) 26%, var(--metal-mid) 56%, var(--metal-lo) 84%, var(--metal-deep) 100%);
-  box-shadow: 0 2px 3px color-mix(in srgb, var(--metal-deep) 85%, transparent), inset 0 0 0 1px color-mix(in srgb, var(--metal-deep) 55%, transparent);
 }
 .frame[data-frame='scale'] {
   background-image:
@@ -276,11 +240,6 @@
   background-size: var(--space-3) var(--space-3), var(--space-3) var(--space-3), 100% 100%;
   background-repeat: repeat-x, repeat-x, no-repeat;
 }
-.frame[data-frame='scale'] .boss {
-  border-radius: var(--radius-round);
-  background: radial-gradient(circle at 36% 32%, color-mix(in srgb, var(--metal-spec) 55%, transparent) 0 6%, transparent 20%), radial-gradient(circle closest-side, var(--metal-deep) 0 38%, var(--metal-lo) 46%, var(--metal-mid) 52%, var(--metal-hi) 66%, var(--metal-spec) 70%, var(--metal-mid) 84%, var(--metal-deep) 100%);
-  box-shadow: 0 2px 3px color-mix(in srgb, var(--metal-deep) 85%, transparent);
-}
 .frame[data-frame='inlay'] {
   background-image:
     linear-gradient(90deg, transparent 0 28%, color-mix(in srgb, var(--metal-deep) 80%, transparent) 28% 32%, var(--patina-deep) 32% 68%, color-mix(in srgb, var(--patina-text) 55%, transparent) 48% 52%, color-mix(in srgb, var(--metal-deep) 80%, transparent) 68% 72%, transparent 72%),
@@ -308,11 +267,6 @@
     linear-gradient(0deg, color-mix(in srgb, var(--metal-deep) 85%, transparent) 0 1px, var(--metal-lo) 1px, var(--metal-mid) calc(100% - 1px), color-mix(in srgb, var(--metal-spec) 50%, transparent) calc(100% - 1px) 100%);
   background-size: 100% 100%, 100% 100%, 100% 100%;
   background-repeat: no-repeat, no-repeat, no-repeat;
-}
-.frame[data-frame='inlay'] .boss {
-  border-radius: var(--radius-round);
-  background: radial-gradient(circle at 34% 30%, var(--patina-text) 0 5%, var(--patina) 22%, var(--patina-deep) 46%, var(--metal-deep) 62%, transparent 64%), radial-gradient(circle closest-side, transparent 0 60%, var(--metal-hi) 64%, var(--metal-spec) 68%, var(--metal-mid) 82%, var(--metal-deep) 100%);
-  box-shadow: 0 2px 3px color-mix(in srgb, var(--metal-deep) 85%, transparent);
 }
 @media (prefers-reduced-motion: no-preference) {
   .linked .face { transition: background-color var(--dur-element) var(--ease-out); }

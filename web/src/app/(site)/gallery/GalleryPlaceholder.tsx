@@ -1,3 +1,4 @@
+import { Frame } from '@/components/Frame';
 import { Section } from '@/components/Layout';
 import { DiscSkeleton, EmptyState } from '@/components/States';
 import styles from './GalleryView.module.css';
@@ -8,7 +9,7 @@ export function GalleryGridSkeleton({ count = GALLERY_PAGE_SIZE }: { count?: num
   return Array.from({ length: count }, (_, index) => (
     <li key={index} aria-hidden="true">
       <div className={styles.card}>
-        <DiscSkeleton />
+        <Frame compact><DiscSkeleton /></Frame>
         <span className={styles.meta}><span className="mono">&nbsp;</span></span>
       </div>
     </li>

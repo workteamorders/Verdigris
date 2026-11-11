@@ -9,6 +9,7 @@ import { Badge } from '@/components/Badge';
 import { Button } from '@/components/Button';
 import { Dialog } from '@/components/Dialog';
 import { Checkbox, TextField } from '@/components/Field';
+import { Frame, frameAt } from '@/components/Frame';
 import { Disc } from '@/components/Disc';
 import { TiltCard } from '@/components/TiltCard';
 import { Section } from '@/components/Layout';
@@ -60,7 +61,7 @@ export function VaultView() {
         <ul className={styles.grid}>
           {[0, 1, 2].map((i) => (
             <li key={i}>
-              <DiscSkeleton />
+              <Frame compact><DiscSkeleton /></Frame>
             </li>
           ))}
         </ul>
@@ -88,9 +89,11 @@ export function VaultView() {
           return (
             <li key={d.id} className={styles.item}>
               <Link href={`/gallery/?id=${d.id}`} className={styles.card}>
-                <TiltCard max={6}>
-                  <Disc sign={d.sign} numeral={d.numeral} serial={d.serial} level={d.level} />
-                </TiltCard>
+                <Frame frame={frameAt(d.id)} compact>
+                  <TiltCard max={6}>
+                    <Disc sign={d.sign} numeral={d.numeral} serial={d.serial} level={d.level} />
+                  </TiltCard>
+                </Frame>
               </Link>
               <p className={styles.title}>
                 <span className="mono">#{d.id}</span> {SIGNS[d.sign]?.name}, Numeral {d.numeral}

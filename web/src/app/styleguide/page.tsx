@@ -259,7 +259,7 @@ export default function StyleguidePage() {
 
           <div className={styles.sub}>
             <h3>Frames</h3>
-            <p className="dim">Eight cast-bronze frames, lit from the top left. Each has its own engraved border and its own corner pieces, so no two boxes on a page look the same. The frame is decoration only: it carries no information and is hidden from assistive technology.</p>
+            <p className="dim">Eight cast-bronze frames, lit from the top left. Each has a distinct engraved rail, a crest with a matching stamp, and corner relief with bronze highlights and verdigris inlay. The frame is decorative and hidden from assistive technology.</p>
             <div className={styles.grid3}>
               {FRAMES.map((f) => (
                 <Panel key={f} frame={f}>

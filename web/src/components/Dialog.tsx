@@ -2,6 +2,7 @@
 
 import { useEffect, useId, useRef, type ReactNode } from 'react';
 import { Button } from './Button';
+import { FrameEngraving } from './FrameEngraving';
 import styles from './Dialog.module.css';
 
 interface DialogProps {
@@ -44,6 +45,7 @@ export function Dialog({ open, onClose, title, children, actions, variant = 'mod
         if (e.target === ref.current) onClose();
       }}
     >
+      <FrameEngraving frame={variant === 'drawer' ? 'inlay' : 'lozenge'} />
       <div className={styles.inner}>
         <header className={styles.head}>
           <h2 id={titleId} className={styles.title}>

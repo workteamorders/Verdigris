@@ -24,15 +24,15 @@
   }
 }
 
+.frame {
+  max-width: 36rem;
+}
+
 .state {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   gap: var(--space-3);
-  padding: var(--space-6);
-  border: var(--stroke) dashed var(--line-strong);
-  background: var(--surface);
-  max-width: 36rem;
 }
 .state p {
   color: var(--text-dim);
@@ -40,12 +40,10 @@
 .art {
   width: var(--space-9);
   height: var(--space-9);
-  color: var(--line-strong);
+  color: var(--metal-spec);
 }
 .error {
-  border-style: solid;
-  border-color: var(--danger);
-  background: var(--danger-surface);
+  --face: var(--danger-surface);
   color: var(--danger);
 }
 .state h2 {

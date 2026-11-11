@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import { useState, ViewTransition } from 'react';
 import { Badge } from '@/components/Badge';
 import { Button } from '@/components/Button';
+import { Frame, frameAt } from '@/components/Frame';
 import { Disc } from '@/components/Disc';
 import { TiltCard } from '@/components/TiltCard';
 import { Facts, Section } from '@/components/Layout';
@@ -69,9 +70,11 @@ function DiscGrid({ page }: { page: number }) {
               <li key={d.id}>
                 <Link href={`/gallery/?id=${d.id}`} className={styles.card} aria-label={`Disc ${d.id}, ${SIGNS[d.sign]?.name}, Numeral ${d.numeral}, Patina level ${d.level}`}>
                   <ViewTransition name={`disc-${d.id}`}>
-                    <TiltCard max={6}>
-                      <Disc sign={d.sign} numeral={d.numeral} serial={d.serial} level={d.level} noFilters />
-                    </TiltCard>
+                    <Frame frame={frameAt(d.id)} compact>
+                      <TiltCard max={6}>
+                        <Disc sign={d.sign} numeral={d.numeral} serial={d.serial} level={d.level} noFilters />
+                      </TiltCard>
+                    </Frame>
                   </ViewTransition>
                   <span className={styles.meta}>
                     <span className="mono">#{d.id}</span>
@@ -85,7 +88,7 @@ function DiscGrid({ page }: { page: number }) {
           : (ids.length > 0 ? ids : Array.from({ length: PAGE }, (_, i) => -i)).map((i) => (
               <li key={i}>
                 <div className={styles.card} aria-hidden={i <= 0 ? undefined : true}>
-                  <DiscSkeleton />
+                  <Frame compact><DiscSkeleton /></Frame>
                   <span className={styles.meta}>
                     <span className="mono">&nbsp;</span>
                   </span>

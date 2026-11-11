@@ -123,7 +123,9 @@
   --metal-lo: #3f281b;
   --metal-deep: #1a0e0a;
   --frame-w: var(--space-3);
-  --boss: calc(var(--frame-w) * 1.75);
+  --engraving-corner: var(--space-7);
+  --engraving-corner-compact: var(--space-6);
+  --engraving-cartouche: var(--space-9);
   --frame-shadow: 0 var(--space-2) var(--space-4) rgb(0 0 0 / 0.5), 0 2px 3px rgb(0 0 0 / 0.6);
   --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .85 0 0 0 0 .65 0 0 0 0 .45 1.4 0 0 0 -.6'/%3E%3C/filter%3E%3Crect width='96' height='96' filter='url(%23g)'/%3E%3C/svg%3E");
 
@@ -161,6 +163,7 @@
 @media (min-width: 48rem) {
   :root {
     --frame-w: var(--space-4);
+    --engraving-corner: var(--space-8);
     --gutter: var(--space-5);
   }
 }
