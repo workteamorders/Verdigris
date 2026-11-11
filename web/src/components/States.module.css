@@ -3,8 +3,7 @@
   width: 100%;
   height: var(--space-4);
   background: linear-gradient(90deg, var(--surface-2), var(--line), var(--surface-2));
-  background-size: 200% 100%;
-  animation: sweep 1600ms linear infinite;
+  animation: breathe var(--dur-breathe) var(--ease-out) infinite alternate;
 }
 .round {
   height: 100%;
@@ -15,13 +14,8 @@
   aspect-ratio: 1;
 }
 
-@keyframes sweep {
-  from {
-    background-position: 100% 0;
-  }
-  to {
-    background-position: -100% 0;
-  }
+@keyframes breathe {
+  to { opacity: 0.52; }
 }
 
 .state {
@@ -37,18 +31,13 @@
 .state p {
   color: var(--text-dim);
 }
-.art {
-  width: var(--space-9);
-  height: var(--space-9);
-  color: var(--line-strong);
-}
 .error {
   border-style: solid;
   border-color: var(--danger);
   background: var(--danger-surface);
   color: var(--danger);
 }
-.error h3 {
+.error .title {
   color: var(--text);
 }
 .safe {
@@ -56,4 +45,10 @@
   gap: var(--space-2);
   align-items: center;
   color: var(--success) !important;
+}
+
+.title {
+  font-size: clamp(var(--fs-lg), 3vw, var(--fs-xl));
+  font-weight: 700;
+  line-height: var(--lh-snug);
 }

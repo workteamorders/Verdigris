@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { RackArtwork } from './Artwork';
 import { Icon } from './Icon';
 import styles from './States.module.css';
 
@@ -18,20 +19,17 @@ export function DiscSkeleton() {
 
 interface EmptyProps {
   title: string;
+  heading?: 'h2' | 'h3';
   children: ReactNode;
   action?: ReactNode;
 }
 
 /** Empty: a small drawing, one sentence, one button. */
-export function EmptyState({ title, children, action }: EmptyProps) {
+export function EmptyState({ title, heading: Heading = 'h2', children, action }: EmptyProps) {
   return (
     <div className={styles.state}>
-      <svg className={styles.art} viewBox="0 0 96 96" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.5">
-        <circle cx="48" cy="48" r="40" strokeDasharray="4 6" />
-        <circle cx="48" cy="48" r="26" />
-        <path d="M48 36V60M36 48H60" strokeLinecap="square" />
-      </svg>
-      <h3>{title}</h3>
+      <RackArtwork kind="empty" compact />
+      <Heading className={styles.title}>{title}</Heading>
       <p>{children}</p>
       {action}
     </div>
@@ -40,6 +38,7 @@ export function EmptyState({ title, children, action }: EmptyProps) {
 
 interface ErrorProps {
   title: string;
+  heading?: 'h2' | 'h3';
   /** What happened. */
   what: string;
   /** Whether data, money or assets are safe. */
@@ -49,11 +48,11 @@ interface ErrorProps {
 }
 
 /** Error: what happened, whether money and assets are safe, what to do now. */
-export function ErrorState({ title, what, safe, next }: ErrorProps) {
+export function ErrorState({ title, heading: Heading = 'h2', what, safe, next }: ErrorProps) {
   return (
     <div className={`${styles.state} ${styles.error}`} role="alert">
-      <Icon name="alert" size={32} />
-      <h3>{title}</h3>
+      <RackArtwork kind="error" compact />
+      <Heading className={styles.title}>{title}</Heading>
       <p>{what}</p>
       <p className={styles.safe}>
         <Icon name="check" size={16} /> {safe}

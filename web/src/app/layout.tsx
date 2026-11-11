@@ -11,8 +11,24 @@ import '@/styles/base.css';
 import { ToastProvider } from '@/components/Toast';
 import { RegisterSw } from '@/components/RegisterSw';
 
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
+
 export const metadata: Metadata = {
   title: { default: 'Verdigris', template: '%s · Verdigris' },
+  manifest: '/art/app.webmanifest',
+  icons: {
+    icon: [
+      { url: '/art/mark.svg', type: 'image/svg+xml' },
+      { url: '/art/icon-192.png', sizes: '192x192', type: 'image/png' },
+      { url: '/art/icon-512.png', sizes: '512x512', type: 'image/png' },
+    ],
+    apple: { url: '/art/icon-180.png', sizes: '180x180', type: 'image/png' },
+  },
+  openGraph: siteUrl ? {
+    type: 'website',
+    siteName: 'Verdigris',
+    images: [{ url: new URL('/art/exposure.png', siteUrl), width: 1200, height: 630, alt: 'Verdigris Discs, a bronze exposure plate weathering at the rim' }],
+  } : undefined,
   description: 'Verdigris Discs: bronze medals drawn on-chain. Each UTC Day opens one Sign and one Numeral, and a Disc gains Patina the longer it stays unmoved.',
 };
 
