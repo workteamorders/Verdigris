@@ -139,7 +139,7 @@ Pilihan ini bisa diganti pemilik di titik berhenti kedua.
 - **Font**: paket `@fontsource` (latin saja), dimuat lewat CSS.
 - **Galeri**: 12 Disc per halaman, thumbnail tanpa filter (detail memakai gambar penuh), placeholder berukuran sama untuk mencegah pergeseran tata letak.
 - **Lighthouse mobile** (server lokal dengan brotli, chain lokal berisi sekitar 168 Disc; bukan hasil di Cloudflare): Perf Home 91, Mint 97, Calendar 90, Rules 96, Vault 96, Gallery 88; A11y 100, Best Practices 96, SEO 100. Gallery di bawah target 90; sisa waktunya adalah JavaScript wagmi/viem (TBT). Ukur ulang di deploy nyata.
-- **Kebijakan teks**: `pnpm copy:check` memindai kata terlarang (kalimat negasi diizinkan). Tidak ada label "verified" atau "audited". Tanpa audit: "No external audit yet". Data contoh diberi label "EXAMPLE".
+- **Kebijakan teks**: `pnpm copy:check` memindai kata terlarang (kalimat negasi diizinkan). Tidak ada label "verified" atau "audited". Tanpa audit: "No external audit yet". Data pratinjau diberi label "PREVIEW".
 
 ### Hal yang BELUM TERVERIFIKASI (diulang agar tidak hilang)
 Batas gas `eth_call`; dukungan Cancun/PUSH0; selisih jam sequencer; batas laju RPC; render SVG data-URI, ERC-2981 dan ERC-4906 di marketplace; perilaku dompet sungguhan; `/api/rpc` di Cloudflare; Syarat Khusus Layanan Cloudflare Pages; batas Tooltip pada tepi layar.

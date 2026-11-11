@@ -149,7 +149,7 @@ const DEMO_ROWS: readonly DemoRow[] = [
 export function TableDemo() {
   return (
     <DataTable<DemoRow>
-      caption="Example Discs, EXAMPLE data"
+      caption="Disc preview data"
       rowKey={(r) => String(r.id)}
       rows={DEMO_ROWS}
       columns={[
@@ -171,7 +171,7 @@ export function MotionDemos() {
   const [calendarMode, setCalendarMode] = useState('live');
   return (
     <>
-      <p className="label">EXAMPLE</p>
+      <p className="label">PREVIEW</p>
       <h3>Patina timeline</h3>
       <p>Use the arrow keys or drag the slider to preview each threshold.</p>
       <PatinaTimeline />

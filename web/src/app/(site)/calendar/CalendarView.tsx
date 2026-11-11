@@ -81,7 +81,7 @@ export function CalendarView() {
               </p>
               <div className={styles.preview}>
                 <Disc sign={view.sign} numeral={view.numeral} serial={1} level={0} noFilters />
-                <p className="label">EXAMPLE</p>
+                <p className="label">PREVIEW</p>
               </div>
               <Facts
                 items={[

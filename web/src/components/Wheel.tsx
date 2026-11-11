@@ -15,7 +15,7 @@ interface WheelProps {
   numeral: number;
   /** Text under the centre, e.g. a countdown. Provided by the caller so the wheel stays pure. */
   caption?: string;
-  example?: boolean;
+  preview?: boolean;
   serial?: number;
 }
 
@@ -29,7 +29,7 @@ const CENTRE: Record<Exclude<WheelState, 'today' | 'undeployed'>, { a: string; b
 };
 
 /** The functional wheel: 12 Signs outside, 7 Numerals inside, the lit pair is today's. */
-export const Wheel = memo(function Wheel({ state, sign, numeral, caption, example = state === 'undeployed', serial = 5 }: WheelProps) {
+export const Wheel = memo(function Wheel({ state, sign, numeral, caption, preview = state === 'undeployed', serial = 5 }: WheelProps) {
   const [focused, setFocused] = useState<number | null>(null);
   const [hover, setHover] = useState<number | null>(null);
   const [rotation, setRotation] = useState(0);
@@ -81,9 +81,9 @@ export const Wheel = memo(function Wheel({ state, sign, numeral, caption, exampl
     }
   }
   const raw = useId().replace(/:/g, '');
-  const disc = useMemo(() => discInline({ sign, numeral, level: example ? 2 : 0, serial }, {
+  const disc = useMemo(() => discInline({ sign, numeral, level: preview ? 2 : 0, serial }, {
     idPrefix: `w${raw}`, noFilters: true,
-  }), [sign, numeral, example, serial, raw]);
+  }), [sign, numeral, preview, serial, raw]);
   const showDisc = state === 'today' || state === 'undeployed' || state === 'soldout';
   const dim = state === 'before' || state === 'soldout' || state === 'done' || state === 'loading' || state === 'error';
   const lit = state === 'today' || state === 'undeployed' || state === 'soldout';
@@ -194,18 +194,18 @@ export const Wheel = memo(function Wheel({ state, sign, numeral, caption, exampl
             ) : null}
           </g>
         ) : null}
-        {example && showDisc ? (
+        {preview && showDisc ? (
           <g>
             <rect x="215" y="446" width="170" height="34" className={styles.label} />
             <text x="300" y="469" textAnchor="middle" className={styles.centreText}>
-              EXAMPLE
+              PREVIEW
             </text>
           </g>
         ) : null}
       </svg>
       <p className={`label ${styles.readout}`}>
         {hover === null ? (lit ? `Sign · ${sName}` : '12 Signs · 7 Numerals') : `Sign · ${SIGNS[hover]?.name}`}
-        {example && !showDisc ? ' · EXAMPLE' : ''}
+        {preview && !showDisc ? ' · PREVIEW' : ''}
       </p>
     </div>
   );

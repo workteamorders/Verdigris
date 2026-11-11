@@ -27,7 +27,7 @@ export function HomeView() {
           <h1>Time sets the Disc.</h1>
         </div>
         <div className={styles.wheel} data-ambient-anchor>
-          <Wheel {...wheel} example={!t} serial={t ? Math.min(t.cap, t.minted + 1) : undefined} />
+          <Wheel {...wheel} preview={!t} serial={t ? Math.min(t.cap, t.minted + 1) : undefined} />
         </div>
         <div className={styles.copy}>
           <p className={styles.lead}>
@@ -66,7 +66,7 @@ export function HomeView() {
           <Panel>
             <p>
               {count.status === 'undeployed'
-                ? 'No deployment is connected to this build yet, so there is no live Day to show. The wheel above is an EXAMPLE.'
+                ? 'No deployment is connected to this build yet, so there is no live Day to show. The wheel shows a preview.'
                 : count.status === 'before'
                   ? 'The Count has not started. Day 1 opens when the countdown in the wheel reaches zero.'
                   : count.status === 'ended'

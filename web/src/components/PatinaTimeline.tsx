@@ -20,7 +20,7 @@ export function PatinaTimeline({ thresholds = mainnetThresholdsSeconds, disabled
         <TiltDisc sign={5} numeral={3} serial={7} level={level} noFilters state={disabled ? 'disabled' : 'ready'} />
       </div>
       <div>
-        <p className="label">EXAMPLE</p>
+        <p className="label">PREVIEW</p>
         <Slider label="Patina level" value={level} valueText={description} min={0} max={4} step={1} disabled={disabled} onChange={(event) => setLevel(Number(event.currentTarget.value) as PatinaLevel)} />
       </div>
     </div>

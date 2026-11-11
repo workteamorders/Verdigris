@@ -123,7 +123,7 @@ export function MintView() {
       <div className={styles.preview}>
         <TiltDisc sign={sign} numeral={numeral} serial={(today?.minted ?? 4) + 1} level={0} />
         <p className="dim">
-          {count.status === 'live' ? `Preview of Disc ${(today?.minted ?? 0) + 1} of today. The contract draws the final image.` : 'EXAMPLE: the Disc of Day 1.'}
+          {count.status === 'live' ? `Preview of Disc ${(today?.minted ?? 0) + 1} of today. The contract draws the final image.` : 'Preview of a Day 1 Disc.'}
         </p>
       </div>
 
