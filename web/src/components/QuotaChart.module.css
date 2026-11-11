@@ -1,0 +1,46 @@
+.fig {
+  margin: 0;
+}
+.title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--fs-lg);
+  margin-bottom: var(--space-4);
+}
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+.row {
+  display: grid;
+  grid-template-columns: 5rem 1fr 5rem;
+  align-items: center;
+  gap: var(--space-3);
+}
+.tier {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--fs-sm);
+}
+.track {
+  display: block;
+  height: var(--space-5);
+  border: var(--stroke) solid var(--line-strong);
+  background: var(--field);
+}
+.fill {
+  display: block;
+  height: 100%;
+  background: var(--patina);
+  border-right: var(--stroke-bold) solid var(--text);
+}
+.value {
+  font-size: var(--fs-sm);
+  text-align: right;
+}
+.axis {
+  margin-top: var(--space-3);
+  font-size: var(--fs-xs);
+  color: var(--text-dim);
+}

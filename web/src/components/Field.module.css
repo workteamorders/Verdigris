@@ -1,0 +1,208 @@
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  min-width: 0;
+}
+
+.label {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--fs-sm);
+}
+
+.hint {
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--text-dim);
+}
+
+.error {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin: 0;
+  font-size: var(--fs-sm);
+  color: var(--danger);
+}
+.error svg {
+  flex: none;
+  margin-top: 0.15em;
+}
+
+.input {
+  width: 100%;
+  min-height: var(--tap);
+  padding: 0 var(--space-4);
+  background: var(--field);
+  color: var(--text);
+  border: var(--stroke) solid var(--line-strong);
+  border-radius: var(--radius-none);
+  font-family: var(--font-mono);
+  font-size: var(--fs-md);
+  transition: border-color var(--dur-element) var(--ease-out), background-color var(--dur-element) var(--ease-out);
+}
+.input::placeholder {
+  color: var(--text-dim);
+}
+.input:hover,
+.input[data-state='hover'] {
+  border-color: var(--text-dim);
+}
+.input:focus-visible,
+.input[data-state='focus'] {
+  border-color: var(--focus);
+  outline: var(--stroke-bold) solid var(--focus);
+  outline-offset: 1px;
+}
+.input:disabled {
+  background: var(--surface);
+  color: var(--text-dim);
+  border-color: var(--line);
+  cursor: not-allowed;
+}
+[data-invalid] .input {
+  border-color: var(--danger);
+}
+
+.stepper {
+  display: inline-flex;
+  align-items: stretch;
+  align-self: flex-start;
+  border: var(--stroke) solid var(--line-strong);
+}
+.stepBtn {
+  width: var(--tap);
+  min-height: var(--tap);
+  background: transparent;
+  color: var(--text);
+  border: 0;
+  font-family: var(--font-mono);
+  font-size: var(--fs-lg);
+  cursor: pointer;
+  transition: background-color var(--dur-element) var(--ease-out);
+}
+.stepBtn:hover:not(:disabled) {
+  background: var(--surface-2);
+}
+.stepBtn:active:not(:disabled) {
+  transform: translateY(1px);
+}
+.stepBtn:disabled {
+  color: var(--text-dim);
+  cursor: not-allowed;
+}
+.stepValue {
+  display: grid;
+  place-items: center;
+  min-width: var(--tap);
+  border-inline: var(--stroke) solid var(--line);
+  font-family: var(--font-mono);
+  font-size: var(--fs-lg);
+  font-variant-numeric: tabular-nums;
+}
+
+.choice {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  min-height: var(--tap);
+}
+.choice label {
+  display: flex;
+  flex-direction: column;
+  padding-block: var(--space-3);
+  cursor: pointer;
+}
+.choiceLabel {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: var(--fs-sm);
+}
+
+/* The native control is replaced by a square or round plate; the input stays the real, focusable element. */
+.check,
+.radio,
+.switch {
+  appearance: none;
+  flex: none;
+  margin: var(--space-3) 0 0;
+  background: var(--field);
+  border: var(--stroke) solid var(--line-strong);
+  cursor: pointer;
+  transition: background-color var(--dur-element) var(--ease-out), border-color var(--dur-element) var(--ease-out);
+}
+.check,
+.radio {
+  width: var(--space-5);
+  height: var(--space-5);
+  display: grid;
+  place-items: center;
+}
+.radio {
+  border-radius: var(--radius-round);
+}
+.check:hover,
+.radio:hover,
+.switch:hover {
+  border-color: var(--text-dim);
+}
+.check:checked {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+.check:checked::after {
+  content: '';
+  width: var(--space-3);
+  height: var(--space-2);
+  border-left: var(--stroke-bold) solid var(--text-on-accent);
+  border-bottom: var(--stroke-bold) solid var(--text-on-accent);
+  transform: translateY(-1px) rotate(-45deg);
+}
+.radio:checked {
+  border-color: var(--accent);
+}
+.radio:checked::after {
+  content: '';
+  width: var(--space-3);
+  height: var(--space-3);
+  border-radius: var(--radius-round);
+  background: var(--accent);
+}
+.switch {
+  width: var(--space-7);
+  height: var(--space-5);
+  position: relative;
+}
+.switch::after {
+  content: '';
+  position: absolute;
+  top: var(--space-1);
+  left: var(--space-1);
+  width: calc(var(--space-5) - var(--space-2));
+  height: calc(var(--space-5) - var(--space-2));
+  background: var(--text-dim);
+  transition: transform var(--dur-element) var(--ease-out), background-color var(--dur-element) var(--ease-out);
+}
+.switch:checked {
+  background: var(--patina-deep);
+  border-color: var(--patina-text);
+}
+.switch:checked::after {
+  background: var(--text);
+  transform: translateX(var(--space-5));
+}
+.check:disabled,
+.radio:disabled,
+.switch:disabled {
+  border-color: var(--line);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.range {
+  width: 100%;
+  min-height: var(--tap);
+  accent-color: var(--accent);
+  cursor: pointer;
+}

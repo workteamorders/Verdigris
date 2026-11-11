@@ -1,0 +1,272 @@
+[
+  {
+    "fg": "text",
+    "bg": "field",
+    "fgHex": "#e9dfd2",
+    "bgHex": "#1a0606",
+    "ratio": 14.87,
+    "min": 4.5,
+    "pass": true,
+    "what": "Body text on field"
+  },
+  {
+    "fg": "text",
+    "bg": "surface",
+    "fgHex": "#e9dfd2",
+    "bgHex": "#221514",
+    "ratio": 13.46,
+    "min": 4.5,
+    "pass": true,
+    "what": "Body text on slab"
+  },
+  {
+    "fg": "text",
+    "bg": "surface-2",
+    "fgHex": "#e9dfd2",
+    "bgHex": "#2c1c1a",
+    "ratio": 12.38,
+    "min": 4.5,
+    "pass": true,
+    "what": "Body text on slab 2"
+  },
+  {
+    "fg": "text-dim",
+    "bg": "field",
+    "fgHex": "#b5a396",
+    "bgHex": "#1a0606",
+    "ratio": 8.06,
+    "min": 4.5,
+    "pass": true,
+    "what": "Dim text on field"
+  },
+  {
+    "fg": "text-dim",
+    "bg": "surface",
+    "fgHex": "#b5a396",
+    "bgHex": "#221514",
+    "ratio": 7.29,
+    "min": 4.5,
+    "pass": true,
+    "what": "Dim text on slab"
+  },
+  {
+    "fg": "text-dim",
+    "bg": "surface-2",
+    "fgHex": "#b5a396",
+    "bgHex": "#2c1c1a",
+    "ratio": 6.71,
+    "min": 4.5,
+    "pass": true,
+    "what": "Dim text on slab 2"
+  },
+  {
+    "fg": "text-dim",
+    "bg": "field-glow",
+    "fgHex": "#b5a396",
+    "bgHex": "#3e0b09",
+    "ratio": 6.88,
+    "min": 4.5,
+    "pass": true,
+    "what": "Dim text on field glow"
+  },
+  {
+    "fg": "text-on-accent",
+    "bg": "accent",
+    "fgHex": "#120505",
+    "bgHex": "#e9dfd2",
+    "ratio": 15.2,
+    "min": 4.5,
+    "pass": true,
+    "what": "Primary button label"
+  },
+  {
+    "fg": "text-on-accent",
+    "bg": "accent-hover",
+    "fgHex": "#120505",
+    "bgHex": "#ffffff",
+    "ratio": 20.01,
+    "min": 4.5,
+    "pass": true,
+    "what": "Primary button label, hover"
+  },
+  {
+    "fg": "patina-text",
+    "bg": "surface",
+    "fgHex": "#7fcbb6",
+    "bgHex": "#221514",
+    "ratio": 9.38,
+    "min": 4.5,
+    "pass": true,
+    "what": "Patina text on slab"
+  },
+  {
+    "fg": "patina-text",
+    "bg": "field",
+    "fgHex": "#7fcbb6",
+    "bgHex": "#1a0606",
+    "ratio": 10.37,
+    "min": 4.5,
+    "pass": true,
+    "what": "Patina text on field"
+  },
+  {
+    "fg": "patina-text",
+    "bg": "patina-deep",
+    "fgHex": "#7fcbb6",
+    "bgHex": "#1f5a58",
+    "ratio": 4.18,
+    "min": 3,
+    "pass": true,
+    "what": "Switch edge on checked track (3:1)"
+  },
+  {
+    "fg": "success",
+    "bg": "success-surface",
+    "fgHex": "#7cc9a0",
+    "bgHex": "#12301f",
+    "ratio": 7.3,
+    "min": 4.5,
+    "pass": true,
+    "what": "Success badge"
+  },
+  {
+    "fg": "danger",
+    "bg": "danger-surface",
+    "fgHex": "#f28b7d",
+    "bgHex": "#3a1512",
+    "ratio": 6.76,
+    "min": 4.5,
+    "pass": true,
+    "what": "Danger badge and error"
+  },
+  {
+    "fg": "warning",
+    "bg": "warning-surface",
+    "fgHex": "#e6b65a",
+    "bgHex": "#33270f",
+    "ratio": 7.79,
+    "min": 4.5,
+    "pass": true,
+    "what": "Warning badge"
+  },
+  {
+    "fg": "info",
+    "bg": "info-surface",
+    "fgHex": "#86b6da",
+    "bgHex": "#112433",
+    "ratio": 7.34,
+    "min": 4.5,
+    "pass": true,
+    "what": "Info badge"
+  },
+  {
+    "fg": "success",
+    "bg": "surface",
+    "fgHex": "#7cc9a0",
+    "bgHex": "#221514",
+    "ratio": 9.04,
+    "min": 4.5,
+    "pass": true,
+    "what": "Success text on slab"
+  },
+  {
+    "fg": "danger",
+    "bg": "field",
+    "fgHex": "#f28b7d",
+    "bgHex": "#1a0606",
+    "ratio": 8.17,
+    "min": 4.5,
+    "pass": true,
+    "what": "Error text on field"
+  },
+  {
+    "fg": "danger",
+    "bg": "surface",
+    "fgHex": "#f28b7d",
+    "bgHex": "#221514",
+    "ratio": 7.39,
+    "min": 4.5,
+    "pass": true,
+    "what": "Error text on slab"
+  },
+  {
+    "fg": "text",
+    "bg": "danger-surface",
+    "fgHex": "#e9dfd2",
+    "bgHex": "#3a1512",
+    "ratio": 12.31,
+    "min": 4.5,
+    "pass": true,
+    "what": "Text on danger surface"
+  },
+  {
+    "fg": "text",
+    "bg": "info-surface",
+    "fgHex": "#e9dfd2",
+    "bgHex": "#112433",
+    "ratio": 12.05,
+    "min": 4.5,
+    "pass": true,
+    "what": "Text on info surface"
+  },
+  {
+    "fg": "text",
+    "bg": "warning-surface",
+    "fgHex": "#e9dfd2",
+    "bgHex": "#33270f",
+    "ratio": 11.09,
+    "min": 4.5,
+    "pass": true,
+    "what": "Text on warning surface"
+  },
+  {
+    "fg": "line-strong",
+    "bg": "field",
+    "fgHex": "#7a6358",
+    "bgHex": "#1a0606",
+    "ratio": 3.5,
+    "min": 3,
+    "pass": true,
+    "what": "Input border on field (3:1)"
+  },
+  {
+    "fg": "line-strong",
+    "bg": "surface",
+    "fgHex": "#7a6358",
+    "bgHex": "#221514",
+    "ratio": 3.17,
+    "min": 3,
+    "pass": true,
+    "what": "Component edge on slab (3:1)"
+  },
+  {
+    "fg": "focus",
+    "bg": "surface",
+    "fgHex": "#f2e8dc",
+    "bgHex": "#221514",
+    "ratio": 14.64,
+    "min": 3,
+    "pass": true,
+    "what": "Focus ring on slab (3:1)"
+  },
+  {
+    "fg": "focus",
+    "bg": "field",
+    "fgHex": "#f2e8dc",
+    "bgHex": "#1a0606",
+    "ratio": 16.18,
+    "min": 3,
+    "pass": true,
+    "what": "Focus ring on field (3:1)"
+  },
+  {
+    "fg": "accent",
+    "bg": "field",
+    "fgHex": "#e9dfd2",
+    "bgHex": "#1a0606",
+    "ratio": 14.87,
+    "min": 3,
+    "pass": true,
+    "what": "Accent edge on field (3:1)"
+  }
+]

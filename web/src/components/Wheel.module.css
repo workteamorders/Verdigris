@@ -1,0 +1,85 @@
+.plate {
+  width: 100%;
+  max-width: 40rem;
+  aspect-ratio: 1;
+  padding: var(--space-5);
+}
+.svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.disk {
+  fill: var(--surface);
+  stroke: var(--line-strong);
+  stroke-width: 2;
+}
+.ring {
+  fill: none;
+  stroke: var(--line-strong);
+  stroke-width: 1;
+}
+.ringErr {
+  fill: none;
+  stroke: var(--danger);
+  stroke-width: 2;
+  stroke-dasharray: 8 8;
+}
+.glyph {
+  fill: none;
+  stroke: var(--text);
+  stroke-width: 6;
+  opacity: 0.85;
+}
+.glyphLit {
+  fill: none;
+  stroke: var(--text-on-accent);
+  stroke-width: 7;
+}
+.litBg,
+.dotLit {
+  fill: var(--accent);
+}
+.dot {
+  fill: none;
+  stroke: var(--text);
+  stroke-width: 2;
+  opacity: 0.7;
+}
+.dotText {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 500;
+  fill: var(--text-on-accent);
+}
+.dimmed {
+  opacity: 0.45;
+}
+.discDim {
+  opacity: 0.35;
+}
+.label {
+  fill: var(--field);
+  stroke: var(--line-strong);
+  stroke-width: 1;
+}
+.centreText {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 800;
+  fill: var(--text);
+}
+.centreNum {
+  font-family: var(--font-mono);
+  font-size: 30px;
+  fill: var(--text);
+}
+.skel {
+  fill: var(--surface-2);
+  animation: pulse 1600ms linear infinite;
+}
+@keyframes pulse {
+  50% {
+    opacity: 0.4;
+  }
+}

@@ -1,0 +1,133 @@
+/* Verdigris design tokens. The ONLY place raw visual values live.
+   Direction C, "Exposure Rack": bronze coupons weathering on a dark test board.
+   Dark only: the material language (smoked red-black field, oxidised bronze) needs it, and
+   color-scheme is set so native controls match. Names are by role, never by colour. */
+
+:root {
+  color-scheme: dark;
+
+  /* Surfaces: 1 base field, 2 slabs */
+  --field: #1a0606;
+  --field-deep: #050202;
+  --field-glow: #3e0b09;
+  --surface: #221514;
+  --surface-2: #2c1c1a;
+  --overlay: rgb(5 2 2 / 0.72);
+
+  /* Lines */
+  --line: #4a312c;
+  --line-strong: #7a6358;
+  --focus: #f2e8dc;
+
+  /* Text */
+  --text: #e9dfd2;
+  --text-dim: #b5a396;
+  --text-on-accent: #120505;
+
+  /* Accent: bone. Marks the single most important action on a screen. */
+  --accent: #e9dfd2;
+  --accent-edge: #b5a396;
+  --accent-hover: #ffffff;
+
+  /* Support accent: patina. Used for time, history and the live Day. */
+  --patina: #3f8f7e;
+  --patina-text: #7fcbb6;
+  --patina-deep: #1f5a58;
+
+  /* Status (always paired with an icon and a label) */
+  --success: #7cc9a0;
+  --danger: #f28b7d;
+  --warning: #e6b65a;
+  --info: #86b6da;
+  --danger-surface: #3a1512;
+  --warning-surface: #33270f;
+  --success-surface: #12301f;
+  --info-surface: #112433;
+
+  /* Patina scale: mean tone per level, used by swatches and small marks only */
+  --patina-0: #c98a4b;
+  --patina-1: #a89a5c;
+  --patina-2: #6fa08a;
+  --patina-3: #3f8f7e;
+  --patina-4: #1f5a58;
+
+  /* Type families */
+  --font-display: 'Schibsted Grotesk', 'Helvetica Neue', Arial, sans-serif;
+  --font-body: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+  --font-mono: 'DM Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+
+  /* Type scale, ratio about 1.2 */
+  --fs-xs: 0.75rem; /* 12 */
+  --fs-sm: 0.875rem; /* 14 */
+  --fs-md: 1rem; /* 16 */
+  --fs-lg: 1.25rem; /* 20 */
+  --fs-xl: 1.5rem; /* 24 */
+  --fs-2xl: 2rem; /* 32 */
+  --fs-3xl: 2.75rem; /* 44 */
+  --fs-4xl: 3.75rem; /* 60 */
+
+  --lh-tight: 1.1;
+  --lh-snug: 1.25;
+  --lh-body: 1.6;
+
+  --ls-label: 0.14em;
+  --ls-display: -0.02em;
+
+  /* Spacing: multiples of 4 and 8 only */
+  --space-1: 0.25rem; /* 4 */
+  --space-2: 0.5rem; /* 8 */
+  --space-3: 0.75rem; /* 12 */
+  --space-4: 1rem; /* 16 */
+  --space-5: 1.5rem; /* 24 */
+  --space-6: 2rem; /* 32 */
+  --space-7: 3rem; /* 48 */
+  --space-8: 4rem; /* 64 */
+  --space-9: 6rem; /* 96 */
+
+  /* Rhythm: three levels only */
+  --gap-tight: var(--space-2);
+  --gap-medium: var(--space-5);
+  --gap-wide: var(--space-8);
+
+  /* Layout */
+  --content-max: 75rem; /* 1200 */
+  --gutter: var(--space-4);
+  --measure: 68ch;
+  --tap: 2.75rem; /* 44 */
+
+  /* Shape: square. Radius exists only for round physical parts (rivets, discs). */
+  --radius-none: 0;
+  --radius-round: 50%;
+  --stroke: 1px;
+  --stroke-bold: 2px;
+
+  /* Elevation, 3 levels */
+  --elev-flat: none;
+  --elev-raised: inset 0 0 0 6px var(--surface-2), inset 0 0 0 7px var(--line);
+  --elev-floating: 0 24px 48px rgb(0 0 0 / 0.55), inset 0 0 0 6px var(--surface-2), inset 0 0 0 7px var(--line-strong);
+
+  /* Motion: one character, "exposure": steady, linear, no bounce. */
+  --dur-micro: 100ms;
+  --dur-element: 200ms;
+  --dur-panel: 320ms;
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+
+  /* Layers */
+  --z-header: 20;
+  --z-drawer: 40;
+  --z-dialog: 50;
+  --z-toast: 60;
+}
+
+@media (min-width: 48rem) {
+  :root {
+    --gutter: var(--space-5);
+  }
+}
+
+@media (min-width: 64rem) {
+  :root {
+    --gutter: var(--space-6);
+  }
+}

@@ -1,0 +1,14 @@
+node_modules
+.next
+out
+.env*
+!.env.example
+.dev.vars
+vercel.*.vars
+*.tsbuildinfo
+contracts/lib
+contracts/cache
+contracts/out
+contracts/broadcast
+web/deployments/31337.json
+web/src/lib/deployments.generated.ts

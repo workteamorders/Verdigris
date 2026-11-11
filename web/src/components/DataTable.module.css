@@ -1,0 +1,110 @@
+.wrap {
+  max-height: 24rem;
+  overflow: auto;
+  border: var(--stroke) solid var(--line);
+  background: var(--surface);
+}
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--fs-sm);
+}
+.caption {
+  padding: var(--space-3) var(--space-4);
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--text-dim);
+  border-bottom: var(--stroke) solid var(--line);
+}
+.table th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface-2);
+  text-align: left;
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-weight: 400;
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--text-dim);
+  border-bottom: var(--stroke) solid var(--line-strong);
+}
+.table td {
+  padding: var(--space-3) var(--space-4);
+  border-bottom: var(--stroke) solid var(--line);
+}
+.table tbody tr:hover,
+.table tbody tr:focus-visible {
+  background: var(--surface-2);
+}
+.table tbody tr:focus-visible {
+  outline: var(--stroke-bold) solid var(--focus);
+  outline-offset: -2px;
+}
+.numeric {
+  text-align: right !important;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+.sortBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-height: var(--tap);
+  margin-block: calc(-1 * var(--space-3));
+  padding: 0;
+  background: none;
+  border: 0;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  cursor: pointer;
+}
+.sortBtn:hover {
+  color: var(--text);
+}
+.arrow {
+  color: var(--patina-text);
+}
+
+/* Phones: rows become cards. */
+@media (max-width: 47.99rem) {
+  .table thead {
+    position: absolute;
+    clip-path: inset(50%);
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+  .table,
+  .table tbody,
+  .table tr,
+  .table td {
+    display: block;
+  }
+  .table tr {
+    padding: var(--space-3) var(--space-4);
+    border-bottom: var(--stroke) solid var(--line-strong);
+  }
+  .table td {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-1) 0;
+    border: 0;
+  }
+  .table td::before {
+    content: attr(data-label);
+    font-family: var(--font-mono);
+    font-size: var(--fs-xs);
+    letter-spacing: var(--ls-label);
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+}

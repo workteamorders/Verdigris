@@ -1,0 +1,59 @@
+.skeleton {
+  display: block;
+  width: 100%;
+  height: var(--space-4);
+  background: linear-gradient(90deg, var(--surface-2), var(--line), var(--surface-2));
+  background-size: 200% 100%;
+  animation: sweep 1600ms linear infinite;
+}
+.round {
+  height: 100%;
+  border-radius: var(--radius-round);
+}
+.discSkel {
+  width: 100%;
+  aspect-ratio: 1;
+}
+
+@keyframes sweep {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}
+
+.state {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: var(--space-6);
+  border: var(--stroke) dashed var(--line-strong);
+  background: var(--surface);
+  max-width: 36rem;
+}
+.state p {
+  color: var(--text-dim);
+}
+.art {
+  width: var(--space-9);
+  height: var(--space-9);
+  color: var(--line-strong);
+}
+.error {
+  border-style: solid;
+  border-color: var(--danger);
+  background: var(--danger-surface);
+  color: var(--danger);
+}
+.error h3 {
+  color: var(--text);
+}
+.safe {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+  color: var(--success) !important;
+}

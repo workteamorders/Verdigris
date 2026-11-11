@@ -1,0 +1,33 @@
+import { defineChain } from 'viem';
+
+// Parameters from docs.robinhood.com (checked 2026-11-11, see docs/DECISIONS.md). Public RPCs are rate-limited.
+export const robinhood = defineChain({
+  id: 4663,
+  name: 'Robinhood Chain',
+  nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+  rpcUrls: { default: { http: ['https://rpc.mainnet.chain.robinhood.com'] } },
+  blockExplorers: { default: { name: 'Blockscout', url: 'https://robinhoodchain.blockscout.com' } },
+});
+
+export const robinhoodTestnet = defineChain({
+  id: 46630,
+  name: 'Robinhood Chain Testnet',
+  nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+  rpcUrls: { default: { http: ['https://rpc.testnet.chain.robinhood.com'] } },
+  blockExplorers: { default: { name: 'Explorer', url: 'https://explorer.testnet.chain.robinhood.com' } },
+  testnet: true,
+});
+
+export const localChain = defineChain({
+  id: 31337,
+  name: 'Local anvil',
+  nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+  rpcUrls: { default: { http: ['http://127.0.0.1:8545'] } },
+  testnet: true,
+});
+
+export const KNOWN_CHAINS = [robinhood, robinhoodTestnet, localChain] as const;
+
+export function chainById(id: number) {
+  return KNOWN_CHAINS.find((c) => c.id === id) ?? robinhood;
+}
