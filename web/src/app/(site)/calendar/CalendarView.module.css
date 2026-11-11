@@ -3,6 +3,84 @@
   gap: var(--space-6);
   align-items: start;
 }
+.head,
+.grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: var(--space-1);
+}
+.head {
+  text-align: center;
+  padding-bottom: var(--space-1);
+}
+.grid {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.cell {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: var(--tap);
+  aspect-ratio: 1;
+  padding: 0;
+  background: var(--surface);
+  border: var(--stroke) solid var(--line);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+.cell:hover {
+  border-color: var(--line-strong);
+}
+.cell[data-state='past'] {
+  color: var(--text-dim);
+}
+.cell[data-state='today'] {
+  border-color: var(--patina-text);
+  border-width: var(--stroke-bold);
+  background: var(--surface-2);
+}
+.cell[data-tier='Crown'] {
+  border-style: double;
+  border-width: calc(var(--stroke-bold) + var(--stroke));
+}
+.cell[data-tier='Fine'] {
+  border-style: dashed;
+}
+.cell[data-selected] {
+  outline: var(--stroke-bold) solid var(--focus);
+  outline-offset: 1px;
+}
+.num {
+  position: absolute;
+  top: var(--space-1);
+  left: var(--space-1);
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  line-height: 1;
+}
+.glyph {
+  width: 56%;
+  height: 56%;
+  margin-top: var(--space-2);
+}
+.bar {
+  position: absolute;
+  inset: auto var(--space-1) var(--space-1);
+  height: var(--space-1);
+  background: var(--field-deep);
+}
+.bar span {
+  display: block;
+  height: 100%;
+  background: var(--patina);
+}
+.bar span[data-full] {
+  background: var(--text-dim);
+}
 .detail {
   display: grid;
   gap: var(--space-3);
@@ -14,5 +92,49 @@
 @media (min-width: 64rem) {
   .layout {
     grid-template-columns: 1.4fr 1fr;
+  }
+}
+
+/* Pointing at a Day lights every Day with the same Sign. */
+.cell {
+  transition: opacity var(--dur-element) var(--ease-out);
+}
+.cell[data-lit='off'] {
+  opacity: 0.45;
+}
+.cell[data-lit='on'] {
+  border-color: var(--patina-text);
+  background: var(--surface-2);
+}
+.cell[data-state='today']::after {
+  content: '';
+  position: absolute;
+  inset: calc(-1 * var(--space-1));
+  border: var(--stroke) solid var(--patina-text);
+  pointer-events: none;
+  animation: today-pulse 2800ms var(--ease-inout) infinite;
+}
+@keyframes today-pulse {
+  0%,
+  100% {
+    opacity: 0;
+    transform: scale(0.96);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1);
+  }
+}
+:global([data-motion='minimal']) .cell[data-state='today']::after {
+  animation: none;
+  opacity: 0.6;
+}
+@media (prefers-reduced-motion: reduce) {
+  .cell {
+    transition: none;
+  }
+  .cell[data-state='today']::after {
+    animation: none;
+    opacity: 0.6;
   }
 }

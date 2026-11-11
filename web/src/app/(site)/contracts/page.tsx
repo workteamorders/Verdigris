@@ -51,7 +51,7 @@ export default function Page() {
             </div>
           </Panel>
         ) : (
-          <EmptyState heading="h3" title="Not deployed yet">This build has no contract address for {chain.name}. Addresses appear here once a deployment is added, and nothing on this page should be treated as live until then.</EmptyState>
+          <EmptyState title="Not deployed yet">This build has no contract address for {chain.name}. Addresses appear here once a deployment is added, and nothing on this page should be treated as live until then.</EmptyState>
         )}
       </Section>
 

@@ -1,6 +1,8 @@
 'use client';
 
-import type { ReactNode } from 'react';
+import { useEffect, type ReactNode } from 'react';
+import { usePathname } from 'next/navigation';
+import { useMotion } from '@/lib/motion';
 import { useAccount, useSwitchChain } from 'wagmi';
 import { SiteHeader } from './SiteHeader';
 import { SiteFooter } from './SiteFooter';
@@ -18,6 +20,35 @@ export function AppShell({ children }: { children: ReactNode }) {
   const { isConnected, chainId } = useAccount();
   const { switchChain, isPending } = useSwitchChain();
   const wrongNetwork = isConnected && chainId !== activeChain.id;
+  const { tier } = useMotion();
+  const path = usePathname();
+
+  // Reveal on scroll: only things that start below the fold are hidden, and only once the page is running.
+  useEffect(() => {
+    if (tier === 'minimal') return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            e.target.setAttribute('data-reveal-state', 'shown');
+            io.unobserve(e.target);
+          }
+        }
+      },
+      { rootMargin: '0px 0px -8% 0px' },
+    );
+    const els = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]'));
+    for (const el of els) {
+      if (el.getBoundingClientRect().top > window.innerHeight) {
+        el.setAttribute('data-reveal-state', 'hidden');
+        io.observe(el);
+      }
+    }
+    return () => {
+      io.disconnect();
+      for (const el of els) el.removeAttribute('data-reveal-state');
+    };
+  }, [tier, path]);
 
   const status =
     count.status === 'undeployed'
@@ -32,7 +63,7 @@ export function AppShell({ children }: { children: ReactNode }) {
               ? { tone: 'info' as const, label: 'Count complete' }
               : count.status === 'error'
                 ? { tone: 'warning' as const, label: 'Cannot read the chain' }
-                : { tone: 'info' as const, label: 'Reading the Count' };
+                : undefined;
 
   return (
     <>

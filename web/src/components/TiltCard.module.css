@@ -1,0 +1,29 @@
+.tilt {
+  perspective: var(--tilt-depth);
+}
+.inner {
+  position: relative;
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform var(--dur-panel) var(--ease-out);
+  will-change: transform;
+}
+.sheen {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(circle at var(--sx, 50%) var(--sy, 30%), color-mix(in srgb, var(--accent-hover) 34%, transparent), transparent 55%);
+  transition: opacity var(--dur-panel) var(--ease-out);
+}
+.round {
+  border-radius: var(--radius-round);
+}
+.tilt[data-enabled]:hover .sheen {
+  opacity: 1;
+}
+@media (prefers-reduced-motion: reduce) {
+  .inner,
+  .sheen {
+    transition: none;
+  }
+}

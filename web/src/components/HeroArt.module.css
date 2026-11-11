@@ -1,0 +1,86 @@
+.art {
+  position: absolute;
+  z-index: 0;
+  width: min(125vw, 78rem);
+  aspect-ratio: 1;
+  right: -26%;
+  top: 50%;
+  translate: 0 -50%;
+  pointer-events: none;
+  opacity: 0.7;
+  /* Fade the engraving out where the headline and lead sit. */
+  mask-image: linear-gradient(to right, transparent 6%, var(--text) 24%);
+}
+.hair {
+  fill: none;
+  stroke: var(--line-strong);
+  stroke-width: 1.2;
+}
+.hairDim {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 1;
+}
+.ticks {
+  fill: none;
+  stroke: var(--line-strong);
+  stroke-width: 1.6;
+}
+.hatch {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 0.9;
+}
+.spin {
+  transform-origin: center;
+  transform-box: fill-box;
+}
+/* The slow turn only runs once the page has chosen a motion tier, so it never competes with loading. */
+:global([data-motion='full']) .spin,
+:global([data-motion='medium']) .spin {
+  animation: spin var(--dur-drift) linear infinite;
+}
+.patch {
+  transform: scale(0.7);
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes grow {
+  from {
+    opacity: 0;
+    transform: scale(0.15);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+/* Patina follows the scroll, where the browser supports scroll-driven animation. Elsewhere the patches rest part-grown. */
+@supports (animation-timeline: scroll()) {
+  .patch {
+    opacity: 0;
+    transform: scale(0.15);
+    animation: grow linear both;
+    animation-timeline: scroll(root block);
+    animation-range-start: calc(var(--i) * 1.5vh);
+    animation-range-end: calc(55vh + var(--i) * 2.5vh);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .spin {
+    animation: none;
+  }
+  .patch {
+    animation: none;
+    opacity: 1;
+    transform: scale(0.7);
+  }
+}
+@media (max-width: 47.99rem) {
+  .art {
+    opacity: 0.35;
+  }
+}

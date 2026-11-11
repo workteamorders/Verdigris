@@ -2,11 +2,11 @@
 
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { useState } from 'react';
+import { useState, ViewTransition } from 'react';
 import { Badge } from '@/components/Badge';
 import { Button } from '@/components/Button';
-import { MintedTotal } from '@/components/MintedTotal';
-import { TiltDisc } from '@/components/TiltDisc';
+import { Disc } from '@/components/Disc';
+import { TiltCard } from '@/components/TiltCard';
 import { Facts, Section } from '@/components/Layout';
 import { Panel } from '@/components/Panel';
 import { DiscSkeleton, EmptyState, ErrorState } from '@/components/States';
@@ -18,8 +18,9 @@ import { SIGNS } from '@/lib/signs';
 import { activeChain } from '@/lib/wagmi';
 import { formatDate, formatDuration } from '@/lib/wheel';
 import { useChainClock } from '@/lib/chain-data';
-import { GALLERY_PAGE_SIZE as PAGE, GalleryGridSkeleton, GalleryPlaceholder } from './GalleryPlaceholder';
 import styles from './GalleryView.module.css';
+
+const PAGE = 12;
 
 export function GalleryView() {
   const params = useSearchParams();
@@ -38,7 +39,13 @@ function DiscGrid({ page }: { page: number }) {
   const ids = Array.from({ length: Math.max(0, Math.min(PAGE, top)) }, (_, i) => top - i);
   const discs = useDiscPage(ids);
 
-  if (!dep) return <GalleryPlaceholder deployed={false} />;
+  if (!dep) {
+    return (
+      <Section>
+        <EmptyState title="No Discs to show yet">No deployment is connected to this build. Once the Count opens, every Disc appears here.</EmptyState>
+      </Section>
+    );
+  }
   if (total.isError || discs.isError) {
     return (
       <Section>
@@ -55,13 +62,17 @@ function DiscGrid({ page }: { page: number }) {
   }
   return (
     <Section>
-      <p className="dim">{total.data === undefined ? 'Reading the chain…' : <><MintedTotal value={n} /> {n === 1 ? 'Disc' : 'Discs'} minted. Showing {ids.length}, newest first.</>}</p>
+      <p className="dim">{total.data === undefined ? 'Reading the chain…' : `${n} Disc${n === 1 ? '' : 's'} minted. Showing ${ids.length}, newest first.`}</p>
       <ul className={styles.grid}>
         {discs.data
           ? discs.data.map((d) => (
               <li key={d.id}>
                 <Link href={`/gallery/?id=${d.id}`} className={styles.card} aria-label={`Disc ${d.id}, ${SIGNS[d.sign]?.name}, Numeral ${d.numeral}, Patina level ${d.level}`}>
-                  <TiltDisc sign={d.sign} numeral={d.numeral} serial={d.serial} level={d.level} noFilters />
+                  <ViewTransition name={`disc-${d.id}`}>
+                    <TiltCard max={6}>
+                      <Disc sign={d.sign} numeral={d.numeral} serial={d.serial} level={d.level} noFilters />
+                    </TiltCard>
+                  </ViewTransition>
                   <span className={styles.meta}>
                     <span className="mono">#{d.id}</span>
                     <span className="dim">
@@ -71,7 +82,16 @@ function DiscGrid({ page }: { page: number }) {
                 </Link>
               </li>
             ))
-          : <GalleryGridSkeleton count={ids.length || PAGE} />}
+          : (ids.length > 0 ? ids : Array.from({ length: PAGE }, (_, i) => -i)).map((i) => (
+              <li key={i}>
+                <div className={styles.card} aria-hidden={i <= 0 ? undefined : true}>
+                  <DiscSkeleton />
+                  <span className={styles.meta}>
+                    <span className="mono">&nbsp;</span>
+                  </span>
+                </div>
+              </li>
+            ))}
       </ul>
       {pages > 1 ? (
         <nav aria-label="Pages" className={styles.pager}>
@@ -141,7 +161,11 @@ function DiscDetail({ id }: { id: number }) {
     <Section>
       <div className={styles.detail}>
         <div className={styles.big}>
-          <TiltDisc sign={d.sign} numeral={d.numeral} serial={d.serial} level={d.level} />
+          <ViewTransition name={`disc-${d.id}`}>
+            <TiltCard max={10}>
+              <Disc sign={d.sign} numeral={d.numeral} serial={d.serial} level={d.level} />
+            </TiltCard>
+          </ViewTransition>
         </div>
         <Panel>
           <div className={styles.info}>

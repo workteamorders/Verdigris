@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { CONFIG } from '@/lib/config';
+import { MotionToggle } from './MotionToggle';
 import styles from './SiteFooter.module.css';
 
 export function SiteFooter() {
@@ -28,6 +29,9 @@ export function SiteFooter() {
               </>
             )}
           </p>
+        </div>
+        <div>
+          <MotionToggle />
         </div>
         <p className={`dim ${styles.legal}`}>
           Verdigris Discs are digital collectibles, not financial advice. Verdigris is not affiliated with Robinhood, with any blockchain or marketplace, or with the reference collection that inspired its mood.

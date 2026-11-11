@@ -166,6 +166,9 @@ importers:
 
   .:
     dependencies:
+      '@fontsource/bodoni-moda':
+        specifier: ^5.3.0
+        version: 5.3.0
       '@fontsource/dm-mono':
         specifier: ^5.3.0
         version: 5.3.0
@@ -428,6 +431,9 @@ packages:
   '@ethereumjs/util@8.1.0':
     resolution: {integrity: sha512-zQ0IqbdX8FZ9aw11vP+dZkKDkS+kgIvQPHnSAXzP9pLu+Rfu3D3XEeLbicvoXJTYnhZiPmsZUxgdzXwNKxRPbA==}
     engines: {node: '>=14'}
+
+  '@fontsource/bodoni-moda@5.3.0':
+    resolution: {integrity: sha512-Wt2XBCHivYxkTP3ydq/Ax+7VshwsOh/6ayA5om2t+yClCkGwLPj2Mi6OnyMANjyLcqDUWs4rlOHnc8SBLf6/pA==}
 
   '@fontsource/dm-mono@5.3.0':
     resolution: {integrity: sha512-OINjI8C1S/wpchhQxl7njZdMn4+hnDCpQ4YtvvOpKNARo+0J8O1x1IcrChxNjHOhfVv1by8C/FQoy3hXK+C1Ug==}
@@ -3041,6 +3047,8 @@ snapshots:
       '@ethereumjs/rlp': 4.0.1
       ethereum-cryptography: 2.2.1
       micro-ftch: 0.3.1
+
+  '@fontsource/bodoni-moda@5.3.0': {}
 
   '@fontsource/dm-mono@5.3.0': {}
 

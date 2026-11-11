@@ -1,0 +1,72 @@
+.strike {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  z-index: 1;
+}
+.flash,
+.ring,
+.spark {
+  grid-area: 1 / 1;
+}
+.flash {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: var(--radius-round);
+  background: radial-gradient(circle, color-mix(in srgb, var(--patina-0) 70%, var(--accent-hover)) 0%, transparent 62%);
+  animation: strike-flash var(--dur-strike) var(--ease-out) both;
+}
+.ring {
+  width: 70%;
+  aspect-ratio: 1;
+  border-radius: var(--radius-round);
+  border: var(--stroke-bold) solid var(--patina-text);
+  animation: strike-ring var(--dur-strike) var(--ease-out) both;
+}
+.spark {
+  width: var(--space-1);
+  height: var(--space-1);
+  border-radius: var(--radius-round);
+  background: var(--patina-text);
+  animation: strike-spark var(--dur-strike) var(--ease-out) var(--k) both;
+}
+@keyframes strike-flash {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  18% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.5);
+  }
+}
+@keyframes strike-ring {
+  0% {
+    opacity: 0.9;
+    transform: scale(0.3);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.7);
+  }
+}
+@keyframes strike-spark {
+  0% {
+    opacity: 1;
+    transform: rotate(var(--a)) translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(var(--a)) translateX(var(--d));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .strike {
+    display: none;
+  }
+}

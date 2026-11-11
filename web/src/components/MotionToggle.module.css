@@ -1,0 +1,39 @@
+.toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--tap);
+  padding: 0 var(--space-4);
+  background: transparent;
+  color: var(--text);
+  border: var(--stroke) solid var(--line-strong);
+  cursor: pointer;
+}
+.toggle:hover:not(:disabled) {
+  border-color: var(--text);
+}
+.toggle:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+.knob {
+  position: relative;
+  width: var(--space-6);
+  height: var(--space-4);
+  border: var(--stroke) solid var(--line-strong);
+  border-radius: var(--radius-none);
+}
+.knob::after {
+  content: '';
+  position: absolute;
+  top: calc(50% - var(--space-3) / 2);
+  left: var(--space-1);
+  width: var(--space-3);
+  height: var(--space-3);
+  background: var(--text-dim);
+  transition: transform var(--dur-element) var(--ease-out);
+}
+.knob[data-on]::after {
+  background: var(--patina-text);
+  transform: translateX(calc(var(--space-4) - 2 * var(--stroke)));
+}

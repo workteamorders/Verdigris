@@ -1,0 +1,51 @@
+.ticker {
+  overflow: hidden;
+  border-block: var(--stroke) solid var(--line);
+  background: color-mix(in srgb, var(--field-deep) 70%, transparent);
+  padding-block: var(--space-3);
+}
+.track {
+  display: flex;
+  width: max-content;
+  gap: var(--space-7);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-mono);
+  font-size: var(--fs-sm);
+  letter-spacing: var(--ls-label);
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+:global([data-motion='full']) .track,
+:global([data-motion='medium']) .track {
+  animation: ticker var(--dur-ticker) linear infinite;
+}
+.track li {
+  display: flex;
+  align-items: center;
+  gap: var(--space-7);
+  white-space: nowrap;
+}
+.track li::after {
+  content: '';
+  width: var(--space-2);
+  height: var(--space-2);
+  border: var(--stroke) solid var(--patina);
+  transform: rotate(45deg);
+}
+.ticker:hover .track,
+.ticker:focus-within .track {
+  animation-play-state: paused !important;
+}
+@keyframes ticker {
+  to {
+    transform: translateX(-50%);
+  }
+}
+/* Without motion the strip simply rests, clipped to one row, so nothing moves when the tier is chosen. */
+@media (prefers-reduced-motion: reduce) {
+  :global([data-motion]) .track {
+    animation: none;
+  }
+}

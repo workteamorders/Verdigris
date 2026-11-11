@@ -176,3 +176,29 @@ Home scored 100 in all four mobile Lighthouse categories with CLS 0.0018 and TBT
 The cursor revision replaces the bronze trail with one small light that follows the pointer. Patina patches grow faster, fine grains drift through the field, and tap blooms clear sooner. Touch canvases use one backing pixel per CSS pixel, and grain drawing is batched. Home's local mobile Lighthouse scored 100 in all four categories with CLS 0 and TBT 3.5 ms. The final 4× throttled mobile Chromium run measured a 33.3 ms median frame interval.
 
 The texture revision uses 288-pixel Patina sprites with interpolated grain, replacing the regular pattern that showed when the sprites were enlarged. The canvas starts at up to 2× device resolution and reduces it in two steps under sustained load. The sprites are cached across client navigation.
+
+## UI gerak dan karya visual (2026-11-11, dikerjakan langsung, bukan lewat Codex)
+
+`docs/CODEX-UI-PROMPT.md` tetap ada sebagai catatan, tetapi **tidak dipakai**: pekerjaan itu dikerjakan di sesi ini.
+
+### Yang ditambahkan
+- **Tingkat gerak** (`web/src/lib/motion.tsx`): Full, Medium, Minimal, dipilih dari perangkat (kursor halus, jumlah inti CPU, `saveData`, memori). Render pertama selalu Minimal agar server dan klien sama. Pengaturan reduced-motion dari sistem selalu menang; tombol "Motion: Full / Reduced" di footer (disimpan di `localStorage`, dibungkus try/catch). Bila frame rata-rata lambat sekitar 2,5 detik, lapisan berat turun satu tingkat sendiri.
+- **Latar hidup** (`Ambient*.tsx`): Minimal = backdrop CSS statis (tanpa pekerjaan skrip). Medium = canvas 2D (bloom verdigris hanyut, tertarik kursor seperti lensa hangat, riak saat klik atau tap, bergeser saat scroll). Full = shader WebGL tulisan sendiri (chunk terpisah, dimuat lazy), jatuh kembali ke canvas 2D bila WebGL tidak ada, gagal kompilasi, hilang konteks, atau lambat. Mulai 1,5 detik setelah halaman selesai dimuat. Berhenti saat tab tersembunyi. Resolusi setengah. Jumlah dan ukuran bloom mengecil di layar sempit.
+- **Karya visual**: huruf judul Bodoni Moda (OFL-1.1, paket `@fontsource/bodoni-moda`, dimuat lewat `next/font/local` dengan fallback berukuran serasi), ukiran hero (`HeroArt`: 84 tik untuk 84 Day, arsiran medali, bloom Patina yang tumbuh mengikuti scroll lewat CSS `animation-timeline: scroll()` bila didukung), ornamen (`Rule`, `ChapterHead`, `Plate`), bab Romawi di Home.
+- **Elemen live**: `TiltCard` (miring dan kilau, hanya mouse), `Strike` (animasi cetak saat mint sukses), `PatinaScrubber` (slider level 0-4), `Ticker` (CSS), sorotan Sign di Calendar plus denyut hari ini, reveal saat scroll (hanya elemen di bawah layar, diatur setelah halaman berjalan), transisi bersama Gallery ke detail (`ViewTransition` React).
+- Semua dipajang di `/styleguide`, bagian "Motion and artwork".
+
+### Keputusan
+- Font: Schibsted 800 dan DM Mono 500 dibuang (bobot 800 dipetakan ke 700) untuk memangkas sekitar 40 KB font; Bodoni 700 satu berkas ditambahkan. Bodoni italic tidak dipakai (terlalu berat untuk jalur kritis).
+- `h3` di `EmptyState`/`ErrorState` menjadi `h2` (urutan heading, A11y).
+- Sticky wheel di Calendar, drag roda dengan inersia, tombol magnetik, dan loupe kursor **tidak dibuat**; diganti sorotan Sign (lebih sederhana dan tetap aksesibel). Roda tetap `role="img"`.
+- Kanvas diberi gaya posisi inline karena CSS-nya bisa tiba setelah kanvas dan menggeser tata letak (ditemukan lewat CLS 0,44 di Rules, sudah diperbaiki).
+
+### Pengukuran (Lighthouse mobile, build statis, kompresi brotli, chain lokal tanpa deployment)
+Metode devtools-throttling (waktu nyata), sebelum dan sesudah, mesin yang sama: Home 88 -> 87, Mint 87 -> 92, Calendar 86 -> 88, Gallery 90 -> 89, Rules 89 -> 90, Vault 93 -> 86. Selisih masih dalam derau pengukuran (TBT 300-500 ms bergantung beban VM). A11y 100, Best Practices 96, SEO 100, CLS paling tinggi 0,048 (Rules, sama dengan sebelum perubahan). **Target Perf >= 90 belum tercapai di Home, Calendar, Gallery, dan Vault pada metode ini** (sebelum perubahan pun belum). Metode simulasi bawaan Lighthouse memberi angka lebih rendah karena server lokal terlalu cepat; tidak dipakai sebagai perbandingan.
+
+### Belum terverifikasi
+- Shader WebGL hanya dicoba di GL perangkat lunak (swiftshader), tidak di GPU nyata; frame time Full belum diukur di GPU.
+- Perilaku kursor dan sentuhan di perangkat nyata; browser tanpa `animation-timeline` (fallback statis ada, belum dilihat).
+- `ViewTransition` Gallery ke detail dan animasi Strike pada mint sungguhan (butuh deployment); Strike hanya diputar di `/styleguide`.
+- Kontras teks di atas latar hidup tidak tercakup pemeriksa kontras (27 pasangan token); alpha bloom sudah diturunkan dan diperiksa mata di 390 dan 1440 px.

@@ -42,12 +42,10 @@ export function useChainClock(): { now: number; ready: boolean } {
     },
   });
   const [tick, setTick] = useState(0);
-  const clockReady = Boolean(q.data);
   useEffect(() => {
-    if (!clockReady) return;
     const t = setInterval(() => setTick((x) => x + 1), 1000);
     return () => clearInterval(t);
-  }, [clockReady]);
+  }, []);
   void tick;
   if (!q.data) return { now: Math.floor(Date.now() / 1000), ready: false };
   return { now: q.data.chainTs + Math.floor((Date.now() - q.data.localMs) / 1000), ready: true };

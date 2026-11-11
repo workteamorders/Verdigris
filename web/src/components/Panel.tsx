@@ -12,7 +12,11 @@ interface PanelProps {
 
 /** Static panel: a bolted slab. */
 export function Panel({ children, as: Tag = 'div', className }: PanelProps) {
-  return <Tag className={[styles.panel, 'bolted', className].filter(Boolean).join(' ')}>{children}</Tag>;
+  return (
+    <Tag className={[styles.panel, 'bolted', className].filter(Boolean).join(' ')} data-reveal>
+      {children}
+    </Tag>
+  );
 }
 
 interface LinkPanelProps extends PanelProps {

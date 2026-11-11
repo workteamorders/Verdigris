@@ -12,11 +12,9 @@ html {
 }
 
 body {
-  isolation: isolate;
   margin: 0;
   min-height: 100dvh;
   background: radial-gradient(ellipse 80% 60% at 20% 0%, var(--field-glow) 0%, var(--field) 50%, var(--field-deep) 100%) fixed;
-  background-color: var(--field-deep);
   color: var(--text);
   font-family: var(--font-body);
   font-size: var(--fs-md);
@@ -31,12 +29,18 @@ h3,
 h4 {
   margin: 0;
   font-family: var(--font-display);
-  font-weight: 800;
+  font-weight: 700;
   line-height: var(--lh-tight);
   letter-spacing: var(--ls-display);
   text-wrap: balance;
 }
 
+h1,
+h2 {
+  font-family: var(--font-engraved);
+  font-weight: 700;
+  letter-spacing: var(--ls-engraved);
+}
 h1 {
   font-size: clamp(var(--fs-2xl), 7vw, var(--fs-4xl));
 }
@@ -157,4 +161,15 @@ svg {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
+}
+
+/* Scroll reveal. The attributes are set by the page after it loads, so nothing is hidden before that. */
+[data-reveal-state='hidden'] {
+  opacity: 0;
+  transform: translateY(var(--space-5));
+}
+[data-reveal-state='shown'] {
+  transition:
+    opacity var(--dur-reveal) var(--ease-out),
+    transform var(--dur-reveal) var(--ease-out);
 }

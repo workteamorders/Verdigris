@@ -9,7 +9,8 @@ import { Badge } from '@/components/Badge';
 import { Button } from '@/components/Button';
 import { Dialog } from '@/components/Dialog';
 import { Checkbox, TextField } from '@/components/Field';
-import { TiltDisc } from '@/components/TiltDisc';
+import { Disc } from '@/components/Disc';
+import { TiltCard } from '@/components/TiltCard';
 import { Section } from '@/components/Layout';
 import { DiscSkeleton, EmptyState, ErrorState } from '@/components/States';
 import { useToast } from '@/components/Toast';
@@ -87,7 +88,9 @@ export function VaultView() {
           return (
             <li key={d.id} className={styles.item}>
               <Link href={`/gallery/?id=${d.id}`} className={styles.card}>
-                <TiltDisc sign={d.sign} numeral={d.numeral} serial={d.serial} level={d.level} />
+                <TiltCard max={6}>
+                  <Disc sign={d.sign} numeral={d.numeral} serial={d.serial} level={d.level} />
+                </TiltCard>
               </Link>
               <p className={styles.title}>
                 <span className="mono">#{d.id}</span> {SIGNS[d.sign]?.name}, Numeral {d.numeral}

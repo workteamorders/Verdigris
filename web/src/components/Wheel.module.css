@@ -1,7 +1,8 @@
 .plate {
   width: 100%;
-  max-width: var(--wheel-max);
-  padding: var(--space-2) var(--space-2) var(--space-4);
+  max-width: 40rem;
+  aspect-ratio: 1;
+  padding: var(--space-5);
 }
 .svg {
   display: block;
@@ -48,7 +49,7 @@
 .dotText {
   font-family: var(--font-mono);
   font-size: 15px;
-  font-weight: 500;
+  font-weight: 400;
   fill: var(--text-on-accent);
 }
 .dimmed {
@@ -65,7 +66,7 @@
 .centreText {
   font-family: var(--font-display);
   font-size: 26px;
-  font-weight: 800;
+  font-weight: 700;
   fill: var(--text);
 }
 .centreNum {
@@ -75,82 +76,10 @@
 }
 .skel {
   fill: var(--surface-2);
-  animation: pulse var(--dur-breathe) linear infinite;
+  animation: pulse 1600ms linear infinite;
 }
 @keyframes pulse {
   50% {
     opacity: 0.4;
   }
-}
-
-.svg[data-interactive] {
-  touch-action: pan-y;
-}
-
-.dragRing {
-  transform-origin: center;
-}
-
-.dragRing {
-  transition: transform var(--dur-bloom) var(--ease-out);
-}
-
-.dragRing[data-dragging] {
-  transition: none;
-  cursor: grabbing;
-}
-
-.readout {
-  text-align: center;
-  margin: var(--space-2) auto 0;
-}
-
-.hit {
-  fill: transparent;
-}
-
-.sign {
-  cursor: pointer;
-  outline: none;
-}
-
-.sign:hover > .hit,
-.sign:focus-visible > .hit {
-  stroke: var(--focus);
-  stroke-width: 4;
-}
-
-.glyph {
-  color: var(--text);
-}
-
-.glyphLit {
-  color: var(--text-on-accent);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .dragRing {
-    animation: none;
-    transform: none !important;
-  }
-}
-
-.signRing {
-  transform-origin: center;
-  animation: sign-turn var(--dur-signs) ease-in-out infinite alternate;
-}
-
-.svg:hover .signRing,
-.svg:focus-within .signRing,
-.dragRing[data-dragging] .signRing {
-  animation-play-state: paused;
-}
-
-@keyframes sign-turn {
-  from { transform: rotate(-5deg); }
-  to { transform: rotate(5deg); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .signRing { animation: none; }
 }

@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { ChapterHead } from './Ornament';
 import styles from './Layout.module.css';
 
 export function PageHead({ eyebrow, title, lead, children }: { eyebrow?: string; title: string; lead?: ReactNode; children?: ReactNode }) {
@@ -12,11 +13,13 @@ export function PageHead({ eyebrow, title, lead, children }: { eyebrow?: string;
   );
 }
 
-export function Section({ title, id, children, lead }: { title?: string; id?: string; children: ReactNode; lead?: ReactNode }) {
+export function Section({ title, id, children, lead, chapter }: { title?: string; id?: string; children: ReactNode; lead?: ReactNode; chapter?: { n: number; label: string } }) {
+  const hid = id ? `${id}-h` : undefined;
   return (
-    <section className={`container ${styles.section}`} aria-labelledby={id ? `${id}-h` : undefined} id={id}>
-      {title ? <h2 id={id ? `${id}-h` : undefined}>{title}</h2> : null}
-      {lead ? <p className={styles.lead}>{lead}</p> : null}
+    <section className={`container ${styles.section}`} aria-labelledby={hid} id={id}>
+      {title && chapter ? <ChapterHead n={chapter.n} label={chapter.label} title={title} id={hid} lead={lead} /> : null}
+      {title && !chapter ? <h2 id={hid} data-reveal>{title}</h2> : null}
+      {lead && !chapter ? <p className={styles.lead}>{lead}</p> : null}
       {children}
     </section>
   );

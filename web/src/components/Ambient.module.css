@@ -1,0 +1,26 @@
+.canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: var(--z-ambient);
+  pointer-events: none;
+  animation: ambient-in var(--dur-slow) var(--ease-out) both;
+}
+@keyframes ambient-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* The still backdrop: a few soft verdigris and bronze glows, pure CSS. */
+.still {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-ambient);
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 42% 34% at 86% 16%, color-mix(in srgb, var(--patina-deep) 60%, transparent), transparent 72%),
+    radial-gradient(ellipse 36% 30% at 6% 72%, color-mix(in srgb, var(--patina) 16%, transparent), transparent 72%),
+    radial-gradient(ellipse 30% 22% at 62% 96%, color-mix(in srgb, var(--patina-0) 12%, transparent), transparent 72%);
+}

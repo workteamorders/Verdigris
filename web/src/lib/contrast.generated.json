@@ -61,16 +61,6 @@
   },
   {
     "fg": "text-dim",
-    "bg": "field-bronze",
-    "fgHex": "#b5a396",
-    "bgHex": "#512f20",
-    "ratio": 4.86,
-    "min": 4.5,
-    "pass": true,
-    "what": "Dim text on the bronze lens"
-  },
-  {
-    "fg": "text-dim",
     "bg": "field-glow",
     "fgHex": "#b5a396",
     "bgHex": "#3e0b09",
@@ -78,26 +68,6 @@
     "min": 4.5,
     "pass": true,
     "what": "Dim text on field glow"
-  },
-  {
-    "fg": "text-dim",
-    "bg": "field-oxide-core",
-    "fgHex": "#b5a396",
-    "bgHex": "#173f37",
-    "ratio": 4.8,
-    "min": 4.5,
-    "pass": true,
-    "what": "Dim text on ambient bloom core"
-  },
-  {
-    "fg": "focus",
-    "bg": "field-oxide-core",
-    "fgHex": "#f2e8dc",
-    "bgHex": "#173f37",
-    "ratio": 9.63,
-    "min": 3,
-    "pass": true,
-    "what": "Focus ring on ambient bloom core (3:1)"
   },
   {
     "fg": "text-on-accent",
