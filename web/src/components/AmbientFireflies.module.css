@@ -4,32 +4,33 @@
   left: var(--swarm-x, 0);
   z-index: var(--z-fireflies);
   pointer-events: none;
+}
+
+.arrival {
+  position: absolute;
+  top: 0;
+  left: 0;
   opacity: 0;
-  transform: scale(1.6);
-  transition: opacity var(--dur-panel) var(--ease-in), transform var(--dur-reveal) var(--ease-out);
+  transform: translate(var(--entry-x), var(--entry-y));
+  transition: opacity var(--dur-panel) var(--ease-in), transform var(--dur-firefly-arrive) var(--ease-out);
 }
 
-.swarm[data-visible] {
+.swarm[data-visible] .arrival {
   opacity: 1;
-  transform: scale(1);
+  transform: translate(0, 0);
   transition-timing-function: var(--ease-out);
-}
-
-.orbit {
-  animation: firefly-orbit var(--dur-firefly-orbit) linear infinite;
+  transition-duration: var(--dur-firefly-fade), var(--dur-firefly-arrive);
+  transition-delay: calc(var(--arrival-order, var(--index)) * var(--dur-firefly-stagger));
 }
 
 .fly {
   position: absolute;
   width: var(--firefly-length);
   height: var(--firefly-length);
-  margin: calc(var(--firefly-length) / -2);
-  transform: rotate(var(--angle)) translateX(var(--radius)) rotate(90deg);
-  animation: firefly-drift var(--dur-firefly-pulse) var(--ease-inout) infinite alternate;
-}
-
-.fly {
-  animation-delay: calc(var(--index) * -1 * var(--dur-firefly-phase));
+  offset-path: var(--flight-path);
+  offset-rotate: auto;
+  animation: firefly-flight calc(var(--dur-firefly-flight) * var(--flight-pace)) linear infinite;
+  animation-delay: calc(-1 * var(--flight-phase, 0) * var(--dur-firefly-flight) * var(--flight-pace));
 }
 
 .body,
@@ -80,14 +81,14 @@
   top: 18%;
   border-radius: 70% 45% 20% 40%;
   transform-origin: 88% 84%;
-  animation: firefly-wing-up var(--dur-firefly-wing) var(--ease-inout) infinite alternate;
+  animation: firefly-wing-up calc(var(--dur-firefly-wing) * var(--flight-pace)) var(--ease-inout) infinite alternate;
 }
 
 .lowerWing {
   bottom: 18%;
   border-radius: 40% 20% 45% 70%;
   transform-origin: 88% 16%;
-  animation: firefly-wing-down var(--dur-firefly-wing) var(--ease-inout) infinite alternate;
+  animation: firefly-wing-down calc(var(--dur-firefly-wing) * var(--flight-pace)) var(--ease-inout) infinite alternate;
 }
 
 .lantern {
@@ -99,17 +100,12 @@
   animation-delay: calc(var(--index) * -1 * var(--dur-firefly-phase));
 }
 
-.swarm:not([data-visible]) :is(.orbit, .fly, .wing, .lantern) {
+.swarm:not([data-visible]) :is(.fly, .wing, .lantern) {
   animation-play-state: paused;
 }
 
-@keyframes firefly-orbit {
-  to { transform: rotate(1turn); }
-}
-
-@keyframes firefly-drift {
-  from { transform: rotate(var(--angle)) translateX(calc(var(--radius) + var(--space-2))) rotate(78deg) scale(0.83); }
-  to { transform: rotate(var(--angle)) translateX(var(--radius)) rotate(102deg); }
+@keyframes firefly-flight {
+  to { offset-distance: 100%; }
 }
 
 @keyframes firefly-light {

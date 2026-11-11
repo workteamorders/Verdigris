@@ -137,7 +137,10 @@
   --dur-drift: 240s;
   --dur-ticker: 60s;
   --dur-firefly-wing: 85ms;
-  --dur-firefly-orbit: 16s;
+  --dur-firefly-flight: 6s;
+  --dur-firefly-arrive: 1400ms;
+  --dur-firefly-fade: 920ms;
+  --dur-firefly-stagger: 105ms;
   --dur-firefly-pulse: 1800ms;
   --dur-firefly-phase: 210ms;
   --tilt-depth: 56rem;
