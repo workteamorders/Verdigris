@@ -9,6 +9,7 @@
   /* Surfaces: 1 base field, 2 slabs */
   --field: #1a0606;
   --field-deep: #050202;
+  --field-oxide: #122c27;
   --field-glow: #3e0b09;
   --surface: #221514;
   --surface-2: #2c1c1a;
@@ -107,6 +108,10 @@
   --elev-floating: 0 24px 48px rgb(0 0 0 / 0.55), inset 0 0 0 6px var(--surface-2), inset 0 0 0 7px var(--line-strong);
 
   /* Motion: one character, "exposure": steady, linear, no bounce. */
+  --dur-bloom: 520ms;
+  --dur-breathe: 3600ms;
+  --dur-wheel: 150s;
+  --dur-rim: 16s;
   --dur-micro: 100ms;
   --dur-element: 200ms;
   --dur-panel: 320ms;
@@ -114,6 +119,7 @@
   --ease-out: cubic-bezier(0, 0, 0.2, 1);
 
   /* Layers */
+  --z-ambient: -1;
   --z-header: 20;
   --z-drawer: 40;
   --z-dialog: 50;

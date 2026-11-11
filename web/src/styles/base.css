@@ -12,6 +12,7 @@ html {
 }
 
 body {
+  isolation: isolate;
   margin: 0;
   min-height: 100dvh;
   background: radial-gradient(ellipse 80% 60% at 20% 0%, var(--field-glow) 0%, var(--field) 50%, var(--field-deep) 100%) fixed;
