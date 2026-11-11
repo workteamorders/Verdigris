@@ -17,6 +17,7 @@ interface FrameProps extends HTMLAttributes<HTMLElement> {
   frame?: FrameName;
   faceClassName?: string;
   compact?: boolean;
+  featured?: boolean;
   /** Lets a link card lift its face on hover. */
   linked?: boolean;
   'data-state'?: string;
@@ -24,12 +25,12 @@ interface FrameProps extends HTMLAttributes<HTMLElement> {
 }
 
 /** A framed box. The border is decorative (aria-hidden); the face holds the content. */
-export function Frame({ children, as: Tag = 'div', frame = 'reed', className, faceClassName, linked, compact = false, ...rest }: FrameProps) {
+export function Frame({ children, as: Tag = 'div', frame = 'reed', className, faceClassName, linked, compact = false, featured = false, ...rest }: FrameProps) {
   return (
     <Tag className={[styles.frame, linked ? styles.linked : '', className].filter(Boolean).join(' ')} data-frame={frame} data-compact={compact || undefined} {...rest}>
       <span className={styles.grain} aria-hidden="true" />
       <div className={[styles.face, faceClassName].filter(Boolean).join(' ')}>{children}</div>
-      <FrameEngraving frame={frame} compact={compact} />
+      <FrameEngraving frame={frame} compact={compact} featured={featured} />
     </Tag>
   );
 }

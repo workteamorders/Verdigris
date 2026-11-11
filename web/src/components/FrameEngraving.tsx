@@ -85,6 +85,51 @@ function Crown({ frame }: { frame: FrameName }) {
   );
 }
 
+const wingFeathers = [
+  'M148 72C117 79 94 63 79 48C59 29 33 33 26 7C18 33 33 53 50 65C69 80 97 96 137 91Z',
+  'M147 79C123 91 99 86 77 74C55 62 26 67 13 37C9 60 26 78 53 88C74 97 105 101 141 94Z',
+  'M140 87C106 107 79 97 60 94C40 91 25 94 14 80C17 102 43 109 68 109C94 109 121 106 143 99Z',
+  'M142 67C118 63 108 54 96 37C82 17 65 25 61 13C57 33 66 46 79 58C97 76 116 81 142 80Z',
+  'M139 76C117 78 107 70 98 61C84 46 73 52 62 45C65 64 84 76 98 83C114 92 128 91 143 88Z',
+] as const;
+
+function SculptedWing({ metal, mirror = false }: { metal: string; mirror?: boolean }) {
+  return (
+    <g transform={mirror ? 'translate(320) scale(-1 1)' : undefined}>
+      <path d="M5 114C30 116 43 99 69 102C93 105 110 90 139 96L151 113L141 127H47Z" className={styles.cast} />
+      {wingFeathers.map((d) => <path key={d} d={d} fill={`url(#${metal})`} className={styles.sculptedRim} />)}
+      <path d="M29 21C37 43 67 43 81 61C99 77 117 83 134 79M23 49C39 74 65 68 88 84C104 94 119 94 134 88M25 91C51 104 81 100 99 102M65 24C74 42 93 47 101 59M70 54C89 61 100 84 127 85" className={styles.lightCut} />
+      <path d="M35 34L32 43M44 42L41 51M55 47L52 56M66 52L63 63M76 61L73 71M40 73L35 80M52 78L48 85M65 80L61 89M78 86L75 94M91 91L88 99M49 99L47 105M64 101L62 107M80 102L78 108M93 103L92 109" className={styles.shadowCut} />
+      <path d="M50 114C61 103 76 111 77 118C78 125 64 126 65 120C65 117 69 116 72 118M84 120C94 106 109 105 117 111C124 116 119 124 112 123C106 122 107 116 112 116M94 117C87 115 84 109 87 105" className={styles.raisedVine} />
+      {[[32, 111], [40, 114], [51, 119], [58, 121], [81, 124], [95, 123], [101, 119], [129, 119], [135, 116]].map(([cx, cy]) => (
+        <circle key={cx} cx={cx} cy={cy} r="1.9" className={styles.pearl} />
+      ))}
+    </g>
+  );
+}
+
+function SculptedCrown({ frame }: { frame: FrameName }) {
+  const metal = useId();
+  return (
+    <svg className={styles.sculptedCrown} viewBox="0 0 320 132" focusable="false">
+      <Bronze id={metal} />
+      <SculptedWing metal={metal} />
+      <SculptedWing metal={metal} mirror />
+      <path d="M160 4C169 19 183 22 191 40C196 51 194 63 199 74C205 91 195 102 182 107L177 121L160 130L143 121L138 107C125 102 115 91 121 74C126 63 124 51 129 40C137 22 151 19 160 4Z" className={styles.cast} />
+      <path d="M160 11C168 24 181 27 187 43C191 54 187 65 195 78C200 90 191 99 179 103L173 118L160 125L147 118L141 103C129 99 120 90 125 78C133 65 129 54 133 43C139 27 152 24 160 11Z" fill={`url(#${metal})`} className={styles.sculptedRim} />
+      <path d="M160 17Q161 28 170 35Q175 40 172 45M160 17Q159 28 150 35Q145 40 148 45M139 49C132 54 133 63 140 67M181 49C188 54 187 63 180 67M127 84C132 73 141 78 139 85C137 91 130 87 132 83M193 84C188 73 179 78 181 85C183 91 190 87 188 83M137 95C144 102 152 100 156 94M183 95C176 102 168 100 164 94" className={styles.raisedVine} />
+      <circle cx="160" cy="62" r="29" className={styles.cast} />
+      <circle cx="160" cy="60" r="26" fill={`url(#${metal})`} className={styles.sculptedRim} />
+      <circle cx="160" cy="60" r="20" className={styles.inset} />
+      <circle cx="160" cy="60" r="17" className={styles.lightCut} />
+      <path d="M160 46Q165 42 168 44M160 46Q155 42 152 44M160 52Q154 47 151 52Q148 60 157 63M160 52Q166 47 169 52Q172 60 163 63M160 50Q167 57 160 71Q153 57 160 50Z" fill={`url(#${metal})`} className={styles.sculptedRim} />
+      <circle cx="160" cy="67" r="2.1" className={styles.rivet} />
+      <path d="M160 95Q173 104 160 119Q147 104 160 95Z" className={styles.inset} />
+      <path d={cuts[frame]} transform="translate(155.1 101) scale(.54)" className={styles.sign} />
+    </svg>
+  );
+}
+
 function Roots() {
   return (
     <svg className={styles.roots} viewBox="0 0 152 34" focusable="false">
@@ -98,12 +143,12 @@ function Roots() {
   );
 }
 
-export function FrameEngraving({ frame, compact = false }: { frame: FrameName; compact?: boolean }) {
+export function FrameEngraving({ frame, compact = false, featured = false }: { frame: FrameName; compact?: boolean; featured?: boolean }) {
   return (
     <span className={styles.engraving} data-compact={compact || undefined} aria-hidden="true">
       <span className={styles.keylines} />
       {(compact ? compactCorners : corners).map((position) => <Corner key={position} frame={frame} position={position} />)}
-      {!compact && <><Crown frame={frame} /><Roots /></>}
+      {!compact && <>{featured ? <SculptedCrown frame={frame} /> : <Crown frame={frame} />}<Roots /></>}
     </span>
   );
 }

@@ -15,6 +15,7 @@
 
 .corner,
 .crown,
+.sculptedCrown,
 .roots {
   position: absolute;
   overflow: visible;
@@ -32,6 +33,7 @@
 .bottomRight { bottom: 0; right: 0; transform: scale(-1); }
 
 .crown,
+.sculptedCrown,
 .roots {
   left: 50%;
   transform: translateX(-50%);
@@ -40,6 +42,25 @@
 .crown {
   top: calc(var(--frame-w) * -0.52);
   width: min(var(--engraving-crown), 59%);
+}
+
+.sculptedCrown {
+  bottom: calc(100% - var(--space-5));
+  width: min(86%, var(--engraving-feature-width));
+  filter: drop-shadow(0 var(--space-1) var(--space-1) var(--metal-deep));
+}
+
+.sculptedRim {
+  stroke: var(--metal-lo);
+  stroke-width: 1.25;
+}
+
+.raisedVine {
+  fill: none;
+  stroke: var(--metal-spec);
+  stroke-linecap: round;
+  stroke-width: 1.8;
+  filter: drop-shadow(0 1px 1px var(--metal-deep));
 }
 
 .roots {

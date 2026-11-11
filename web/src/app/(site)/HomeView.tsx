@@ -53,7 +53,7 @@ export function HomeView() {
         </div>
         <div className={styles.wheel}>
           <TiltCard round={false} max={3}>
-            <Wheel {...wheel} />
+            <Wheel {...wheel} featured />
           </TiltCard>
         </div>
       </div>

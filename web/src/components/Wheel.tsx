@@ -13,6 +13,7 @@ interface WheelProps {
   numeral: number;
   /** Text under the centre, e.g. a countdown. Provided by the caller so the wheel stays pure. */
   caption?: string;
+  featured?: boolean;
 }
 
 const CENTRE: Record<Exclude<WheelState, 'today' | 'undeployed'>, { a: string; b?: string }> = {
@@ -24,7 +25,7 @@ const CENTRE: Record<Exclude<WheelState, 'today' | 'undeployed'>, { a: string; b
 };
 
 /** The functional wheel: 12 Signs outside, 7 Numerals inside, the lit pair is today's. */
-export function Wheel({ state, sign, numeral, caption }: WheelProps) {
+export function Wheel({ state, sign, numeral, caption, featured = false }: WheelProps) {
   const raw = useId().replace(/:/g, '');
   const showDisc = state === 'today' || state === 'undeployed' || state === 'soldout' || state === 'done';
   const dim = state === 'before' || state === 'soldout' || state === 'done' || state === 'loading' || state === 'error';
@@ -74,7 +75,7 @@ export function Wheel({ state, sign, numeral, caption }: WheelProps) {
       : `Wheel. ${centre?.a ?? ''}.`;
 
   return (
-    <Frame frame="moulding" className={styles.plate} faceClassName={styles.plateFace} data-state={state}>
+    <Frame frame="moulding" featured={featured} className={styles.plate} faceClassName={styles.plateFace} data-state={state}>
       <svg viewBox="0 0 600 600" className={styles.svg} role="img" aria-label={label}>
         <circle cx="300" cy="300" r="294" className={styles.disk} />
         <circle cx="300" cy="300" r="238" className={state === 'error' ? styles.ringErr : styles.ring} />

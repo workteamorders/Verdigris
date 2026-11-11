@@ -35,6 +35,7 @@
   text-decoration: none;
 }
 .wheel {
+  padding-block-start: var(--engraving-feature-rise);
   width: 100%;
   max-width: 34rem;
   margin-inline: auto;
