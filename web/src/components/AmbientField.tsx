@@ -10,12 +10,18 @@ const clamp = (value: number) => Math.max(0, Math.min(1, value));
 
 function makeTexture(core: string, edge: string, phase: number, rimOnly = false) {
   const texture = document.createElement('canvas');
-  const size = 144;
+  const size = 288;
   texture.width = texture.height = size;
   const brush = texture.getContext('2d');
   if (!brush) return texture;
 
   const mask = brush.createImageData(size, size);
+  const grainCells = 42;
+  const grain = Array.from({ length: (grainCells + 1) ** 2 }, (_, index) => {
+    const value = Math.sin(index * 73.17 + phase * 19.4) * 43758.5453;
+    return value - Math.floor(value);
+  });
+  const smooth = (value: number) => value * value * (3 - 2 * value);
   for (let y = 0; y < size; y++) {
     for (let x = 0; x < size; x++) {
       const u = (x + 0.5) / size * 2 - 1;
@@ -24,17 +30,26 @@ function makeTexture(core: string, edge: string, phase: number, rimOnly = false)
       const radius = Math.hypot(u, v);
       const edgeRadius = 0.71 + 0.10 * Math.sin(angle * 3 + phase)
         + 0.065 * Math.sin(angle * 8 - phase) + 0.035 * Math.sin(angle * 17 + phase);
-      const grain = Math.sin(x * 1.72 + y * 0.91) * Math.sin(y * 2.3 - x * 0.3);
+      const gx = x * grainCells / size;
+      const gy = y * grainCells / size;
+      const column = Math.floor(gx);
+      const row = Math.floor(gy);
+      const offset = row * (grainCells + 1) + column;
+      const fx = smooth(gx - column);
+      const fy = smooth(gy - row);
+      const top = grain[offset]! * (1 - fx) + grain[offset + 1]! * fx;
+      const bottom = grain[offset + grainCells + 1]! * (1 - fx) + grain[offset + grainCells + 2]! * fx;
+      const fleck = 2 * (top * (1 - fy) + bottom * fy) - 1;
       const veins = Math.sin(u * 17 + Math.sin(v * 13) * 2.2)
         * Math.cos(v * 23 + Math.sin(u * 16) * 2.8);
-      const distance = (edgeRadius - radius) + veins * 0.07 + grain * 0.033;
-      const fringe = clamp(1 - Math.abs(distance) * 17) * (0.48 + 0.32 * grain);
-      const body = rimOnly ? 0 : clamp(distance * 12) * (0.45 + 0.19 * veins + 0.15 * grain);
+      const distance = (edgeRadius - radius) + veins * 0.045 + fleck * 0.027;
+      const fringe = smooth(clamp(1 - Math.abs(distance) * 12)) * (0.38 + 0.22 * fleck);
+      const body = rimOnly ? 0 : smooth(clamp(distance * 8)) * (0.51 + 0.12 * veins + 0.12 * fleck);
       mask.data[(y * size + x) * 4 + 3] = 255 * clamp(body + fringe);
     }
   }
   brush.putImageData(mask, 0, 0);
-  const gradient = brush.createRadialGradient(63, 63, 0, 72, 72, 72);
+  const gradient = brush.createRadialGradient(size * 0.44, size * 0.44, 0, size / 2, size / 2, size / 2);
   gradient.addColorStop(0, edge);
   gradient.addColorStop(0.62, core);
   gradient.addColorStop(1, core);
@@ -57,6 +72,9 @@ function makeLens(bronze: string) {
   return texture;
 }
 
+// Reuse the larger sprites when the site layout survives client navigation.
+let cachedTextures: { key: string; patches: readonly [HTMLCanvasElement, HTMLCanvasElement]; rim: HTMLCanvasElement; lens: HTMLCanvasElement } | undefined;
+
 function startField(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D) {
   const motion = matchMedia('(prefers-reduced-motion: reduce)');
   const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
@@ -66,9 +84,16 @@ function startField(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D
   const oxide = color('--field-oxide-core');
   const shade = color('--field-oxide');
   const bronze = color('--field-bronze');
-  const textures = [makeTexture(oxide, shade, 0.8), makeTexture(oxide, shade, 3.6)];
-  const rim = makeTexture(oxide, shade, 2.4, true);
-  const lens = makeLens(bronze);
+  const textureKey = [oxide, shade, bronze].join('/');
+  if (cachedTextures?.key !== textureKey) {
+    cachedTextures = {
+      key: textureKey,
+      patches: [makeTexture(oxide, shade, 0.8), makeTexture(oxide, shade, 3.6)],
+      rim: makeTexture(oxide, shade, 2.4, true),
+      lens: makeLens(bronze),
+    };
+  }
+  const { patches: textures, rim, lens } = cachedTextures;
   const hero = document.querySelector('[data-ambient-anchor]');
   const patches = [
     { x: 0.01, y: 0.13, size: 0.41, angle: 0.6, depth: 0.14 },
@@ -87,9 +112,6 @@ function startField(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D
   const pointer = { x: 0, y: 0, targetX: 0, targetY: 0, warmth: 0, targetWarmth: 0 };
   let width = 0;
   let height = 0;
-  // The source textures are already soft. On touch screens, extra backing pixels
-  // add fill cost without changing the texture.
-  const pixelRatio = Math.min(devicePixelRatio || 1, matchMedia('(pointer: coarse)').matches ? 1 : 2);
   let resolution = 1;
   let visible = true;
   let frame = 0;
@@ -155,7 +177,10 @@ function startField(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D
       const warmth = pointer.warmth * clamp(1 - Math.hypot(dx, dy) / reach);
       const size = grain.size * (1 + warmth * 0.8);
       const path = warmth > 0.24 ? warm : Math.sin(phase * 1.6) > 0 ? visible : faint;
-      path.rect(x + dx * warmth * 0.17, y + dy * warmth * 0.17, size, size);
+      const centerX = x + dx * warmth * 0.17;
+      const centerY = y + dy * warmth * 0.17;
+      path.moveTo(centerX + size / 2, centerY);
+      path.arc(centerX, centerY, size / 2, 0, Math.PI * 2);
     }
     context.fillStyle = oxide;
     context.globalAlpha = 0.32;
@@ -187,10 +212,11 @@ function startField(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D
     measureAnchor();
     width = Math.max(1, canvas.clientWidth);
     height = Math.max(1, canvas.clientHeight);
-    const ratio = pixelRatio * resolution;
+    const ratio = Math.min(devicePixelRatio || 1, 2) * resolution;
     canvas.width = Math.round(width * ratio);
     canvas.height = Math.round(height * ratio);
     context.setTransform(ratio, 0, 0, ratio, 0, 0);
+    context.imageSmoothingQuality = 'medium';
     draw(0);
   }
 
@@ -200,8 +226,9 @@ function startField(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D
     last = now;
     draw(Math.min(elapsed, 40) / 1000);
     slow = elapsed > 22 || performance.now() - start > 8 ? slow + 1 : Math.max(0, slow - 0.5);
-    if (slow >= 12 && resolution === 1) {
-      resolution = 0.5;
+    if (slow >= 12 && resolution > 0.5) {
+      resolution -= 0.25;
+      slow = 0;
       resize();
     }
     frame = requestAnimationFrame(tick);
