@@ -12,12 +12,13 @@ interface Props {
   sign?: number;
   numeral?: number;
   serial?: number;
+  initialLevel?: PatinaLevel;
 }
 
 /** Drag the slider and the verdigris spreads on a Disc. Native range input, so keyboard and screen readers work. */
-export function PatinaScrubber({ when, sign = 5, numeral = 3, serial = 7 }: Props) {
+export function PatinaScrubber({ when, sign = 5, numeral = 3, serial = 7, initialLevel = 2 }: Props) {
   const id = useId();
-  const [level, setLevel] = useState<PatinaLevel>(2);
+  const [level, setLevel] = useState<PatinaLevel>(initialLevel);
   const [prev, setPrev] = useState<PatinaLevel | null>(null);
   const name = LEVEL_NAMES[level];
 
@@ -25,7 +26,7 @@ export function PatinaScrubber({ when, sign = 5, numeral = 3, serial = 7 }: Prop
     <div className={styles.wrap}>
       <div className={styles.stage}>
         {prev !== null ? (
-          <div className={styles.under}>
+          <div className={styles.under} aria-hidden="true">
             <Disc sign={sign} numeral={numeral} serial={serial} level={prev} />
           </div>
         ) : null}
@@ -34,7 +35,7 @@ export function PatinaScrubber({ when, sign = 5, numeral = 3, serial = 7 }: Prop
         </div>
       </div>
       <div className={styles.controls}>
-        <p className="label">Disc preview</p>
+        <p className="label">PREVIEW</p>
         <label htmlFor={id} className={styles.heading}>
           <Badge tone="patina">{`Level ${level}`}</Badge> {name}
         </label>

@@ -126,6 +126,12 @@
   --engraving-corner: calc(var(--space-7) + var(--space-2));
   --engraving-corner-compact: var(--space-6);
   --engraving-crown: calc(var(--space-9) + var(--space-7));
+  --exhibit-wheel: 26rem;
+  --exhibit-caption: 33rem;
+  --exhibit-demo: 56rem;
+  --exhibit-crest-clearance: calc(min(86vw, var(--engraving-feature-width)) * 0.4125 - var(--space-4));
+  --exhibit-veil: rgb(5 2 2 / 0.67);
+  --exhibit-light: rgb(87 53 31 / 0.31);
   --engraving-feature-width: 23rem;
   --engraving-feature-rise: calc(var(--space-9) + var(--space-4));
   --engraving-amber: #80542e;
