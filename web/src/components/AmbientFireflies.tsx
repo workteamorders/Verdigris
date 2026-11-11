@@ -63,7 +63,13 @@ export function AmbientFireflies({ economy }: { economy: boolean }) {
             className={styles.fly}
             key={angle}
             style={{ '--angle': `${angle}deg`, '--radius': `${radius}px`, '--index': index } as CSSProperties}
-          />
+          >
+            <span className={`${styles.wing} ${styles.upperWing}`} />
+            <span className={`${styles.wing} ${styles.lowerWing}`} />
+            <span className={styles.body} />
+            <span className={styles.lantern} />
+            <span className={styles.head} />
+          </span>
         ))}
       </div>
     </div>

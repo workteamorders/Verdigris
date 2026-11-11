@@ -21,18 +21,85 @@
 
 .fly {
   position: absolute;
-  width: var(--space-3);
-  height: var(--space-3);
-  margin: calc(var(--space-3) / -2);
-  border-radius: 50%;
-  background: radial-gradient(circle, var(--firefly-core) 12%, var(--firefly-glow) 27%, transparent 67%);
-  transform: rotate(var(--angle)) translateX(var(--radius));
-  animation: firefly-pulse var(--dur-firefly-pulse) var(--ease-inout) infinite alternate;
+  width: var(--firefly-length);
+  height: var(--firefly-length);
+  margin: calc(var(--firefly-length) / -2);
+  transform: rotate(var(--angle)) translateX(var(--radius)) rotate(90deg);
+  animation: firefly-drift var(--dur-firefly-pulse) var(--ease-inout) infinite alternate;
+}
+
+.fly {
   animation-delay: calc(var(--index) * -1 * var(--dur-firefly-phase));
 }
 
-.swarm:not([data-visible]) .orbit,
-.swarm:not([data-visible]) .fly {
+.body,
+.head,
+.lantern,
+.wing {
+  position: absolute;
+  display: block;
+}
+
+.body {
+  inset: 37% 24% 37% 12%;
+  border: var(--stroke) solid var(--firefly-shell);
+  border-radius: 56% 45% 45% 56%;
+  background: linear-gradient(var(--firefly-shell), var(--firefly-body) 52%);
+}
+
+.head {
+  inset: 38% 15% 38% 63%;
+  border: var(--stroke) solid var(--firefly-shell);
+  border-radius: 50%;
+  background: var(--firefly-body);
+}
+
+.head::before,
+.head::after {
+  content: '';
+  position: absolute;
+  left: 70%;
+  width: 120%;
+  height: var(--stroke);
+  background: var(--firefly-shell);
+  transform-origin: left center;
+}
+
+.head::before { top: 25%; transform: rotate(-32deg); }
+.head::after { bottom: 25%; transform: rotate(32deg); }
+
+.wing {
+  width: 50%;
+  height: 32%;
+  left: 19%;
+  border: var(--stroke) solid var(--firefly-wing-edge);
+  background: linear-gradient(110deg, transparent, var(--firefly-wing));
+}
+
+.upperWing {
+  top: 18%;
+  border-radius: 70% 45% 20% 40%;
+  transform-origin: 88% 84%;
+  animation: firefly-wing-up var(--dur-firefly-wing) var(--ease-inout) infinite alternate;
+}
+
+.lowerWing {
+  bottom: 18%;
+  border-radius: 40% 20% 45% 70%;
+  transform-origin: 88% 16%;
+  animation: firefly-wing-down var(--dur-firefly-wing) var(--ease-inout) infinite alternate;
+}
+
+.lantern {
+  inset: 41% 64% 41% 13%;
+  border-radius: 55% 25% 25% 55%;
+  background: var(--firefly-core);
+  box-shadow: 0 0 var(--space-1) var(--firefly-glow);
+  animation: firefly-light var(--dur-firefly-pulse) var(--ease-inout) infinite alternate;
+  animation-delay: calc(var(--index) * -1 * var(--dur-firefly-phase));
+}
+
+.swarm:not([data-visible]) :is(.orbit, .fly, .wing, .lantern) {
   animation-play-state: paused;
 }
 
@@ -40,9 +107,24 @@
   to { transform: rotate(1turn); }
 }
 
-@keyframes firefly-pulse {
-  from { opacity: 0.18; transform: rotate(var(--angle)) translateX(calc(var(--radius) + var(--space-2))) scale(0.72); }
-  to { opacity: 0.88; transform: rotate(var(--angle)) translateX(var(--radius)) scale(1.12); }
+@keyframes firefly-drift {
+  from { transform: rotate(var(--angle)) translateX(calc(var(--radius) + var(--space-2))) rotate(78deg) scale(0.83); }
+  to { transform: rotate(var(--angle)) translateX(var(--radius)) rotate(102deg); }
+}
+
+@keyframes firefly-light {
+  from { opacity: 0.12; }
+  to { opacity: 1; }
+}
+
+@keyframes firefly-wing-up {
+  from { transform: rotate(46deg) scaleY(0.9); }
+  to { transform: rotate(-10deg) scaleY(0.42); }
+}
+
+@keyframes firefly-wing-down {
+  from { transform: rotate(-46deg) scaleY(0.9); }
+  to { transform: rotate(10deg) scaleY(0.42); }
 }
 
 @media (prefers-reduced-motion: reduce) {

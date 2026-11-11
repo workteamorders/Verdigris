@@ -33,6 +33,11 @@
   --patina: #3f8f7e;
   --patina-text: #7fcbb6;
   --patina-deep: #1f5a58;
+  --firefly-body: #22130e;
+  --firefly-shell: #b4885b;
+  --firefly-wing: rgb(212 205 146 / 0.58);
+  --firefly-wing-edge: rgb(226 219 165 / 0.43);
+  --firefly-length: 1.5rem;
   --firefly-core: #f1e8a1;
   --firefly-glow: rgb(197 209 103 / 0.62);
 
@@ -131,6 +136,7 @@
   --dur-strike: 1100ms;
   --dur-drift: 240s;
   --dur-ticker: 60s;
+  --dur-firefly-wing: 85ms;
   --dur-firefly-orbit: 16s;
   --dur-firefly-pulse: 1800ms;
   --dur-firefly-phase: 210ms;
