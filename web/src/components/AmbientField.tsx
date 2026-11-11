@@ -44,6 +44,19 @@ function makeTexture(core: string, edge: string, phase: number, rimOnly = false)
   return texture;
 }
 
+function makeLens(bronze: string) {
+  const texture = document.createElement('canvas');
+  texture.width = texture.height = 64;
+  const brush = texture.getContext('2d');
+  if (!brush) return texture;
+  const light = brush.createRadialGradient(32, 32, 0, 32, 32, 32);
+  light.addColorStop(0, bronze);
+  light.addColorStop(1, 'transparent');
+  brush.fillStyle = light;
+  brush.fillRect(0, 0, 64, 64);
+  return texture;
+}
+
 function startField(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D) {
   const motion = matchMedia('(prefers-reduced-motion: reduce)');
   const connection = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
@@ -55,7 +68,7 @@ function startField(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D
   const bronze = color('--field-bronze');
   const textures = [makeTexture(oxide, shade, 0.8), makeTexture(oxide, shade, 3.6)];
   const rim = makeTexture(oxide, shade, 2.4, true);
-  const lens = makeTexture(bronze, color('--field-glow'), 4.1);
+  const lens = makeLens(bronze);
   const hero = document.querySelector('[data-ambient-anchor]');
   const patches = [
     { x: 0.01, y: 0.13, size: 0.41, angle: 0.6, depth: 0.14 },
@@ -64,10 +77,19 @@ function startField(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D
     { x: 0.62, y: 1.18, size: 0.44, angle: -0.72, depth: 0.2 },
   ].slice(0, economy ? 2 : 4);
   const marks: Mark[] = [];
-  const trail: Mark[] = [];
+  const grains = Array.from({ length: economy ? 28 : 68 }, (_, index) => ({
+    x: ((index * 37 + 11) % 101) / 100,
+    y: ((index * 61 + 23) % 103) / 102,
+    phase: index * 2.39,
+    speed: 0.85 + (index % 7) * 0.24,
+    size: 0.8 + (index % 5) * 0.46,
+  }));
   const pointer = { x: 0, y: 0, targetX: 0, targetY: 0, warmth: 0, targetWarmth: 0 };
   let width = 0;
   let height = 0;
+  // The source textures are already soft. On touch screens, extra backing pixels
+  // add fill cost without changing the texture.
+  const pixelRatio = Math.min(devicePixelRatio || 1, matchMedia('(pointer: coarse)').matches ? 1 : 2);
   let resolution = 1;
   let visible = true;
   let frame = 0;
@@ -94,51 +116,70 @@ function startField(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D
 
   function draw(dt: number) {
     time += dt;
-    const spring = 1 - Math.exp(-dt * 6);
+    const spring = 1 - Math.exp(-dt * 28);
     pointer.x += (pointer.targetX - pointer.x) * spring;
     pointer.y += (pointer.targetY - pointer.y) * spring;
-    pointer.warmth += (pointer.targetWarmth - pointer.warmth) * spring;
+    pointer.warmth += (pointer.targetWarmth - pointer.warmth) * (1 - Math.exp(-dt * 14));
     const scale = Math.min(width, height);
     context.clearRect(0, 0, width, height);
 
     patches.forEach((patch, index) => {
-      const growth = 1 + Math.sin(time * (0.23 + index * 0.035) + index) * 0.21;
+      const growth = 1 + Math.sin(time * (0.74 + index * 0.12) + index) * 0.21;
       const size = scale * patch.size * growth;
       const offset = Math.min(scroll * patch.depth, height * 0.52);
-      stamp(textures[index % 2]!, width * patch.x, height * patch.y - offset, size * 1.48, size, patch.angle, hero ? 0.83 : 0.62);
+      stamp(textures[index % 2]!, width * patch.x + scale * Math.sin(time * 0.63 + index) * 0.035, height * patch.y - offset, size * 1.48, size, patch.angle, hero ? 0.83 : 0.62);
     });
 
     if (anchor) {
       const y = anchor.top + anchorScroll - scroll;
       const size = Math.min(anchor.width, height);
       if (y + anchor.height + size > 0 && y - size < height) {
-        const growth = 1 + Math.sin(time * 0.31) * 0.22;
+        const growth = 1 + Math.sin(time * 0.94) * 0.22;
         const spread = size * (0.68 + 0.15 * growth);
         stamp(textures[0]!, anchor.left + anchor.width * 0.96, y + anchor.height * 0.12, spread * growth, spread * 0.78, -0.57, 0.98);
-        stamp(textures[1]!, anchor.left + anchor.width * 0.17, y + anchor.height * 0.90, spread * 0.94, spread * (0.78 + Math.sin(time * 0.24) * 0.14), 0.52, 0.94);
+        stamp(textures[1]!, anchor.left + anchor.width * 0.17, y + anchor.height * 0.90, spread * 0.94, spread * (0.78 + Math.sin(time * 0.79) * 0.14), 0.52, 0.94);
         stamp(rim, anchor.left + anchor.width * 0.96, y + anchor.height * 0.12, spread * 1.18 * growth, spread * 0.91, -0.57, 0.48);
       }
     }
 
+    const reach = scale * 0.19;
+    const faint = new Path2D();
+    const visible = new Path2D();
+    const warm = new Path2D();
+    for (const grain of grains) {
+      const phase = grain.phase + time * grain.speed;
+      const x = width * grain.x + Math.sin(phase) * scale * 0.045;
+      const y = height * grain.y + Math.cos(phase * 0.72) * scale * 0.055 - Math.min(scroll * 0.06, height * 0.16);
+      const dx = x - pointer.x;
+      const dy = y - pointer.y;
+      const warmth = pointer.warmth * clamp(1 - Math.hypot(dx, dy) / reach);
+      const size = grain.size * (1 + warmth * 0.8);
+      const path = warmth > 0.24 ? warm : Math.sin(phase * 1.6) > 0 ? visible : faint;
+      path.rect(x + dx * warmth * 0.17, y + dy * warmth * 0.17, size, size);
+    }
+    context.fillStyle = oxide;
+    context.globalAlpha = 0.32;
+    context.fill(faint);
+    context.globalAlpha = 0.72;
+    context.fill(visible);
+    context.fillStyle = bronze;
+    context.fill(warm);
+    context.globalAlpha = 1;
+
     for (const mark of marks) {
       mark.age += dt;
-      const progress = clamp(mark.age / 1.8);
+      const progress = clamp(mark.age / 1.1);
       const spread = scale * (0.13 + 0.50 * (1 - (1 - progress) ** 2));
-      const remaining = clamp(1 - mark.age / 7);
+      const remaining = clamp(1 - mark.age / 4.5);
       const y = mark.y - scroll;
       stamp(textures[1]!, mark.x, y, spread, spread * 0.84, mark.angle, 0.64 * remaining * Math.min(1, mark.age * 9));
       if (progress < 1) stamp(rim, mark.x, y, spread * 1.12, spread, mark.angle, (1 - progress) * 0.9);
     }
-    while (marks[0] && marks[0].age >= 7) marks.shift();
+    while (marks[0] && marks[0].age >= 4.5) marks.shift();
 
-    for (const point of trail) {
-      point.age += dt;
-      const remaining = clamp(1 - point.age / 0.85);
-      stamp(lens, point.x, point.y - scroll, scale * 0.28, scale * 0.16, point.angle, remaining * 0.31);
-    }
-    while (trail[0] && trail[0].age >= 0.85) trail.shift();
     if (pointer.warmth > 0.01) {
-      stamp(lens, pointer.x, pointer.y, scale * 0.44, scale * 0.31, -0.42, pointer.warmth * 0.88);
+      const diameter = Math.min(176, scale * 0.23);
+      stamp(lens, pointer.x, pointer.y, diameter, diameter, 0, pointer.warmth * 0.36);
     }
   }
 
@@ -146,7 +187,7 @@ function startField(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D
     measureAnchor();
     width = Math.max(1, canvas.clientWidth);
     height = Math.max(1, canvas.clientHeight);
-    const ratio = Math.min(devicePixelRatio || 1, 2) * resolution;
+    const ratio = pixelRatio * resolution;
     canvas.width = Math.round(width * ratio);
     canvas.height = Math.round(height * ratio);
     context.setTransform(ratio, 0, 0, ratio, 0, 0);
@@ -158,7 +199,7 @@ function startField(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D
     const elapsed = last ? now - last : 16;
     last = now;
     draw(Math.min(elapsed, 40) / 1000);
-    slow = elapsed > 22 || performance.now() - start > 8 ? slow + 1 : Math.max(0, slow - 1);
+    slow = elapsed > 22 || performance.now() - start > 8 ? slow + 1 : Math.max(0, slow - 0.5);
     if (slow >= 12 && resolution === 1) {
       resolution = 0.5;
       resize();
@@ -172,7 +213,6 @@ function startField(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D
     if (motion.matches) {
       time = 0;
       marks.length = 0;
-      trail.length = 0;
       pointer.warmth = 0;
       draw(0);
     } else if (!document.hidden && visible) {
@@ -185,13 +225,6 @@ function startField(canvas: HTMLCanvasElement, context: CanvasRenderingContext2D
     if (pointer.warmth < 0.01) {
       pointer.x = event.clientX;
       pointer.y = event.clientY;
-    }
-    const previous = trail.at(-1);
-    const y = event.clientY + scroll;
-    if (event.pointerType !== 'touch' && (!previous || Math.hypot(event.clientX - previous.x, y - previous.y) > 22)) {
-      const angle = previous ? Math.atan2(y - previous.y, event.clientX - previous.x) : -0.42;
-      trail.push({ x: event.clientX, y, age: 0, angle });
-      if (trail.length > (economy ? 3 : 6)) trail.shift();
     }
     pointer.targetX = event.clientX;
     pointer.targetY = event.clientY;
