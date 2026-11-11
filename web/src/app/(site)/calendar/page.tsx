@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function Page() {
   return (
     <>
-      <PageHead eyebrow="Calendar" title="The 84 Days" lead="Twelve weeks of seven Days. The column is the Numeral; the Sign turns every Day and comes round again after 12. Pick a Day to see its details." />
+      <PageHead eyebrow="Calendar" title="The 84 Days" lead="Each row is a Sign and each column is a Numeral. Pick any Day to see its details." />
       <CalendarView />
     </>
   );

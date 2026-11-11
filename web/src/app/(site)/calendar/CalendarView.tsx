@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { CalendarGrid } from '@/components/CalendarGrid';
 import { Badge } from '@/components/Badge';
 import { DataTable, type Column } from '@/components/DataTable';
 import { Disc } from '@/components/Disc';
@@ -65,43 +66,7 @@ export function CalendarView() {
       <Section>
         <div className={styles.layout}>
           <div>
-            <div className={styles.head} aria-hidden="true">
-              {Array.from({ length: 7 }, (_, i) => (
-                <span key={i} className="label">
-                  N{i + 1}
-                </span>
-              ))}
-            </div>
-            <ol className={styles.grid} aria-label="The 84 Days, seven per row">
-              {Array.from({ length: 84 }, (_, d) => {
-                const m = minted(d);
-                const cap = TIER_CAP[tierOfNumeral(numeralOfSlot(d))];
-                const state = todayDay === null ? 'unknown' : d < todayDay ? 'past' : d === todayDay ? 'today' : 'future';
-                const full = m !== null && m >= cap;
-                return (
-                  <li key={d}>
-                    <button
-                      type="button"
-                      className={styles.cell}
-                      data-state={state}
-                      data-tier={tierOfNumeral(numeralOfSlot(d))}
-                      data-selected={d === selected || undefined}
-                      aria-pressed={d === selected}
-                      aria-label={`Day ${d + 1}, Sign ${SIGNS[signOfSlot(d)]?.name}, Numeral ${numeralOfSlot(d)}, ${tierOfNumeral(numeralOfSlot(d))}${state === 'today' ? ', today' : ''}${m !== null ? `, ${m} of ${cap} minted` : ''}`}
-                      onClick={() => setPicked(d)}
-                    >
-                      <span className={styles.num}>{d + 1}</span>
-                      <svg viewBox="-44 -44 88 88" className={styles.glyph} aria-hidden="true">
-                        <path d={SIGNS[signOfSlot(d)]?.d ?? ''} fill={SIGNS[signOfSlot(d)]?.solid ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                      <span className={styles.bar} aria-hidden="true">
-                        <span style={{ width: m === null ? '0%' : `${Math.min(100, (m / cap) * 100)}%` }} data-full={full || undefined} />
-                      </span>
-                    </button>
-                  </li>
-                );
-              })}
-            </ol>
+            <CalendarGrid today={todayDay} selected={selected} minted={all.data} onSelect={setPicked} />
             <p className="dim">{dep ? 'Bars show how much of each Day has been minted.' : 'No deployment is connected, so supply is not shown. The layout is fixed by the rules.'}</p>
           </div>
 
@@ -115,7 +80,8 @@ export function CalendarView() {
                 <Badge tone={view.tier === 'Crown' ? 'warning' : view.tier === 'Fine' ? 'info' : 'neutral'}>{view.tier}</Badge>
               </p>
               <div className={styles.preview}>
-                <Disc sign={view.sign} numeral={view.numeral} serial={1} level={0} />
+                <Disc sign={view.sign} numeral={view.numeral} serial={1} level={0} noFilters />
+                <p className="label">EXAMPLE</p>
               </div>
               <Facts
                 items={[
